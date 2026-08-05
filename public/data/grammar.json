@@ -79,6 +79,69 @@
         "correct": 1,
         "explanation": "be 本身没有具体动作，只是把表语承载的信息“赋予”主语。",
         "difficulty": 1
+      },
+      {
+        "question": "“The rabbit ate the carrot that I bought.” 属于？",
+        "options": ["简单句", "并列复合句", "复杂句（主从）", "感叹句"],
+        "correct": 2,
+        "explanation": "含 that 引导的定语从句，是主从复合句（复杂句）。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The carrot is tasty and the rabbit ate it.” 属于？",
+        "options": ["简单句", "并列复合句", "复杂句", "祈使句"],
+        "correct": 1,
+        "explanation": "and 连接两个并列分句，是并列复合句。",
+        "difficulty": 2
+      },
+      {
+        "question": "句子按用途分类，“What a tasty carrot!” 是？",
+        "options": ["陈述句", "疑问句", "祈使句", "感叹句"],
+        "correct": 3,
+        "explanation": "以 What/How 开头、表强烈感情的句子是感叹句。",
+        "difficulty": 1
+      },
+      {
+        "question": "“Did the rabbit eat the carrot?” 是哪种疑问句？",
+        "options": ["特殊疑问句", "一般疑问句", "选择疑问句", "反义疑问句"],
+        "correct": 1,
+        "explanation": "以助动词 Did 开头、用是/否回答的是一般疑问句。",
+        "difficulty": 1
+      },
+      {
+        "question": "“The rabbit ate a carrot, didn't he?” 是？",
+        "options": ["一般疑问句", "特殊疑问句", "选择疑问句", "反义疑问句"],
+        "correct": 3,
+        "explanation": "陈述 + 简短反问结构，是反义疑问句。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I ate two carrots.” 中 two 是？",
+        "options": ["名词", "数词", "代词", "形容词"],
+        "correct": 1,
+        "explanation": "two 表数量，是数词（此处修饰名词作定语）。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The rabbit runs quickly.” 中 quickly 修饰的是？",
+        "options": ["主语", "动词", "宾语", "名词"],
+        "correct": 1,
+        "explanation": "quickly 修饰动词 runs，是副词作状语。",
+        "difficulty": 1
+      },
+      {
+        "question": "“Call me a taxi.” 与 “Call me Papa.” 中 me 后的成分，正确的是？",
+        "options": ["都是间宾", "都是宾补", "前者宾补/后者间宾", "前者间宾/后者宾补"],
+        "correct": 3,
+        "explanation": "Call me a taxi 中 taxi 是直接宾语（间宾+直宾）；Call me Papa 中 Papa 是对 me 的称呼（宾补）。",
+        "difficulty": 3
+      },
+      {
+        "question": "“I can eat three times faster than he can.” 中 three times 是？",
+        "options": ["倍数表达", "序数词", "分数", "百分数"],
+        "correct": 0,
+        "explanation": "倍数 + 比较级 + than 表“比…快三倍”。",
+        "difficulty": 2
       }
     ]
   },
@@ -190,6 +253,83 @@
         "correct": 1,
         "explanation": "lie（躺）→ lay → lain；lay（放置）→ laid → laid，二者易混。",
         "difficulty": 3
+      },
+      {
+        "question": "与将来事实可能相反的假设，if 从句可用？",
+        "options": ["一般现在时", "should/were to + 原形", "过去完成时", "will + 原形"],
+        "correct": 1,
+        "explanation": "与将来相反，if 从句可用 should + 原形或 were to + 原形。",
+        "difficulty": 3
+      },
+      {
+        "question": "“If it had rained, we ___ at home.” 应填？",
+        "options": ["will stay", "would stay", "would have stayed", "had stayed"],
+        "correct": 2,
+        "explanation": "与过去事实相反的虚拟，主句用 would have + 过去分词。",
+        "difficulty": 3
+      },
+      {
+        "question": "“He talks as if he ___ everything.” 应填？",
+        "options": ["knows", "knew", "know", "has known"],
+        "correct": 1,
+        "explanation": "as if 后与事实相反的假想用虚拟语气（过去式 knew）。",
+        "difficulty": 3
+      },
+      {
+        "question": "“It is time we ___ home.” 应填？",
+        "options": ["go", "went", "going", "goes"],
+        "correct": 1,
+        "explanation": "It is time + 从句用过去式（虚拟），表示“该做…了”。",
+        "difficulty": 3
+      },
+      {
+        "question": "“I would rather you ___ tomorrow.” 应填？",
+        "options": ["come", "came", "coming", "comes"],
+        "correct": 1,
+        "explanation": "would rather + 从句用过去式（虚拟），表示“宁愿你明天来”。",
+        "difficulty": 3
+      },
+      {
+        "question": "现在分词作定语表？",
+        "options": ["被动/完成", "主动/进行", "将来/目的", "否定"],
+        "correct": 1,
+        "explanation": "现在分词作定语表主动、进行；过去分词表被动、完成。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The story is interesting.” 中 interesting 表？",
+        "options": ["被动", "主动（令人…的）", "过去", "将来"],
+        "correct": 1,
+        "explanation": "现在分词作表语暗含主动，表“令人感兴趣”。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The rabbit is interested in carrots.” 中 interested 表？",
+        "options": ["主动", "被动（被引起兴趣）", "进行", "将来"],
+        "correct": 1,
+        "explanation": "过去分词作表语暗含被动，表“对…感兴趣（被吸引）”。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I saw the rabbit cross the road.” 强调看到的是？",
+        "options": ["正在过马路", "过马路的全过程", "将要过马路", "被过马路"],
+        "correct": 1,
+        "explanation": "感官动词 + 裸不定式表看到全过程；+ doing 表看到正在进行的片段。",
+        "difficulty": 3
+      },
+      {
+        "question": "“He must have finished it.” 表？",
+        "options": ["推测过去几乎肯定", "必要", "被允许", "将来的推测"],
+        "correct": 0,
+        "explanation": "must have done 表对过去的推测，几乎肯定已发生。",
+        "difficulty": 3
+      },
+      {
+        "question": "“You should have told me earlier.” 表？",
+        "options": ["本不该做", "本应该做却没做", "不得不做", "正在做"],
+        "correct": 1,
+        "explanation": "should have done 表“本应该做却没做”，带责备/遗憾。",
+        "difficulty": 3
       }
     ]
   },
@@ -279,6 +419,76 @@
         "options": ["am", "is", "are", "be"],
         "correct": 0,
         "explanation": "than 比较状语从句中补全主语谓语，I 用 am。",
+        "difficulty": 2
+      },
+      {
+        "question": "“This is the book ___ I bought yesterday.” 指物且作宾语，应填入？",
+        "options": ["who", "whom", "which/that", "when"],
+        "correct": 2,
+        "explanation": "先行词 book 指物，关系词作 bought 的宾语，用 which/that（可省略）。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The man ___ you met is my teacher.” 作宾语指人，应填入？",
+        "options": ["who/whom", "which", "whose", "when"],
+        "correct": 0,
+        "explanation": "先行词 man 指人，关系词作 met 的宾语，用 who/whom（口语可省略）。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The teacher ___ son won the prize is my friend.” 表所属，应填入？",
+        "options": ["who", "whom", "whose", "that"],
+        "correct": 2,
+        "explanation": "son 属于 teacher，表所属关系用 whose。",
+        "difficulty": 2
+      },
+      {
+        "question": "“All ___ I want is a carrot.” 先行词是不定代词，应填入？",
+        "options": ["which", "that", "who", "what"],
+        "correct": 1,
+        "explanation": "先行词是 all 等不定代词时，定语从句只能用 that。",
+        "difficulty": 3
+      },
+      {
+        "question": "“This is the best carrot ___ I've ever eaten.” 应填入？",
+        "options": ["which", "that", "who", "whom"],
+        "correct": 1,
+        "explanation": "先行词被最高级 the best 修饰，定语从句用 that。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Whether the rabbit ate the carrot is obvious.” 中 Whether 从句是？",
+        "options": ["主语从句", "宾语从句", "表语从句", "定语从句"],
+        "correct": 0,
+        "explanation": "Whether 从句位于谓语 is 之前作主语，是主语从句。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The problem is that the rabbit is hungry.” 中 that 从句是？",
+        "options": ["主语从句", "宾语从句", "表语从句", "同位语从句"],
+        "correct": 2,
+        "explanation": "that 从句在 is 后作表语，是表语从句。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I don't know where the rabbit ate the carrot.” 中 where 从句是？",
+        "options": ["状语从句", "宾语从句", "定语从句", "主语从句"],
+        "correct": 1,
+        "explanation": "where 从句作 know 的宾语，是宾语从句。",
+        "difficulty": 2
+      },
+      {
+        "question": "“Even if I see a carrot, I will not eat it.” 中 Even if 引导的是？",
+        "options": ["原因从句", "让步从句", "时间从句", "结果从句"],
+        "correct": 1,
+        "explanation": "even if 表“即使”，是让步状语从句。",
+        "difficulty": 2
+      },
+      {
+        "question": "“As soon as the wolf stopped by, the rabbit ate.” 中 As soon as 引导？",
+        "options": ["时间从句", "条件从句", "让步从句", "原因从句"],
+        "correct": 0,
+        "explanation": "as soon as 表“一…就…”，是时间状语从句。",
         "difficulty": 2
       }
     ]
@@ -370,6 +580,76 @@
         "correct": 2,
         "explanation": "再次提及已经提过的名词，用 the。",
         "difficulty": 1
+      },
+      {
+        "question": "“play ___ piano” 前应填入？",
+        "options": ["a", "an", "the", "不填"],
+        "correct": 2,
+        "explanation": "乐器名词前用 the，表示弹奏这种乐器。",
+        "difficulty": 2
+      },
+      {
+        "question": "“___ sun rises in the east.” 应填入？",
+        "options": ["A", "An", "The", "不填"],
+        "correct": 2,
+        "explanation": "独一无二的天体（sun/moon/earth）前用 the。",
+        "difficulty": 1
+      },
+      {
+        "question": "“I'm good ___ English.” 应填入？",
+        "options": ["at", "on", "in", "for"],
+        "correct": 0,
+        "explanation": "固定搭配 be good at（擅长）。",
+        "difficulty": 2
+      },
+      {
+        "question": "“He is afraid ___ the dark.” 应填入？",
+        "options": ["for", "of", "at", "with"],
+        "correct": 1,
+        "explanation": "固定搭配 be afraid of（害怕）。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I look forward to ___ you.” 应填入？",
+        "options": ["see", "seeing", "saw", "seen"],
+        "correct": 1,
+        "explanation": "look forward to 中 to 是介词，后接动名词 seeing。",
+        "difficulty": 3
+      },
+      {
+        "question": "“He got up ___.” 表达“早”，应填入？",
+        "options": ["early", "earlily", "earlyly", "ear"],
+        "correct": 0,
+        "explanation": "early 本身可作副词（早），不加 -ly。",
+        "difficulty": 2
+      },
+      {
+        "question": "“She sings ___.” 表达“好”，应填入？",
+        "options": ["good", "well", "goodly", "better"],
+        "correct": 1,
+        "explanation": "修饰动词 sings 用副词 well；good 是形容词。",
+        "difficulty": 2
+      },
+      {
+        "question": "“There is ___ water left.” 表达“几乎没有（否定）”，应填入？",
+        "options": ["few", "a few", "little", "a little"],
+        "correct": 2,
+        "explanation": "water 不可数，little 表“几乎没有”（否定）；a little 表“有一点”。",
+        "difficulty": 3
+      },
+      {
+        "question": "“___ of the two answers is correct.” 表达“两个都（否定）”，应填入？",
+        "options": ["Both", "Neither", "All", "None"],
+        "correct": 1,
+        "explanation": "两个中“都不对”用 neither；both 是“两个都”（肯定）。",
+        "difficulty": 3
+      },
+      {
+        "question": "“___ he comes, I will go.” 表达“除非他不来”，应填入？",
+        "options": ["If", "Unless", "When", "Because"],
+        "correct": 1,
+        "explanation": "unless = if not，表“除非”。",
+        "difficulty": 3
       }
     ]
   },
@@ -445,6 +725,76 @@
         "options": ["get", "gets", "are getting", "have got"],
         "correct": 1,
         "explanation": "as well as 不是并列主语，真正主语是 the rabbit，谓语用单数 gets。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The carrots were eaten by the rabbit.” 中主语是？",
+        "options": ["The rabbit", "The carrots", "were eaten", "eaten"],
+        "correct": 1,
+        "explanation": "被动语态中动作承受者 the carrots 作主语。",
+        "difficulty": 1
+      },
+      {
+        "question": "“The rabbit was seen to eat a carrot.” 被动语态中为什么 to 回来了？",
+        "options": ["这是主动", "被动时感官动词后还原 to", "to 可有可无", "语法错误"],
+        "correct": 1,
+        "explanation": "感官动词 see + 裸不定式在主动态省略 to，变被动（be seen）时 to 要还原。",
+        "difficulty": 3
+      },
+      {
+        "question": "“There is a carrot and two apples on the table.” 谓语 is 遵循？",
+        "options": ["语法一致", "意义一致", "就近一致", "以上都不是"],
+        "correct": 2,
+        "explanation": "there be 遵循就近一致，最近的 a carrot 是单数，用 is。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Not only the rabbit but also many animals ___ carrots.” 应填入？",
+        "options": ["likes", "like", "liking", "liked"],
+        "correct": 1,
+        "explanation": "not only...but also 就近一致，最近的 many animals 复数，用 like。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Every student and every teacher ___ here.” 应填入？",
+        "options": ["are", "is", "were", "be"],
+        "correct": 1,
+        "explanation": "every...and every... 强调个体，谓语用单数 is。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Here ___ the bus.” 完全倒装，应填入？",
+        "options": ["comes", "come", "coming", "came"],
+        "correct": 0,
+        "explanation": "Here/There 开头的完全倒装：谓语动词整体在主语前，主语 the bus 单数用 comes。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Never ___ I seen such a carrot.” 部分倒装，应填入？",
+        "options": ["have", "had", "do", "did"],
+        "correct": 0,
+        "explanation": "否定副词 Never 开头部分倒装，助动词提前。现在完成时用 have。",
+        "difficulty": 3
+      },
+      {
+        "question": "“It was yesterday ___ he left.” 强调时间，应填入？",
+        "options": ["when", "that", "which", "where"],
+        "correct": 1,
+        "explanation": "强调句型 It was + 被强调部分 + that，即使强调时间也用 that 不用 when。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The rabbit was appointed ___ chairman.” 表唯一职位，应填入？",
+        "options": ["a", "an", "the", "不填"],
+        "correct": 3,
+        "explanation": "被任命为唯一职位（主席/队长等）时，名词前零冠词。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Not until midnight ___ the rabbit sleep.” 倒装，应填入？",
+        "options": ["did", "does", "had", "was"],
+        "correct": 0,
+        "explanation": "Not until 开头，主句部分倒装，一般过去时借助 did。",
         "difficulty": 3
       }
     ]
