@@ -1,0 +1,452 @@
+[
+  {
+    "chapterId": "01",
+    "title": "重塑语法认知框架",
+    "questions": [
+      {
+        "question": "英语简单句最基本的骨架是什么？",
+        "options": ["主语 + 宾语", "主语 + 谓语", "谓语 + 表语", "宾语 + 补语"],
+        "correct": 1,
+        "explanation": "任何句子拆到不能再拆，都只剩下“主语 + 谓语”两个核心部分。",
+        "difficulty": 1
+      },
+      {
+        "question": "“Papa rabbit teaches you English.” 属于哪一种基本句型？",
+        "options": ["主谓宾", "主系表", "主谓宾宾（双及物）", "主谓宾宾补"],
+        "correct": 2,
+        "explanation": "teaches 后有间接宾语 you（对谁）和直接宾语 English（给了什么），是双及物句型。",
+        "difficulty": 2
+      },
+      {
+        "question": "“Papa rabbit considers you smart.” 中 smart 是什么成分？",
+        "options": ["间接宾语", "宾语", "宾语补语", "表语"],
+        "correct": 2,
+        "explanation": "smart 补充说明宾语 you 是什么样子，是宾语补语。可用“you are smart”来检验。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The rabbit smells nice.” 中 smells 是？",
+        "options": ["及物动词", "不及物动词", "系动词", "助动词"],
+        "correct": 2,
+        "explanation": "smells 在此把 nice 这个属性赋予主语，是系动词，后接表语。",
+        "difficulty": 2
+      },
+      {
+        "question": "句子成分中，“补充说明主语”的是哪一种成分？",
+        "options": ["宾语", "主语补语（表语）", "宾语补语", "状语"],
+        "correct": 1,
+        "explanation": "主语补语（表语）出现在系动词后，补充说明主语的性质或身份。",
+        "difficulty": 1
+      },
+      {
+        "question": "“The little white rabbit ate a large carrot.” 中 little white 是什么成分？",
+        "options": ["状语", "定语", "补语", "同位语"],
+        "correct": 1,
+        "explanation": "little white 修饰名词 rabbit，作定语。",
+        "difficulty": 2
+      },
+      {
+        "question": "关于谓语和谓语动词的关系，正确的是？",
+        "options": ["两者相同", "谓语动词是谓语的一部分", "谓语是谓语动词的一部分", "没有关系"],
+        "correct": 1,
+        "explanation": "谓语包含动词及宾语补语状语等，谓语动词只是其中动词部分。如 has eaten a carrot 中 has eaten 是谓语动词，整句是谓语。",
+        "difficulty": 3
+      },
+      {
+        "question": "英语动词的“三大本领”不包括以下哪项？",
+        "options": ["时态（Tense）", "语态（Voice）", "体（Aspect）", "语气（Mood）"],
+        "correct": 1,
+        "explanation": "时、体、气是三大本领；语态由 be + 过去分词表达，不属于“三大本领”范畴。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The rabbit has eaten a carrot.” 中谓语动词是？",
+        "options": ["eaten", "has eaten", "a carrot", "The rabbit"],
+        "correct": 1,
+        "explanation": "助动词 has + 主动词 eaten 构成现在完成时，整个 has eaten 是谓语动词。",
+        "difficulty": 2
+      },
+      {
+        "question": "下列哪项是简单句？",
+        "options": ["The rabbit ate a carrot.", "The carrot is tasty and the rabbit ate it.", "The rabbit ate the carrot that I bought.", "Because it rained, he stayed home."],
+        "correct": 0,
+        "explanation": "只有一套主谓结构的是简单句；其余分别含并列连词或从句，是复合句/复杂句。",
+        "difficulty": 2
+      },
+      {
+        "question": "系动词 be 的作用是？",
+        "options": ["表达动作", "把后面的信息赋予主语", "连接两个名词", "修饰名词"],
+        "correct": 1,
+        "explanation": "be 本身没有具体动作，只是把表语承载的信息“赋予”主语。",
+        "difficulty": 1
+      }
+    ]
+  },
+  {
+    "chapterId": "02",
+    "title": "动词语气与虚拟语气",
+    "questions": [
+      {
+        "question": "与现在事实相反的条件句，if 从句用？",
+        "options": ["一般现在时", "过去式", "过去完成时", "will + 原形"],
+        "correct": 1,
+        "explanation": "与现在相反，if 从句用过去式（were/did），主句用 would + 原形。",
+        "difficulty": 2
+      },
+      {
+        "question": "“If I ___ a bird, I would fly.” 应填？",
+        "options": ["am", "was", "were", "be"],
+        "correct": 2,
+        "explanation": "虚拟语气与现在事实相反，be 动词一律用 were（即使是 I）。",
+        "difficulty": 2
+      },
+      {
+        "question": "与过去事实相反，主句用？",
+        "options": ["would + 原形", "would have + 过去分词", "had + 过去分词", "would + 过去式"],
+        "correct": 1,
+        "explanation": "与过去相反，if 从句用 had + 过去分词，主句用 would have + 过去分词。",
+        "difficulty": 3
+      },
+      {
+        "question": "“I wish I ___ taller.” 应填？",
+        "options": ["am", "were", "will be", "have been"],
+        "correct": 1,
+        "explanation": "wish 后接与现在事实相反的愿望，用过去式（were）。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The teacher suggested that he ___ harder.” 应填？",
+        "options": ["study", "studies", "studied", "studying"],
+        "correct": 0,
+        "explanation": "suggest 后的 that 从句用虚拟语气（should）+ 动词原形，should 可省略。",
+        "difficulty": 3
+      },
+      {
+        "question": "非谓语动词（非限定动词）的特点不包括？",
+        "options": ["不受时间限定", "不受人称限定", "可作谓语", "可作句中其他成分"],
+        "correct": 2,
+        "explanation": "非谓语动词不能作谓语，只能作主语、宾语、补语、状语等。",
+        "difficulty": 2
+      },
+      {
+        "question": "“She decided ___ abroad.” 应填？",
+        "options": ["study", "to study", "studying", "studied"],
+        "correct": 1,
+        "explanation": "decide 后接不定式 to do 作宾语。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I enjoy ___ reading.” 应填？",
+        "options": ["read", "to read", "reading", "reads"],
+        "correct": 2,
+        "explanation": "enjoy 后接动名词作宾语。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I had my car ___ yesterday.” 应填？",
+        "options": ["wash", "washed", "washing", "to wash"],
+        "correct": 1,
+        "explanation": "have + 宾语 + 过去分词，表示“让别人把车洗了”。",
+        "difficulty": 3
+      },
+      {
+        "question": "make 的使役用法中，宾语后接？",
+        "options": ["to do", "do（裸不定式）", "doing", "done"],
+        "correct": 1,
+        "explanation": "make + 宾语 + 动词原形（省略 to）。",
+        "difficulty": 2
+      },
+      {
+        "question": "不规则动词 eat 的过去分词是？",
+        "options": ["eated", "ate", "eaten", "eating"],
+        "correct": 2,
+        "explanation": "eat → ate（过去式）→ eaten（过去分词），属 ABC 型。",
+        "difficulty": 1
+      },
+      {
+        "question": "must 与 have to 的区别是？",
+        "options": ["含义相同", "must 表主观，have to 表客观", "must 是过去式", "have to 是禁止"],
+        "correct": 1,
+        "explanation": "must 出于主观认为，have to 出于客观情况迫使。mustn't 表禁止，don't have to 表不必。",
+        "difficulty": 3
+      },
+      {
+        "question": "“You mustn't do it.” 的意思是？",
+        "options": ["你没必要做", "你禁止做", "你不应该做", "你不想做"],
+        "correct": 1,
+        "explanation": "mustn't 表示“禁止、千万别”，语气强于 shouldn't。",
+        "difficulty": 2
+      },
+      {
+        "question": "独立主格“名词 + 现在分词”结构的作用是？",
+        "options": ["作主语", "作宾语", "作状语，说明主句", "作表语"],
+        "correct": 2,
+        "explanation": "独立主格附着在主句上作状语，有自己的逻辑主语。",
+        "difficulty": 3
+      },
+      {
+        "question": "不规则动词 lie（躺）的过去式是？",
+        "options": ["laid", "lay", "lied", "lain"],
+        "correct": 1,
+        "explanation": "lie（躺）→ lay → lain；lay（放置）→ laid → laid，二者易混。",
+        "difficulty": 3
+      }
+    ]
+  },
+  {
+    "chapterId": "03",
+    "title": "从句",
+    "questions": [
+      {
+        "question": "The person ___ is standing there is my friend. 应填入？",
+        "options": ["which", "who", "whom", "what"],
+        "correct": 1,
+        "explanation": "先行词指人且作从句主语，用 who。",
+        "difficulty": 1
+      },
+      {
+        "question": "“___ it rains, we will stay home.” 应填入？",
+        "options": ["Because", "If", "Although", "Unless"],
+        "correct": 1,
+        "explanation": "表达“如果明天下雨”的条件，用 if。",
+        "difficulty": 2
+      },
+      {
+        "question": "定语从句中，先行词是“人 + 物”混合时，只能用？",
+        "options": ["who", "which", "that", "whom"],
+        "correct": 2,
+        "explanation": "先行词同时含人和物时，只能用 that。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The news that the rabbit won spread fast.” 中 that 从句是？",
+        "options": ["定语从句", "同位语从句", "表语从句", "宾语从句"],
+        "correct": 1,
+        "explanation": "that 从句跟在抽象名词 news 后，说明其内容，是同位语从句（that 在从句中不作成分）。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The fact is ___ the rabbit ate the carrot.” 应填入？",
+        "options": ["which", "that", "who", "when"],
+        "correct": 1,
+        "explanation": "that 从句在 is 后作表语，是表语从句。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I don't know ___ he will come.” 表达“是否”，应填入？",
+        "options": ["that", "what", "whether", "which"],
+        "correct": 2,
+        "explanation": "宾语从句表达“是否”用 whether / if。",
+        "difficulty": 2
+      },
+      {
+        "question": "“___ I get home, I will call you.” 表达“当…时”，应填入？",
+        "options": ["If", "When", "Because", "Although"],
+        "correct": 1,
+        "explanation": "时间状语从句表达“当我到家时”用 when；注意主句将来时，when 从句用一般现在时。",
+        "difficulty": 2
+      },
+      {
+        "question": "“You will fail ___ you work hard.” 表达“除非”，应填入？",
+        "options": ["if", "unless", "because", "although"],
+        "correct": 1,
+        "explanation": "unless = if not，表达“除非你努力否则会失败”。",
+        "difficulty": 3
+      },
+      {
+        "question": "非限定性定语从句（带逗号）中，指物只能用？",
+        "options": ["that", "which", "who", "whose"],
+        "correct": 1,
+        "explanation": "非限定性定语从句指物只能用 which，不能用 that。",
+        "difficulty": 3
+      },
+      {
+        "question": "“This is the reason ___ the rabbit ate the carrot.” 应填入？",
+        "options": ["where", "why", "when", "that"],
+        "correct": 1,
+        "explanation": "reason 后接 why 引导定语从句，why = for which。",
+        "difficulty": 2
+      },
+      {
+        "question": "“___ the weather permits, we will go out.” 表达“如果”，应填入？",
+        "options": ["If", "Unless", "Although", "When"],
+        "correct": 0,
+        "explanation": "条件状语从句表达“如果天气允许”用 if。",
+        "difficulty": 1
+      },
+      {
+        "question": "“He is smarter than I ___.” 应填入？",
+        "options": ["am", "is", "are", "be"],
+        "correct": 0,
+        "explanation": "than 比较状语从句中补全主语谓语，I 用 am。",
+        "difficulty": 2
+      }
+    ]
+  },
+  {
+    "chapterId": "04",
+    "title": "词类",
+    "questions": [
+      {
+        "question": "下列哪个词是可数名词？",
+        "options": ["water", "apple", "advice", "money"],
+        "correct": 1,
+        "explanation": "apple 有单复数变化，是可数名词；water/money/advice 为不可数名词。",
+        "difficulty": 1
+      },
+      {
+        "question": "“This book is (我的)” 应填入哪个词？",
+        "options": ["my", "mine", "me", "myself"],
+        "correct": 1,
+        "explanation": "作表语时需用名词性物主代词 mine（my 是形容词性物主代词，后需跟名词）。",
+        "difficulty": 1
+      },
+      {
+        "question": "形容词 “beautiful” 的比较级是？",
+        "options": ["beautifuler", "more beautiful", "beautifuller", "most beautiful"],
+        "correct": 1,
+        "explanation": "多音节词用 more + 原级构成比较级：more beautiful。",
+        "difficulty": 1
+      },
+      {
+        "question": "“___ university” 前应填 a 还是 an？",
+        "options": ["a", "an", "都不对", "视情况"],
+        "correct": 0,
+        "explanation": "university 以 /juː/ 开头（辅音音素），用 a 而非 an。",
+        "difficulty": 2
+      },
+      {
+        "question": "“___ honest boy” 前应填？",
+        "options": ["a", "an", "the 都不对", "零冠词"],
+        "correct": 1,
+        "explanation": "honest 的 h 不发音，以元音音素开头，用 an。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I'm interested ___ English.” 应填入？",
+        "options": ["on", "at", "in", "with"],
+        "correct": 2,
+        "explanation": "固定搭配 be interested in（对…感兴趣）。",
+        "difficulty": 2
+      },
+      {
+        "question": "“He works very ___.” 应填入？",
+        "options": ["hard", "hardly", "hardlyly", "hardy"],
+        "correct": 0,
+        "explanation": "hard 本身可作副词表“努力地”；hardly 是“几乎不”。",
+        "difficulty": 3
+      },
+      {
+        "question": "“friendly” 是形容词还是副词？",
+        "options": ["形容词", "副词", "两者都可", "名词"],
+        "correct": 0,
+        "explanation": "friendly 以 -ly 结尾却是形容词，修饰名词，如 a friendly rabbit。",
+        "difficulty": 3
+      },
+      {
+        "question": "“I have ___ friends in this city.” 表达“几个（肯定）”，应填入？",
+        "options": ["few", "a few", "little", "a little"],
+        "correct": 1,
+        "explanation": "a few + 可数复数表“有几个”（肯定）；few 表“几乎没有”（否定）。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The teacher and video creator ___ a rabbit.” 表达“一人两身份”，应填入？",
+        "options": ["are", "is", "were", "be"],
+        "correct": 1,
+        "explanation": "a teacher and video creator 指同一人（一个身份兼两个），谓语用单数 is。",
+        "difficulty": 3
+      },
+      {
+        "question": "“___ moon” 前应填入？",
+        "options": ["a", "an", "the", "零冠词"],
+        "correct": 2,
+        "explanation": "独一无二的天体前用 the。",
+        "difficulty": 1
+      },
+      {
+        "question": "“I saw a rabbit. ___ rabbit ran away.” 第二处应填入？",
+        "options": ["A", "An", "The", "不填"],
+        "correct": 2,
+        "explanation": "再次提及已经提过的名词，用 the。",
+        "difficulty": 1
+      }
+    ]
+  },
+  {
+    "chapterId": "05",
+    "title": "句子成分与分类",
+    "questions": [
+      {
+        "question": "He is tall. 中 “tall” 是句子的什么成分？",
+        "options": ["主语", "谓语", "表语", "宾语"],
+        "correct": 2,
+        "explanation": "系动词 is 后说明主语特征的成分为表语。",
+        "difficulty": 1
+      },
+      {
+        "question": "Everyone ___ ready. 应填入？",
+        "options": ["are", "is", "were", "be"],
+        "correct": 1,
+        "explanation": "everyone/each 等作主语时谓语用单数。",
+        "difficulty": 2
+      },
+      {
+        "question": "被动语态的基本结构是？",
+        "options": ["be + 过去分词", "have + 过去分词", "be + 现在分词", "will + 动词原形"],
+        "correct": 0,
+        "explanation": "被动语态由 be + 过去分词构成。",
+        "difficulty": 1
+      },
+      {
+        "question": "“The carrot was eaten by the rabbit.” 是哪种语态？",
+        "options": ["主动语态", "被动语态", "虚拟语气", "祈使句"],
+        "correct": 1,
+        "explanation": "was eaten 是 be + 过去分词，动作承受者作主语，是被动语态。",
+        "difficulty": 1
+      },
+      {
+        "question": "“Never have I seen such a carrot.” 是哪类倒装？",
+        "options": ["完全倒装", "部分倒装", "形式倒装", "不是倒装"],
+        "correct": 1,
+        "explanation": "否定副词 Never 在句首，助动词 have 提前到主语前，是部分倒装。",
+        "difficulty": 3
+      },
+      {
+        "question": "“It was the rabbit ___ ate the carrot.” 强调句应填入？",
+        "options": ["who", "that", "which", "whom"],
+        "correct": 1,
+        "explanation": "强调句型 It is/was + 被强调部分 + that 从句，一律用 that。",
+        "difficulty": 3
+      },
+      {
+        "question": "“A number of rabbits ___ hopping.” 应填入？",
+        "options": ["is", "are", "was", "be"],
+        "correct": 1,
+        "explanation": "a number of + 复数 = “一些”，谓语用复数 are。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The number of rabbits ___ growing.” 应填入？",
+        "options": ["is", "are", "were", "be"],
+        "correct": 0,
+        "explanation": "the number of + 复数 = “…的数量”，中心词是 the number，谓语用单数 is。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Either you or he ___ going.” 就近一致，应填入？",
+        "options": ["are", "is", "am", "be"],
+        "correct": 1,
+        "explanation": "either...or 遵循就近一致，离谓语最近的是 he，用 is。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The rabbit, as well as other animals, ___ a carrot.” 应填入？",
+        "options": ["get", "gets", "are getting", "have got"],
+        "correct": 1,
+        "explanation": "as well as 不是并列主语，真正主语是 the rabbit，谓语用单数 gets。",
+        "difficulty": 3
+      }
+    ]
+  }
+]
