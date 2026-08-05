@@ -142,6 +142,55 @@
         "correct": 0,
         "explanation": "倍数 + 比较级 + than 表“比…快三倍”。",
         "difficulty": 2
+      },
+      {
+        "question": "“The sun rises in the east.” 用一般现在时，因为？",
+        "options": ["表习惯", "表客观真理", "表将来", "表过去"],
+        "correct": 1,
+        "explanation": "客观真理/自然现象用一般现在时。",
+        "difficulty": 1
+      },
+      {
+        "question": "“I have eaten breakfast.” 表？",
+        "options": ["过去某时吃过", "过去动作对现在有影响", "正在吃", "将来吃"],
+        "correct": 1,
+        "explanation": "现在完成时强调过去动作对现在的影响/结果。",
+        "difficulty": 2
+      },
+      {
+        "question": "“He is reading a book now.” 用现在进行时，强调？",
+        "options": ["习惯", "正在进行的动作", "已完成", "将来计划"],
+        "correct": 1,
+        "explanation": "现在进行时表此刻正在进行的动作。",
+        "difficulty": 1
+      },
+      {
+        "question": "一般过去时“I ate a carrot.” 强调？",
+        "options": ["对现在的影响", "过去某时做过这个动作", "持续到现在", "还没吃"],
+        "correct": 1,
+        "explanation": "一般过去时只强调过去某时间点发生的动作，不涉及现在。",
+        "difficulty": 1
+      },
+      {
+        "question": "“By the time he arrives, I will have finished.” 用将来完成时表？",
+        "options": ["将来正在做", "将来某点前已完成", "过去完成", "现在完成"],
+        "correct": 1,
+        "explanation": "将来完成时 will have done 表到将来某点之前已完成。",
+        "difficulty": 3
+      },
+      {
+        "question": "“It seems that the rabbit is hungry.” 中 it 是？",
+        "options": ["指代兔子", "形式主语", "强调", "真实主语"],
+        "correct": 1,
+        "explanation": "it 作形式主语，真正主语是后面的 that 从句。",
+        "difficulty": 2
+      },
+      {
+        "question": "动词的语态（主动/被动）是由什么表达的？",
+        "options": ["时态", "be + 过去分词", "情态动词", "主谓一致"],
+        "correct": 1,
+        "explanation": "被动语态 = be + 过去分词。",
+        "difficulty": 2
       }
     ]
   },
@@ -330,6 +379,62 @@
         "correct": 1,
         "explanation": "should have done 表“本应该做却没做”，带责备/遗憾。",
         "difficulty": 3
+      },
+      {
+        "question": "“It is important ___ English.” 应填？",
+        "options": ["learn", "to learn", "learning", "learned"],
+        "correct": 1,
+        "explanation": "It is + adj + to do，不定式作真正主语。",
+        "difficulty": 2
+      },
+      {
+        "question": "“___ is believing.” 应填？",
+        "options": ["See", "To see", "Seeing", "Seen"],
+        "correct": 2,
+        "explanation": "动名词作主语表一般性概念：Seeing is believing（眼见为实）。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I like ___ in summer.” 表达一般爱好，应填？",
+        "options": ["swim", "to swim", "swimming", "swam"],
+        "correct": 2,
+        "explanation": "like 后接动名词表一般性爱好。",
+        "difficulty": 1
+      },
+      {
+        "question": "“She stopped ___ with me.” 表达“停下来跟我说话”，应填？",
+        "options": ["talk", "to talk", "talking", "talked"],
+        "correct": 1,
+        "explanation": "stop to do 表“停下来去做”；stop doing 表“停止正在做的”。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Remember ___ the door.” 表达“记得要锁（还没锁）”，应填？",
+        "options": ["lock", "to lock", "locking", "locked"],
+        "correct": 1,
+        "explanation": "remember to do 表记得要做（未发生）；remember doing 表记得做过。",
+        "difficulty": 3
+      },
+      {
+        "question": "“I forgot ___ him before.” 表达“忘记见过（见过但忘了）”，应填？",
+        "options": ["meet", "to meet", "meeting", "met"],
+        "correct": 2,
+        "explanation": "forget doing 表忘记曾做过（已发生）；forget to do 表忘记要做。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The window needs ___.” 应填？",
+        "options": ["clean", "to clean", "cleaning", "cleaned"],
+        "correct": 2,
+        "explanation": "need 后接动名词主动形式表被动意义（need cleaning = need to be cleaned）。",
+        "difficulty": 3
+      },
+      {
+        "question": "“I had my hair ___ yesterday.” 应填？",
+        "options": ["cut", "to cut", "cutting", "cuts"],
+        "correct": 0,
+        "explanation": "have + 宾语 + 过去分词，让头发被剪，cut 的过去分词仍是 cut。",
+        "difficulty": 3
       }
     ]
   },
@@ -490,6 +595,69 @@
         "correct": 0,
         "explanation": "as soon as 表“一…就…”，是时间状语从句。",
         "difficulty": 2
+      },
+      {
+        "question": "“The house ___ roof is red is mine.” 应填入？",
+        "options": ["which", "whose", "that", "where"],
+        "correct": 1,
+        "explanation": "roof 属于 house，表所属用 whose。",
+        "difficulty": 3
+      },
+      {
+        "question": "“This is the reason ___ he left.” 应填入？",
+        "options": ["why", "when", "where", "which"],
+        "correct": 0,
+        "explanation": "reason 后接 why 引导定语从句。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I still remember the day ___ we met.” 应填入？",
+        "options": ["which", "when", "who", "whom"],
+        "correct": 1,
+        "explanation": "先行词 the day 表时间，从句缺时间状语，用 when。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The village ___ I grew up is far away.” 应填入？",
+        "options": ["which", "where", "when", "who"],
+        "correct": 1,
+        "explanation": "先行词 the village 表地点，从句缺地点状语，用 where。",
+        "difficulty": 2
+      },
+      {
+        "question": "“___ you are here, we can start.” 表达“既然”，应填入？",
+        "options": ["Because", "Since", "Although", "If"],
+        "correct": 1,
+        "explanation": "since 表“既然/因为”（已知原因，较委婉），从句在句首。",
+        "difficulty": 2
+      },
+      {
+        "question": "“He ran fast ___ he could catch the bus.” 表达目的，应填入？",
+        "options": ["because", "so that", "although", "if"],
+        "correct": 1,
+        "explanation": "so that 引导目的状语从句，表“以便”。",
+        "difficulty": 2
+      },
+      {
+        "question": "“___ she was tired, she went on working.” 表达让步，应填入？",
+        "options": ["Because", "Although", "If", "When"],
+        "correct": 1,
+        "explanation": "although 表“虽然”，引导让步状语从句。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The rabbit ate the carrot ___ he found it.” 表地点，应填入？",
+        "options": ["which", "where", "that", "who"],
+        "correct": 1,
+        "explanation": "where 引导地点状语从句，表“在…地方”。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I think ___ he is right.” 宾语从句应填入？",
+        "options": ["what", "that", "which", "where"],
+        "correct": 1,
+        "explanation": "宾语从句结构完整、表陈述事实，用 that（可省略）。",
+        "difficulty": 1
       }
     ]
   },
@@ -650,6 +818,62 @@
         "correct": 1,
         "explanation": "unless = if not，表“除非”。",
         "difficulty": 3
+      },
+      {
+        "question": "“There are ___ books on the shelf.” 表达“许多（可数）”，应填入？",
+        "options": ["much", "many", "little", "a little"],
+        "correct": 1,
+        "explanation": "books 可数复数，用 many 表“许多”。",
+        "difficulty": 1
+      },
+      {
+        "question": "“He gave me ___ advice.” 表达“一些（不可数）”，应填入？",
+        "options": ["a few", "few", "some", "many"],
+        "correct": 2,
+        "explanation": "advice 不可数，用 some 修饰。",
+        "difficulty": 2
+      },
+      {
+        "question": "“___ rabbits like carrots.” 表达“大多数”，应填入？",
+        "options": ["Much", "Most", "Each", "Every"],
+        "correct": 1,
+        "explanation": "most 表“大多数”，后接复数名词 rabbits。",
+        "difficulty": 1
+      },
+      {
+        "question": "“___ of the milk is fresh.” 表达“全部（不可数）”，应填入？",
+        "options": ["All", "Both", "Every", "Each"],
+        "correct": 0,
+        "explanation": "milk 不可数，用 all 表“全部”；both 指两个。",
+        "difficulty": 2
+      },
+      {
+        "question": "“I have two rabbits. ___ is white.” 表达“两个中的另一个”，应填入？",
+        "options": ["another", "the other", "others", "other"],
+        "correct": 1,
+        "explanation": "两者中的另一个用 the other。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Some like carrots, ___ like potatoes.” 表达“其它的（泛指）”，应填入？",
+        "options": ["the other", "other", "others", "another"],
+        "correct": 2,
+        "explanation": "泛指“其它的（人/物）”作代词用 others。",
+        "difficulty": 3
+      },
+      {
+        "question": "“This is ___ car.” 表达“我的（形容词性物主）”，应填入？",
+        "options": ["my", "mine", "me", "myself"],
+        "correct": 0,
+        "explanation": "car 前需要形容词性物主代词 my；mine 独立使用。",
+        "difficulty": 1
+      },
+      {
+        "question": "“This car is ___.” 表达“我的（名词性物主）”，应填入？",
+        "options": ["my", "mine", "me", "myself"],
+        "correct": 1,
+        "explanation": "表语位置、后面无名词，用名词性物主代词 mine。",
+        "difficulty": 2
       }
     ]
   },
@@ -795,6 +1019,76 @@
         "options": ["did", "does", "had", "was"],
         "correct": 0,
         "explanation": "Not until 开头，主句部分倒装，一般过去时借助 did。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The carrots have been eaten.” 被动语态的时态是？",
+        "options": ["一般现在时", "现在完成时", "一般过去时", "将来时"],
+        "correct": 1,
+        "explanation": "have been eaten 是现在完成时的被动语态（have been + 过去分词）。",
+        "difficulty": 2
+      },
+      {
+        "question": "“The rabbit was being watched.” 被动语态的时态是？",
+        "options": ["过去进行时", "一般过去时", "过去完成时", "现在进行时"],
+        "correct": 0,
+        "explanation": "was being watched 是过去进行时的被动语态（was being + 过去分词）。",
+        "difficulty": 3
+      },
+      {
+        "question": "get-被动 “The rabbit got fired yesterday.” 表达？",
+        "options": ["被动动作", "遭遇（不愉快的被动）", "主动动作", "将来被动"],
+        "correct": 1,
+        "explanation": "get + 过去分词表被动，常强调遭遇不愉快的事（被炒）。",
+        "difficulty": 3
+      },
+      {
+        "question": "“This book ___ well.” 表“这本书卖得好”，应填入？",
+        "options": ["sells", "is sold", "is selling", "sold"],
+        "correct": 0,
+        "explanation": "某些不及物动词（sell/wash/write）主动形式表被动意义：The book sells well。",
+        "difficulty": 3
+      },
+      {
+        "question": "“___ a fine day, we went out.” 表达“天气好”，应填入？",
+        "options": ["Being", "It being", "Was", "To be"],
+        "correct": 1,
+        "explanation": "独立主格结构：代词 + 现在分词（It being a fine day），作状语表原因。",
+        "difficulty": 3
+      },
+      {
+        "question": "“The meeting ___ over, we left.” 表达“会议结束后”，应填入？",
+        "options": ["be", "was", "being", "been"],
+        "correct": 2,
+        "explanation": "独立主格：名词 + 现在分词（meeting being over），表时间。",
+        "difficulty": 3
+      },
+      {
+        "question": "“Each of the students ___ a book.” 应填入？",
+        "options": ["have", "has", "are having", "were having"],
+        "correct": 1,
+        "explanation": "each of + 复数名词，谓语用单数 has。",
+        "difficulty": 2
+      },
+      {
+        "question": "“Neither of them ___ correct.” 应填入？",
+        "options": ["are", "is", "be", "were"],
+        "correct": 1,
+        "explanation": "neither of + 复数，正式用法谓语用单数 is。",
+        "difficulty": 2
+      },
+      {
+        "question": "“There ___ a pen and two books on the desk.” 就近一致，应填入？",
+        "options": ["are", "is", "be", "were"],
+        "correct": 1,
+        "explanation": "there be 就近一致，最近的 a pen 单数用 is。",
+        "difficulty": 2
+      },
+      {
+        "question": "“It is I ___ am your friend.” 强调主语，应填入？",
+        "options": ["who", "which", "what", "whose"],
+        "correct": 0,
+        "explanation": "强调人作主语时，It is/was + 人 + who/that 从句（who 更强调人）。",
         "difficulty": 3
       }
     ]
