@@ -1,0 +1,53 @@
+/* ==================== 大纲面板 ==================== */
+.outline-panel {
+    position: fixed;
+    right: 0;
+    top: var(--topbar-height);
+    bottom: 0;
+    width: 280px;
+    background: var(--glass-bg-panel);
+    backdrop-filter: var(--glass-blur-strong);
+    -webkit-backdrop-filter: var(--glass-blur-strong);
+    border-left: 1px solid var(--glass-border);
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.08);
+    z-index: 90;
+    padding: 20px;
+    overflow-y: auto;
+    display: none;
+    transition: transform var(--transition-smooth);
+}
+
+.outline-panel.visible {
+    display: block;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.outline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.outline-header h6 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+#outlineBody a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color var(--transition-fast);
+}
+
+/* .section-label/.section-num/.section-check 为全局小节行样式，见 layout.css */
+#outlineBody a:hover {
+    color: var(--accent);
+}
+

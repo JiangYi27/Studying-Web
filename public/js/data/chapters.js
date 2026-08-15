@@ -150,16 +150,6 @@ async function loadQuizzes() {
     }
 }
 
-// ==================== 游戏状态机 ====================
-const GameState = {
-    IDLE: 'idle',
-    IN_PROGRESS: 'in_progress',
-    CORRECT: 'correct',
-    WRONG: 'wrong',
-    LEVEL_COMPLETE: 'level_complete',
-    ALL_COMPLETE: 'all_complete',
-};
-
 // ==================== 稀有度颜色映射 ====================
 const RARITY_COLORS = {
     common: '#94a3b8',
@@ -238,6 +228,10 @@ const COMMON_BADGES = [
     { id: 'quiz_scholar', name: '满分学霸', desc: '在一次测验中获得S级评价', icon: '🎓', category: 'quiz', rarity: 'uncommon', condition: () => state.quizStats && state.quizStats.sCount >= 1 },
     { id: 'quiz_whiz', name: '答题快手', desc: '单场测验连击30题', icon: '⚡', category: 'quiz', rarity: 'legendary', condition: () => state.quizStats && state.quizStats.bestStreak >= 30 },
     { id: 'quiz_ab', name: '稳如磐石', desc: '10次测验获得A级及以上评价', icon: '🛡️', category: 'quiz', rarity: 'epic', condition: () => state.quizStats && state.quizStats.aCount >= 10 },
+    // ========= 营地训练 =========
+    { id: 'camp_rookie', name: '营地新兵', desc: '完成1次营地训练', icon: '🏕️', category: 'quiz', rarity: 'common', condition: () => state.quest && state.quest.practiceStats && state.quest.practiceStats.count >= 1 },
+    { id: 'camp_veteran', name: '训练达人', desc: '完成20次营地训练', icon: '⛺', category: 'quiz', rarity: 'rare', condition: () => state.quest && state.quest.practiceStats && state.quest.practiceStats.count >= 20 },
+    { id: 'camp_streak', name: '连击训练家', desc: '营地训练最佳连击10题', icon: '🎯', category: 'quiz', rarity: 'epic', condition: () => state.quest && state.quest.practiceStats && state.quest.practiceStats.bestStreak >= 10 },
 
     // ========= 收藏笔记 =========
     { id: 'bookmark_collector', name: '收藏家', desc: '添加5个书签', icon: '🔖', category: 'collection', rarity: 'uncommon', condition: () => state.bookmarks.length >= 5 },

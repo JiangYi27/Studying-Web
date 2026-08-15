@@ -1,0 +1,145 @@
+/* ==================== 拓展知识视图 ==================== */
+/* 顶部标题 + 选项卡（可换行，无水平滚动条）+ 文档内容展示 + 空状态 */
+
+.content-header.extension-header {
+    margin-bottom: 16px;
+}
+.extension-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.extension-heading h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
+}
+.extension-heading h2 i {
+    margin-right: 8px;
+    color: var(--accent);
+}
+.extension-subtitle {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* 资料数量徽章 */
+.extension-count {
+    display: none;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 13px;
+    border-radius: 999px;
+    background: rgba(var(--accent-rgb, 16, 185, 129), 0.1);
+    border: 1px solid rgba(var(--accent-rgb, 16, 185, 129), 0.18);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.extension-count::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb, 16, 185, 129), 0.15);
+}
+
+/* ---- 选项卡栏：可换行，不留水平滚动条 ---- */
+.extension-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+.extension-tab {
+    flex: 0 0 auto;
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg, 10px);
+    background: var(--bg-tertiary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.18s, border-color 0.18s, background 0.18s, transform 0.15s, box-shadow 0.18s;
+}
+.extension-tab:hover {
+    color: var(--accent);
+    border-color: rgba(var(--accent-rgb, 16, 185, 129), 0.4);
+    transform: translateY(-1px);
+}
+.extension-tab.active {
+    background: linear-gradient(135deg, var(--accent), rgba(var(--accent-rgb, 16, 185, 129), 0.75));
+    color: #ffffff;
+    border-color: transparent;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb, 16, 185, 129), 0.28);
+}
+
+/* ---- 内容区：表格自适应容器宽度，避免出现右侧横向滚动条 ---- */
+#extensionBody {
+    padding-top: 4px;
+    overflow: hidden;
+}
+#extensionBody table {
+    min-width: 0;
+    width: 100%;
+    table-layout: auto;
+}
+#extensionBody th,
+#extensionBody td {
+    white-space: normal;
+    word-break: break-word;
+    vertical-align: top;
+}
+
+/* ---- 空状态 ---- */
+.extension-empty {
+    display: none;
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--text-muted);
+}
+.extension-empty i {
+    font-size: 2.6rem;
+    opacity: 0.25;
+    display: block;
+    margin-bottom: 12px;
+}
+.extension-empty p {
+    font-size: 0.92rem;
+    max-width: 320px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ---- 暗色模式下微调 ---- */
+body.dark .extension-tab {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+body.dark .extension-tab:hover {
+    border-color: rgba(var(--accent-rgb, 16, 185, 129), 0.45);
+}
+
+/* ---- 移动端适配 ---- */
+@media (max-width: 640px) {
+    .extension-tab {
+        padding: 8px 13px;
+        font-size: 0.82rem;
+        flex: 1 1 auto;
+    }
+    .extension-heading h2 {
+        font-size: 1.2rem;
+    }
+    .extension-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

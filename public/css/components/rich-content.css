@@ -1,0 +1,123 @@
+/* ==================== 富文本内容 ==================== */
+.rich-content {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    box-shadow: var(--glass-shadow);
+    line-height: 1.8;
+    font-size: 0.95rem;
+    min-height: 300px;
+    position: relative;
+}
+
+.rich-content h1,
+.rich-content h2,
+.rich-content h3 {
+    color: var(--accent);
+    margin-top: 1.5em;
+    margin-bottom: 0.6em;
+    font-weight: 700;
+}
+
+.rich-content h1 {
+    font-size: 1.6rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.rich-content h2 {
+    font-size: 1.3rem;
+}
+
+.rich-content h3 {
+    font-size: 1.1rem;
+}
+
+.rich-content pre {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.rich-content pre::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.rich-content code {
+    font-family: var(--font-mono);
+    background: var(--hover-bg-strong);
+    padding: 2px 6px;
+    border-radius: var(--radius-xs);
+    font-size: 0.88em;
+    color: var(--accent-dark);
+}
+
+.rich-content pre code {
+    background: transparent;
+    padding: 0;
+    color: #e2e8f0;
+}
+
+.rich-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.rich-content th,
+.rich-content td {
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.rich-content th {
+    background: var(--hover-bg);
+    font-weight: 600;
+}
+
+.rich-content blockquote {
+    border-left: 4px solid var(--accent-light);
+    padding: 12px 18px;
+    margin: 14px 0;
+    background: rgba(var(--accent-rgb), 0.04);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--text-secondary);
+}
+
+/* 代码块行号 */
+.rich-content pre.line-numbers {
+    padding-left: 3.5em;
+}
+
+/* 暗黑模式 · 富文本代码块特殊处理 */
+body.dark .rich-content pre {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border-color: rgba(var(--accent-rgb), 0.2);
+}
+
+body.dark .rich-content code {
+    background: rgba(var(--accent-rgb), 0.15);
+    color: var(--accent-light);
+}
+

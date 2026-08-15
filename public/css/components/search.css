@@ -1,0 +1,88 @@
+/* ==================== 全局搜索 ==================== */
+.search-global {
+    position: relative;
+    flex: 1;
+    max-width: 420px;
+    min-width: 180px;
+}
+
+.search-global .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    pointer-events: none;
+    transition: color var(--transition-fast);
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid var(--input-border);
+    background: var(--input-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    transition: all var(--transition-fast);
+    outline: none;
+    font-family: var(--font-sans);
+}
+
+.search-input:focus {
+    border-color: var(--accent-light);
+    box-shadow: var(--input-shadow-focus);
+    background: var(--input-bg-focus);
+}
+
+.search-input::placeholder {
+    color: var(--text-muted);
+}
+
+.search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: var(--glass-bg-strong);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--glass-shadow-strong);
+    max-height: 320px;
+    overflow-y: auto;
+    display: none;
+    z-index: 200;
+}
+
+.search-results.active {
+    display: block;
+}
+
+.search-result-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background: var(--hover-bg-accent);
+    padding-left: 20px;
+}
+
+.search-result-item .result-chapter {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+

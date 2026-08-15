@@ -1,0 +1,19 @@
+﻿/* ==================== 实战闯关视图容器（主站外层） ==================== */
+/* 游戏内部样式见 css/game.css；本文件只负责 #roadmapView 在外层布局中的表现 */
+#roadmapView {
+    position: relative;
+    min-height: 0;
+}
+
+#roadmapView.view-active {
+    display: flex;
+    flex-direction: column;
+}
+
+body.game-mode #mainContent {
+    overflow: hidden;
+}
+
+body.game-mode .content-area {
+    overflow: hidden;
+}

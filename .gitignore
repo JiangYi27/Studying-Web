@@ -1,0 +1,21 @@
+# 依赖
+node_modules/
+
+# 敏感信息
+.env
+
+# 用户学习数据（含明文记录，不公开）
+data/user_data.json
+data/users/
+
+# 本地状态 / 缓存
+.impeccable/
+*.log
+.DS_Store
+.claude/settings.local.json
+
+# 第三方 Agent 技能（本地工具，非应用代码，体积大，不进公开仓库）
+skills/
+
+# 构建产物（可选：如不想提交 index.prod.html 可放开）
+# public/index.prod.html

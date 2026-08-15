@@ -1,0 +1,181 @@
+/* ==================== CSS 变量定义 ==================== */
+/* 通过变量统一管理颜色、玻璃效果、圆角、间距等，
+   暗黑模式仅需覆盖变量值即可适配全部组件 */
+
+:root {
+    /* ---- 背景色 ---- */
+    --bg-primary: #f0f4f8;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f8fafc;
+
+    /* ---- 文字色 ---- */
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    /* muted 为最弱次要色，须保持 WCAG AA 可读（on bg 4.84 / on white 5.35） */
+    --text-muted: #5f6b84;
+
+    /* ---- 边框色 ---- */
+    --border-color: rgba(226, 232, 240, 0.8);
+    --border-light: rgba(226, 232, 240, 0.4);
+
+    /* ---- 玻璃效果 · 基础（卡片/面板） ---- */
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+    --glass-blur: blur(20px) saturate(180%);
+
+    /* ---- 玻璃效果 · 液态玻璃（高级仪表盘） ---- */
+    --liquid-glass-bg: rgba(255, 255, 255, 0.45);
+    --liquid-glass-border: rgba(255, 255, 255, 0.6);
+    --liquid-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.5), inset 0 -1px 1px rgba(0, 0, 0, 0.03);
+    --liquid-glass-blur: blur(24px) saturate(200%) brightness(1.05);
+    --liquid-glass-glow: 0 0 40px rgba(var(--accent-rgb), 0.08);
+    --liquid-glass-highlight: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%, rgba(255, 255, 255, 0.1) 100%);
+
+    /* ---- 玻璃效果 · 强（下拉/弹窗/Toast） ---- */
+    --glass-bg-strong: rgba(255, 255, 255, 0.85);
+    --glass-shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+    /* ---- 玻璃效果 · 顶栏/侧栏/大纲面板 ---- */
+    --glass-bg-topbar: rgba(255, 255, 255, 0.75);
+    --glass-bg-sidebar: rgba(255, 255, 255, 0.7);
+    --glass-bg-panel: rgba(255, 255, 255, 0.8);
+    --glass-blur-strong: blur(24px) saturate(180%);
+
+    /* ---- 仪表盘专用变量 ---- */
+    --dash-card-width: 220px;
+    --dash-card-height: 110px;
+    --dash-panel-min-height: 280px;
+    --dash-chart-height: 220px;
+    --dash-glow-accent: 0 0 24px rgba(var(--accent-rgb), 0.12);
+    --dash-glow-success: 0 0 24px rgba(16, 185, 129, 0.12);
+    --dash-glow-warning: 0 0 24px rgba(245, 158, 11, 0.12);
+    --dash-glow-info: 0 0 24px rgba(59, 130, 246, 0.12);
+    --dash-glow-purple: 0 0 24px rgba(139, 92, 246, 0.12);
+    --dash-glow-pink: 0 0 24px rgba(236, 72, 153, 0.12);
+
+    /* ---- 输入框 ---- */
+    --input-bg: rgba(248, 250, 252, 0.8);
+    --input-bg-focus: rgba(255, 255, 255, 0.95);
+    --input-border: rgba(226, 232, 240, 0.5);
+    --input-shadow-focus: 0 0 0 3px rgba(var(--accent-rgb), 0.1), 0 4px 12px rgba(0, 0, 0, 0.05);
+
+    /* ---- 悬停背景 ---- */
+    --hover-bg: rgba(var(--accent-rgb), 0.06);
+    --hover-bg-strong: rgba(var(--accent-rgb), 0.1);
+    --hover-bg-accent: rgba(var(--accent-rgb), 0.08);
+
+    /* ---- 主题色 ---- */
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --accent-dark: #4f46e5;
+    /* 主题色 RGB 分量（JS applyThemeColor 会随主题一起更新），供 rgba(var(--accent-rgb), a) 引用 */
+    --accent-rgb: 99, 102, 241;
+
+    /* ---- 语义色 ---- */
+    --success: #10b981;
+    --success-light: #34d399;
+    --warning: #f59e0b;
+    --warning-light: #fbbf24;
+    --danger: #ef4444;
+    --info: #3b82f6;
+
+    /* ---- 布局尺寸 ---- */
+    --sidebar-width: 240px;
+    --sidebar-collapsed-width: 60px;
+    --topbar-height: 56px;
+
+    /* ---- 圆角 ---- */
+    /* 完整圆角系统：xs→sm→md→lg→xl→full，全局统一引用避免碎片化 */
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 24px;
+    --radius-full: 999px;
+
+    /* ---- 过渡 ---- */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* ---- 字体 ---- */
+    /* 中文优先：西文无衬线垫底。Inter 无中文字形，中文界面以系统黑体渲染更清晰 */
+    --font-sans: 'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei UI', 'Microsoft YaHei',
+        'Noto Sans SC', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+
+    /* ---- 游戏化变量 · 统一配色体系（始终有效，不依赖暗色模式） ---- */
+    /* 核心原则：金=交互/当前，翠绿=完成/成功，绯红=危险，紫=终点专属 */
+    --game-gold: #fbbf24;
+    --game-gold-dark: #d97706;
+    --game-gold-dim: #92400e;
+    --game-emerald: #10b981;
+    --game-emerald-glow: #34d399;
+    --game-crimson: #ef4444;
+    --game-crimson-glow: #f87171;
+    --game-violet: #8b5cf6;
+    --game-violet-glow: #a78bfa;
+    --game-slate: #64748b;
+    --game-surface: #111720;
+    --game-surface-raised: #1a2332;
+    --game-glow-gold: 0 0 24px rgba(251, 191, 36, 0.45);
+    --game-glow-emerald: 0 0 20px rgba(16, 185, 129, 0.45);
+    --game-glow-crimson: 0 0 16px rgba(239, 68, 68, 0.35);
+    --game-glow-violet: 0 0 28px rgba(139, 92, 246, 0.5);
+    --game-hud-bg: rgba(12, 16, 24, 0.9);
+    --game-hud-border: rgba(251, 191, 36, 0.2);
+    --game-fog-color: rgba(8, 12, 20, 0.78);
+    --game-font: 'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+}
+
+/* ==================== 暗黑模式 · 变量覆盖 ==================== */
+/* 仅覆盖变量值，所有引用变量的组件自动适配暗黑模式 */
+body.dark {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #1a2332;
+
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    /* 暗色下 muted 也须 AA 可读（on #0f172a 5.79） */
+    --text-muted: #8494ab;
+
+    --border-color: rgba(51, 65, 85, 0.8);
+    --border-light: rgba(51, 65, 85, 0.4);
+
+    --glass-bg: rgba(30, 41, 59, 0.75);
+    --glass-border: rgba(51, 65, 85, 0.5);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    --glass-bg-strong: rgba(15, 23, 42, 0.9);
+    --glass-shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    --glass-bg-topbar: rgba(15, 23, 42, 0.8);
+    --glass-bg-sidebar: rgba(15, 23, 42, 0.8);
+    --glass-bg-panel: rgba(15, 23, 42, 0.9);
+
+    /* 液态玻璃 · 暗黑模式 */
+    --liquid-glass-bg: rgba(30, 41, 59, 0.5);
+    --liquid-glass-border: rgba(129, 140, 248, 0.15);
+    --liquid-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(129, 140, 248, 0.1), inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+    --liquid-glass-glow: 0 0 40px rgba(129, 140, 248, 0.12);
+    --liquid-glass-highlight: linear-gradient(135deg, rgba(129, 140, 248, 0.08) 0%, transparent 50%, rgba(129, 140, 248, 0.03) 100%);
+
+    /* 深色下语义色提亮：确保文字/图标对比达 WCAG AA。
+       accent 取 #7f84ee：作文字 4.48 / 作按钮配白字 3.26（大字 3:1），两全 */
+    --accent: #7c7ef0;
+    --accent-light: #a5b0ff;
+    --accent-dark: #5457e6;
+    /* 深色下 RGB 分量与背景区分度更高，阴影/光晕更柔和自然 */
+    --accent-rgb: 124, 126, 240;
+    --danger: #f8707a;
+    --info: #5ea7f5;
+
+    --input-bg: rgba(15, 23, 42, 0.8);
+    --input-bg-focus: rgba(30, 41, 59, 0.9);
+    --input-border: rgba(51, 65, 85, 0.5);
+
+    --hover-bg: rgba(var(--accent-rgb), 0.1);
+    --hover-bg-strong: rgba(var(--accent-rgb), 0.15);
+    --hover-bg-accent: rgba(var(--accent-rgb), 0.1);
+}

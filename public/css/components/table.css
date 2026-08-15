@@ -1,0 +1,300 @@
+/* ==================== 学习记录表 ==================== */
+.learning-table-container {
+    margin-top: 8px;
+}
+
+.table-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.table-search {
+    position: relative;
+    flex: 1;
+    max-width: 240px;
+}
+
+.table-search i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+
+.table-search input {
+    width: 100%;
+    padding: 8px 12px 8px 36px;
+    border-radius: var(--radius-lg);
+    font-size: 0.85rem;
+}
+
+.table-page-size select {
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    margin-bottom: 14px;
+}
+
+.learning-count-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    min-width: 600px;
+}
+
+.learning-count-table thead th {
+    background: var(--bg-tertiary);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-color);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.learning-count-table thead th.sortable {
+    cursor: pointer;
+}
+
+.learning-count-table thead th.sortable:hover {
+    background: var(--hover-bg);
+    color: var(--accent);
+}
+
+.learning-count-table thead th.sortable:hover i {
+    color: var(--accent);
+}
+
+.learning-count-table thead th.sort-asc i,
+.learning-count-table thead th.sort-desc i {
+    color: var(--accent);
+}
+
+.learning-count-table thead th.sort-asc i::before {
+    content: '\f0dc';
+    transform: rotate(180deg);
+}
+
+.learning-count-table thead th.sort-desc i {
+    transform: rotate(0deg);
+}
+
+.learning-count-table thead th.sort-asc i::before,
+.learning-count-table thead th.sort-desc i::before {
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+}
+
+.learning-count-table tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.learning-count-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.learning-count-table tbody tr:hover {
+    background: rgba(var(--accent-rgb), 0.04);
+}
+
+.learning-count-table tbody tr:hover td {
+    color: var(--text-primary);
+}
+
+/* 仪表盘学习记录表格优化 */
+.dash-panel-table .table-responsive {
+    border: 1px solid var(--liquid-glass-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: rgba(248, 250, 252, 0.3);
+}
+
+.dash-panel-table .learning-count-table thead th {
+    background: rgba(var(--accent-rgb), 0.06);
+    border-bottom: 2px solid var(--border-color);
+    font-size: 0.78rem;
+    letter-spacing: 0.3px;
+}
+
+.dash-panel-table .learning-count-table tbody td {
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.dash-panel-table .learning-count-table tbody tr {
+    transition: all var(--transition-fast);
+}
+
+.dash-panel-table .learning-count-table tbody tr:hover {
+    background: rgba(var(--accent-rgb), 0.06);
+}
+
+.dash-panel-table .table-pagination {
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+    margin-top: 8px;
+}
+
+.table-status-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: var(--radius-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.table-status-badge.completed {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success);
+}
+
+.table-status-badge.in-progress {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--warning);
+}
+
+.table-status-badge.not-started {
+    background: rgba(156, 163, 175, 0.15);
+    color: var(--text-muted);
+}
+
+.table-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.pagination-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pagination-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.pagination-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    font-weight: 600;
+}
+
+/* ==================== 学习记录表视觉优化（2026-08） ==================== */
+/* 纯观感增强，不改交互结构 */
+
+/* ---- 表头：更柔和的渐变底 + 排序箭头常显增强 ---- */
+.learning-count-table thead th {
+    background: linear-gradient(180deg, var(--bg-tertiary), rgba(248, 250, 252, 0.4));
+    letter-spacing: 0.3px;
+}
+.learning-count-table thead th.sortable i {
+    font-size: 0.68rem;
+    opacity: 0.45;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+.learning-count-table thead th.sortable:hover i,
+.learning-count-table thead th.sort-asc i,
+.learning-count-table thead th.sort-desc i {
+    opacity: 1;
+}
+
+/* ---- 状态徽章：胶囊 + 同色系柔光，层次更清晰 ---- */
+.dash-panel-table .table-status-badge {
+    padding: 4px 12px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2px;
+    border: 1px solid transparent;
+}
+.table-status-badge.completed {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--success);
+    border-color: rgba(16, 185, 129, 0.25);
+    box-shadow: 0 1px 4px rgba(16, 185, 129, 0.12);
+}
+.table-status-badge.not-started {
+    background: rgba(148, 163, 184, 0.12);
+    color: var(--text-muted);
+    border-color: rgba(148, 163, 184, 0.22);
+}
+
+/* ---- 表格行 hover：轻微抬升 + 左缘强调 ---- */
+.dash-panel-table .learning-count-table tbody tr {
+    position: relative;
+}
+.dash-panel-table .learning-count-table tbody tr:hover {
+    background: rgba(var(--accent-rgb), 0.05);
+}
+.dash-panel-table .learning-count-table tbody tr td:first-child {
+    transition: padding-left var(--transition-fast);
+}
+
+/* ---- 分页：省略号样式 + 按钮等宽胶囊风格 ---- */
+.pagination-ellipsis {
+    width: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+.pagination-btn {
+    border-radius: var(--radius-sm);
+}
+

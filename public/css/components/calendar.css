@@ -1,0 +1,258 @@
+/* ==================== 学习活动日历（仪表盘） ==================== */
+.activity-calendar {
+    padding: 4px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.calendar-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.calendar-weeks {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.calendar-week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+}
+
+.calendar-week-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 6px;
+}
+
+.calendar-week-day {
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 6px 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+}
+
+.calendar-day {
+    aspect-ratio: 1 / 1;
+    background: var(--border-color);
+    border-radius: var(--radius-xs);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    overflow: hidden;
+}
+
+.calendar-day.other-month {
+    background: transparent;
+    color: var(--text-muted);
+    opacity: 0.4;
+}
+
+.calendar-day.other-month .day-num {
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+.calendar-day.today {
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2);
+    animation: todayPulse 2s ease-in-out infinite;
+}
+
+@keyframes todayPulse {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2); }
+    50% { box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0.4); }
+}
+
+.calendar-day.has-events {
+    cursor: pointer;
+}
+
+.calendar-day.has-events:hover {
+    transform: scale(1.15);
+    z-index: 3;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    filter: brightness(1.1);
+}
+
+.calendar-day.level-1:hover { box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.4); }
+.calendar-day.level-2:hover { box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5); }
+.calendar-day.level-3:hover { box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.6); }
+.calendar-day.level-4:hover { box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.7); }
+
+.calendar-day .event-dot {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 4px rgba(16, 185, 129, 0.5);
+}
+
+.calendar-day.level-0 { background: var(--border-color); }
+.calendar-day.level-1 { background: rgba(var(--accent-rgb), 0.25); }
+.calendar-day.level-2 { background: rgba(var(--accent-rgb), 0.5); }
+.calendar-day.level-3 { background: rgba(var(--accent-rgb), 0.75); }
+.calendar-day.level-4 { background: var(--accent); color: #fff; }
+
+.calendar-day.level-4 .day-num,
+.calendar-day.level-4 .day-name {
+    color: #fff;
+}
+
+.calendar-day.empty {
+    background: transparent;
+    color: transparent;
+}
+
+.calendar-day:hover:not(.other-month):not(.empty) {
+    transform: scale(1.1);
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.calendar-day .day-num {
+    font-weight: 600;
+    line-height: 1;
+}
+
+.calendar-day .day-name {
+    font-size: 0.55rem;
+    opacity: 0.7;
+}
+
+/* 日历导航 */
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+
+.calendar-month-year {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 80px;
+    text-align: center;
+}
+
+.calendar-nav .btn {
+    width: 32px;
+    height: 32px;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+}
+
+/* 日历日期详情面板 */
+.calendar-date-detail {
+    margin-top: 14px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detail-header h6 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+.detail-header .btn-link {
+    padding: 2px 6px;
+}
+
+.detail-content {
+    padding: 12px 14px;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.detail-event-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.85rem;
+}
+
+.detail-event-item:last-child {
+    border-bottom: none;
+}
+
+.detail-event-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    flex-shrink: 0;
+}
+
+.detail-event-text {
+    color: var(--text-secondary);
+}
+
+.detail-event-text strong {
+    color: var(--text-primary);
+}
+
+.detail-empty {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* 暗黑模式 · 活动日历级别微调 */
+body.dark .activity-calendar .calendar-day {
+    background: rgba(51, 65, 85, 0.5);
+}
+
+body.dark .activity-calendar .calendar-day.level-1 {
+    background: rgba(var(--accent-rgb), 0.2);
+}
+
+body.dark .activity-calendar .calendar-day.level-2 {
+    background: rgba(var(--accent-rgb), 0.35);
+}
+

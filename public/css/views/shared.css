@@ -1,0 +1,21 @@
+/* ==================== 视图专属样式 ==================== */
+/* 主页、课程、仪表盘、路线图、徽章、设置 */
+
+/* ==================== 玻璃卡片共享样式 ==================== */
+/* 合并所有使用标准玻璃效果的视图卡片，消除重复代码 */
+.stats-card,
+.dash-stat-card,
+.dash-panel,
+.badge-card,
+.settings-card,
+.welcome-section,
+.stats-section,
+.achievement-section,
+.roadmap-path {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+

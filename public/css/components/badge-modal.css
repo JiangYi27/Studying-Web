@@ -1,0 +1,140 @@
+/* ==================== 成就弹窗 ==================== */
+.badge-modal-content {
+    background: var(--glass-bg-strong) !important;
+    backdrop-filter: var(--glass-blur-strong) !important;
+    -webkit-backdrop-filter: var(--glass-blur-strong) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--radius-xl) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2) !important;
+}
+
+.badge-animation {
+    font-size: 3rem;
+    width: 110px;
+    height: 110px;
+    margin: 6px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border-radius: 50%;
+    position: relative;
+    animation: badgeBounce 0.6s ease-out;
+}
+
+/* 稀有度辉光底座 */
+.badge-animation.rarity-common {
+    background: radial-gradient(circle at 30% 30%, rgba(203, 213, 225, 0.95), rgba(100, 116, 139, 0.95));
+    box-shadow: 0 8px 24px rgba(148, 163, 184, 0.35), inset 0 3px 6px rgba(255, 255, 255, 0.4), inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
+.badge-animation.rarity-uncommon {
+    background: radial-gradient(circle at 30% 30%, rgba(52, 211, 153, 0.95), rgba(5, 150, 105, 0.95));
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4), inset 0 3px 6px rgba(255, 255, 255, 0.4), inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
+.badge-animation.rarity-rare {
+    background: radial-gradient(circle at 30% 30%, rgba(96, 165, 250, 0.95), rgba(37, 99, 235, 0.95));
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.45), inset 0 3px 6px rgba(255, 255, 255, 0.4), inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
+.badge-animation.rarity-epic {
+    background: radial-gradient(circle at 30% 30%, rgba(167, 139, 250, 0.95), rgba(124, 58, 237, 0.95));
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.5), inset 0 3px 6px rgba(255, 255, 255, 0.4), inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
+.badge-animation.rarity-legendary {
+    background: radial-gradient(circle at 30% 30%, rgba(252, 211, 77, 0.95), rgba(217, 119, 6, 0.95));
+    box-shadow: 0 8px 28px rgba(251, 191, 36, 0.55), inset 0 3px 6px rgba(255, 255, 255, 0.4), inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 传说 · 光环 */
+.badge-animation.rarity-legendary::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px dashed rgba(251, 191, 36, 0.7);
+    animation: badgeSpin 12s linear infinite;
+}
+
+/* 飘落粒子（稀有度配色） */
+.badge-animation::before {
+    content: '✦';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    font-size: 1.1rem;
+    opacity: 0;
+    animation: badgeParticles 2.2s ease-out infinite;
+}
+.badge-animation.rarity-common::before { color: #e2e8f0; }
+.badge-animation.rarity-uncommon::before { color: #a7f3d0; }
+.badge-animation.rarity-rare::before { color: #bfdbfe; }
+.badge-animation.rarity-epic::before { color: #ddd6fe; }
+.badge-animation.rarity-legendary::before { color: #fde68a; }
+
+@keyframes badgeParticles {
+    0% { opacity: 0; transform: translate(-50%, 0) scale(0.6); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, 46px) scale(1.2) rotate(180deg); }
+}
+
+@keyframes badgeSpin {
+    to { transform: rotate(360deg); }
+}
+
+.badge-name {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 10px 0 4px;
+    color: var(--text-primary);
+}
+
+.badge-rarity-wrapper {
+    margin: 4px 0;
+}
+
+.badge-rarity-label {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: var(--radius-md);
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.badge-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* 稀有度弹窗颜色 */
+.badge-rarity-label.rarity-common { background: rgba(148, 163, 184, 0.2); color: #94a3b8; }
+.badge-rarity-label.rarity-uncommon { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+.badge-rarity-label.rarity-rare { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+.badge-rarity-label.rarity-epic { background: rgba(139, 92, 246, 0.2); color: #8b5cf6; }
+.badge-rarity-label.rarity-legendary { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+
+/* ==================== 解锁弹窗 · 稀有度辉光背景 ==================== */
+.badge-modal-content.rarity-common {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(148, 163, 184, 0.16) 0%, transparent 55%),
+        var(--glass-bg-strong) !important;
+}
+.badge-modal-content.rarity-uncommon {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.18) 0%, transparent 55%),
+        var(--glass-bg-strong) !important;
+}
+.badge-modal-content.rarity-rare {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.2) 0%, transparent 55%),
+        var(--glass-bg-strong) !important;
+}
+.badge-modal-content.rarity-epic {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.24) 0%, transparent 55%),
+        var(--glass-bg-strong) !important;
+}
+.badge-modal-content.rarity-legendary {
+    background:
+        radial-gradient(circle at 50% 0%, rgba(251, 191, 36, 0.3) 0%, transparent 55%),
+        var(--glass-bg-strong) !important;
+}
+

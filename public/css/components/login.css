@@ -1,0 +1,324 @@
+/* ==================== 登录遮罩 ==================== */
+/* 未登录时全屏锁定应用，样式复用全局玻璃效果变量，自动适配深色模式 */
+
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(var(--accent-rgb), 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.14) 0%, transparent 45%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, var(--bg-primary) 40%, var(--bg-primary) 100%);
+  backdrop-filter: blur(6px);
+}
+
+body.dark .login-overlay {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(var(--accent-rgb), 0.22) 0%, transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, var(--bg-primary) 40%, var(--bg-primary) 100%);
+}
+
+.login-overlay.hidden {
+  display: none;
+}
+.login-overlay { overflow: hidden; }
+
+#loginBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
+}
+
+/* 登录卡片：减轻毛玻璃模糊/透明度，让背景粒子清晰透出 */
+.login-card {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px) saturate(150%);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+}
+body.dark .login-card {
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.login-card {
+  width: 360px;
+  max-width: 90vw;
+  padding: 40px 32px 32px;
+  border-radius: var(--radius-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  text-align: center;
+  animation: loginFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes loginFadeIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.login-logo {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 16px;
+  display: block;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 4px var(--hover-bg), 0 8px 24px rgba(var(--accent-rgb), 0.2);
+}
+
+.login-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+  margin: 0 0 4px;
+}
+
+.login-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0 0 28px;
+}
+
+.login-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  padding: 11px 14px;
+  margin-bottom: 14px;
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.login-field:focus-within {
+  border-color: var(--accent);
+  box-shadow: var(--input-shadow-focus);
+}
+
+.login-field i {
+  color: var(--text-muted);
+  font-size: 15px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.login-field input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.login-field input::placeholder {
+  color: var(--text-muted);
+}
+
+.login-error {
+  min-height: 1.4em;
+  font-size: 13px;
+  color: var(--danger);
+  text-align: left;
+  margin-bottom: 6px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(var(--accent-rgb), 0.28);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+}
+
+.login-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(var(--accent-rgb), 0.36);
+}
+
+.login-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 锁定状态下隐藏并禁用底层应用 */
+body.login-locked .app-root {
+  display: none;
+}
+
+/* ==================== 站点选择（登录后） ==================== */
+.login-sites-title {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 4px 0 14px;
+  text-align: center;
+}
+
+.login-sites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-site-btn {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.login-site-btn:hover {
+  border-color: var(--accent);
+  box-shadow: var(--input-shadow-focus);
+  transform: translateY(-1px);
+}
+
+/* ==================== 顶栏站点切换下拉 ==================== */
+/* 站点条目由下拉基础系统提供样式；此处仅微调字号 */
+#siteSwitchDropdown .dropdown-item {
+  font-size: 0.85rem;
+}
+
+/* 响应式 */
+@media (max-width: 480px) {
+  .login-card { padding: 32px 22px 26px; }
+}
+
+/* ==================== 登录输入框：inset 风格（Uiverse Praashoo7） ==================== */
+/* 用户名 / 密码输入区域：灰底圆角 + 内阴影，聚焦变白放大发光 */
+.login-field {
+  border: none;
+  background-color: #ccc;
+  border-radius: 15px;
+  padding: 0.9em 1em;
+  margin-bottom: 14px;
+  box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 300ms ease-in-out, box-shadow 300ms ease-in-out, transform 300ms ease-in-out;
+}
+
+.login-field:focus-within {
+  background-color: #fff;
+  transform: scale(1.03);
+  box-shadow: 6px 6px 40px #969696, -6px -6px 40px #ffffff;
+}
+
+.login-field i {
+  color: #5a5a5a;
+  font-size: 15px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.login-field input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #1a1a1a;
+  font-size: 15px;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.login-field input::placeholder {
+  color: #6b6b6b;
+}
+
+/* 深色模式：适配暗背景 */
+body.dark .login-field {
+  background-color: #2a3348;
+  box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.45);
+}
+body.dark .login-field:focus-within {
+  background-color: #e8ecf5;
+  box-shadow: 6px 6px 40px #1e2637, -6px -6px 40px #2c3850;
+}
+body.dark .login-field input { color: #12161f; }
+body.dark .login-field input::placeholder { color: #6b7488; }
+
+
+
+/* ==================== 按钮：sekaiking 经典描边风格 ==================== */
+.split-btn {
+  background-color: #fff;
+  color: #000;
+  border-radius: 10em;
+  font-size: 17px;
+  font-weight: 600;
+  padding: 1em 2em;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #000;
+  box-shadow: 0 0 0 0 #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: inherit;
+}
+
+.split-btn:hover {
+  transform: translateY(-4px) translateX(-2px);
+  box-shadow: 2px 5px 0 0 #000;
+}
+
+.split-btn:active {
+  transform: translateY(2px) translateX(1px);
+  box-shadow: 0 0 0 0 #000;
+}
+
+.split-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 登录按钮 / 站点按钮：占满整行 */
+#loginSubmitBtn.split-btn,
+.login-site-btn.split-btn {
+  width: 100%;
+}
+
+/* 开始学习按钮 */
+#continueLastBtn.split-btn {
+  gap: 8px;
+}

@@ -1,0 +1,933 @@
+/* ==================== 主页视图（v2 · 新版布局） ==================== */
+/* 设计原则：单一强调色 + 中性卡片 + 高信息密度 + 统一卡片规范
+   参考 Duolingo/Notion/GitHub 热力图 —— 主行动突出、数据去重、层级清晰 */
+
+/* ---------- 通用卡片规范 ---------- */
+.home-grid {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+.home-grid-2 {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+}
+.home-grid-heat {
+    grid-template-columns: 2fr 1fr;
+    align-items: stretch;
+}
+.home-grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: stretch;
+}
+
+.home-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--glass-shadow);
+    padding: 20px 22px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.home-card:hover {
+    box-shadow: 0 10px 40px rgba(var(--accent-rgb), 0.08), var(--glass-shadow);
+}
+
+.home-head, .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.home-head-icon, .card-head-icon {
+    font-size: 1.05rem;
+}
+.home-head-title, .card-head-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    flex: 1;
+    letter-spacing: 0.3px;
+}
+
+/* ---------- 欢迎 Hero（主行动） ---------- */
+.welcome-hero {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 22px 26px;
+    margin-bottom: 16px;
+    border-radius: var(--radius-xl);
+    background:
+        radial-gradient(ellipse at 8% 0%, rgba(var(--accent-rgb), 0.18) 0%, transparent 55%),
+        linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(16, 185, 129, 0.06));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    flex-wrap: wrap;
+}
+.welcome-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 220px;
+}
+
+/* ---------- 主页欢迎 · 动态闹钟图标 ---------- */
+.welcome-alarm {
+    position: relative;
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 闹钟主体：表盘圆 */
+.welcome-alarm .alarm-body {
+    font-size: 2.1rem;
+    color: var(--accent);
+    filter: drop-shadow(0 2px 4px rgba(var(--accent-rgb), 0.35));
+    position: relative;
+    z-index: 1;
+}
+
+/* 顶部两个响铃锤，绕表盘顶角摆动 */
+.welcome-alarm .alarm-bell {
+    position: absolute;
+    top: 5px;
+    font-size: 0.85rem;
+    color: var(--warning);
+    z-index: 2;
+    transform-origin: bottom center;
+}
+
+.welcome-alarm .alarm-bell-left {
+    left: 6px;
+    animation: bellSwingL 1.2s ease-in-out infinite;
+}
+
+.welcome-alarm .alarm-bell-right {
+    right: 6px;
+    animation: bellSwingR 1.2s ease-in-out infinite;
+}
+
+@keyframes bellSwingL {
+    0%, 100% { transform: rotate(-18deg); }
+    50%      { transform: rotate(14deg); }
+}
+
+@keyframes bellSwingR {
+    0%, 100% { transform: rotate(18deg); }
+    50%      { transform: rotate(-14deg); }
+}
+
+/* 两条支脚 */
+.welcome-alarm .alarm-leg {
+    position: absolute;
+    bottom: 6px;
+    width: 9px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.75;
+    z-index: 1;
+}
+
+.welcome-alarm .alarm-leg-left { left: 13px; transform: rotate(8deg); transform-origin: top center; }
+.welcome-alarm .alarm-leg-right { right: 13px; transform: rotate(-8deg); transform-origin: top center; }
+
+/* 表盘轻微摆动 → 整体"闹钟在响"的生命感 */
+.welcome-alarm {
+    animation: alarmNudge 2.4s ease-in-out infinite;
+}
+
+@keyframes alarmNudge {
+    0%, 100% { transform: translateZ(0) rotate(0deg); }
+    15%      { transform: translateZ(0) rotate(-3deg); }
+    30%      { transform: translateZ(0) rotate(3deg); }
+    45%      { transform: translateZ(0) rotate(-1deg); }
+    60%      { transform: translateZ(0) rotate(0deg); }
+}
+
+/* 减少动态偏好：停掉永久循环动画 */
+@media (prefers-reduced-motion: reduce) {
+    .welcome-alarm .alarm-bell-left,
+    .welcome-alarm .alarm-bell-right,
+    .welcome-alarm {
+        animation: none;
+    }
+}
+.welcome-greeting {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 3px;
+}
+.welcome-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.welcome-level-chip {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--hover-bg);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    padding: 2px 10px;
+    border-radius: var(--radius-lg);
+}
+.hero-cta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex: 1.4;
+    min-width: 320px;
+    padding: 14px 18px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+}
+.hero-cta-info {
+    flex: 1;
+}
+.hero-cta-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+.hero-cta-sub {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.hero-cta-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.hero-progress {
+    flex: 1;
+    height: 6px !important;
+    background: var(--border-color) !important;
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+}
+/* 覆盖 Bootstrap .progress 默认背景 */
+.hero-progress .progress-bar {
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    border-radius: var(--radius-xs);
+}
+.hero-cta-pct {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+}
+.hero-cta-btn {
+    padding: 12px 26px;
+    border: none;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 6px 18px rgba(var(--accent-rgb), 0.3);
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+}
+.hero-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(var(--accent-rgb), 0.4);
+}
+body.dark .hero-cta { background: var(--bg-tertiary); }
+
+/* ---------- 励志语录条 ---------- */
+.quote-strip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    margin-bottom: 16px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(251, 191, 36, 0.04), rgba(var(--accent-rgb), 0.04));
+    border: 1px solid var(--glass-border);
+}
+.quote-strip-icon {
+    color: var(--warning);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    opacity: 0.8;
+}
+.quote-strip .quote-text {
+    flex: 1;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--text-secondary);
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.quote-refresh-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+.quote-refresh-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+/* ---------- 今日任务清单 ---------- */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 90px;
+}
+.task-empty {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 20px 0;
+}
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+.task-item:hover {
+    background: var(--hover-bg);
+    border-color: rgba(var(--accent-rgb), 0.2);
+}
+.task-item.done {
+    opacity: 0.6;
+    cursor: default;
+}
+.task-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: var(--success);
+    flex-shrink: 0;
+}
+.task-item.done .task-check {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+}
+.task-info {
+    flex: 1;
+    min-width: 0;
+}
+.task-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.task-sub {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+.task-time {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+.task-cta-row {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+}
+.mini-cta {
+    width: 100%;
+    padding: 9px;
+    border-radius: var(--radius-lg);
+    border: 1.5px solid var(--success);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.04));
+    color: var(--success);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--font-sans);
+}
+.mini-cta:hover {
+    background: linear-gradient(135deg, var(--success), #0ea572);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+.mini-cta.checked {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: var(--success);
+    color: var(--success);
+    cursor: default;
+    opacity: 0.7;
+}
+.mini-cta.checked:hover {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--success);
+    box-shadow: none;
+    transform: none;
+}
+
+/* ---------- 连续打卡 ---------- */
+.streak-big {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--warning);
+    line-height: 1;
+}
+.streak-unit {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-left: 4px;
+}
+.week-dots {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 6px;
+    padding: 6px 4px;
+}
+.week-dot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+}
+.week-dot label {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+}
+.week-dot .dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    color: #fff;
+    transition: all var(--transition-fast);
+}
+.week-dot.done .dot {
+    background: var(--success);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+.week-dot.today .dot {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--hover-bg-strong);
+}
+.week-dot.future .dot {
+    background: var(--border-color);
+    opacity: 0.5;
+}
+.streak-card .weekly-progress {
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+    margin-top: 8px;
+}
+.streak-card .weekly-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+.streak-card .weekly-progress-header span:last-child {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+.streak-card .progress {
+    height: 7px !important;
+    background: var(--border-color) !important;
+    border-radius: var(--radius-xs);
+}
+.streak-card .progress .progress-bar {
+    background: linear-gradient(90deg, var(--warning), #fbbf24);
+    border-radius: var(--radius-xs);
+}
+
+/* ---------- 学习热力图 ---------- */
+.heat-hint {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+}
+.heat-wrap {
+    overflow-x: auto;
+}
+.heat-body {
+    display: flex;
+    gap: 3px;
+    padding: 2px 0;
+}
+.heat-col {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.heat-cell {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-xs);
+    background: var(--border-color);
+}
+.heat-cell[data-l="1"] { background: rgba(16, 185, 129, 0.35); }
+.heat-cell[data-l="2"] { background: rgba(16, 185, 129, 0.55); }
+.heat-cell[data-l="3"] { background: rgba(16, 185, 129, 0.75); }
+.heat-cell[data-l="4"] { background: var(--success); }
+.heat-cell.today {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+.heat-months {
+    display: flex;
+    gap: 3px;
+    padding: 0 0 4px;
+    font-size: 0.62rem;
+    color: var(--text-muted);
+}
+.heat-month {
+    flex: 0 0 auto;
+    width: 12px;
+    white-space: nowrap;
+    text-align: center;
+    overflow: visible;
+}
+.heat-legend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 10px;
+    font-size: 0.66rem;
+    color: var(--text-muted);
+    justify-content: flex-end;
+}
+.heat-legend .heat-cell { width: 11px; height: 11px; }
+
+/* ---------- 专升本倒计时（圆环） ---------- */
+.countdown-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.countdown-ring {
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent) calc(var(--pct, 0) * 1%), var(--border-color) 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 6px auto 12px;
+    position: relative;
+}
+.countdown-ring::before {
+    content: '';
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+}
+.countdown-ring-fill {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+}
+.countdown-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+}
+.countdown-days-unit {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+.countdown-label {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+.countdown-motto {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* ---------- 学习统计 ---------- */
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.stat-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 4px;
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-fast);
+}
+.stat-line:hover {
+    background: var(--hover-bg);
+}
+.stat-l-icon {
+    width: 26px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-align: center;
+}
+.stat-l-icon.done { color: var(--success); }
+.stat-l-icon.star { color: var(--warning); }
+.stat-l-icon.medal { color: var(--accent); }
+.stat-l-icon.book { color: #8b5cf6; }
+.stat-line span {
+    flex: 1;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+.stat-line b {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+/* ---------- 最近成就 / 下个徽章 ---------- */
+.achievement-body {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    min-height: 40px;
+    align-items: center;
+}
+.achievement-body .text-muted {
+    font-size: 0.82rem;
+}
+.achievement-body .mini-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    border: 2px solid var(--border-color);
+    transition: all var(--transition-fast);
+}
+.achievement-body .mini-badge.unlocked {
+    border-color: var(--warning);
+    background: rgba(245, 158, 11, 0.1);
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.15);
+}
+.next-badge {
+    padding-top: 10px;
+    border-top: 1px solid var(--border-light);
+}
+.next-badge-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.next-badge-label .nb-icon { font-size: 0.95rem; }
+.next-badge-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+.next-badge .progress {
+    height: 6px !important;
+    background: var(--border-color) !important;
+    border-radius: var(--radius-xs);
+}
+.next-badge .progress .progress-bar {
+    background: linear-gradient(90deg, var(--warning), #fbbf24);
+    border-radius: var(--radius-xs);
+}
+.next-badge-pct {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    margin-left: 8px;
+}
+.head-more-btn {
+    border: none;
+    background: none;
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 6px;
+}
+
+/* ---------- 迷你日历（紧凑签到） ---------- */
+.mini-calendar {
+    overflow: hidden;
+}
+
+.mini-calendar .home-head {
+    gap: 10px;
+}
+
+.mini-calendar .cal-nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: auto;
+}
+
+.cal-nav-btn {
+    width: 22px;
+    height: 22px;
+    border-radius: var(--radius-xs);
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    padding: 0;
+}
+
+.cal-nav-btn:hover {
+    background: var(--hover-bg-accent);
+    color: var(--accent);
+}
+
+.mini-calendar .calendar-month-year {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    min-width: 36px;
+    text-align: center;
+}
+
+/* 日历网格：7列 + 行标题对齐 */
+.mini-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px 2px;
+    margin-top: 6px;
+}
+
+/* 周标题行（日一二三四五六） */
+.cal-week-head {
+    display: contents;
+}
+
+.mini-cal-grid .week-day {
+    text-align: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    padding: 2px 0 4px;
+    letter-spacing: 0.3px;
+}
+
+/* 日期格子 */
+.mini-cal-grid .cal-day {
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 1.5px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    position: relative;
+    transition: all var(--transition-fast);
+    cursor: default;
+}
+
+/* 上/下月补位 */
+.mini-cal-grid .cal-day.other {
+    background: transparent;
+    color: var(--text-muted);
+    opacity: 0.25;
+}
+
+/* 今日：主题色圆环 */
+.mini-cal-grid .cal-day.today {
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 800;
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.12);
+}
+
+/* 已签到：成功绿底 + ✓ */
+.mini-cal-grid .cal-day.checked-in {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+}
+
+.mini-cal-grid .cal-day.checked-in.today {
+    background: var(--success);
+    border-color: var(--success);
+    color: #fff;
+}
+
+/* 可签到（今日未签）：虚线圈 + 脉冲提示 */
+.mini-cal-grid .cal-day.checkable {
+    cursor: pointer;
+    border-style: dashed;
+    border-color: var(--accent);
+    animation: todayPulse 2s ease-in-out infinite;
+}
+
+.mini-cal-grid .cal-day.checkable:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: scale(1.15);
+    border-style: solid;
+    box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.35);
+}
+
+/* 未来日期 */
+.mini-cal-grid .cal-day.future {
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 992px) {
+    .home-grid-3 { grid-template-columns: 1fr 1fr; }
+    .home-grid-heat { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .home-grid-2, .home-grid-heat, .home-grid-3 { grid-template-columns: 1fr; }
+    .welcome-hero { flex-direction: column; align-items: stretch; }
+    .hero-cta { flex-direction: column; align-items: stretch; min-width: 0; }
+    .hero-cta-btn { width: 100%; justify-content: center; }
+    .quote-strip .quote-text { white-space: normal; }
+}
+
+/* ==================== 主页学习卡片视觉优化（2026-08） ==================== */
+/* 纯观感增强，不改交互逻辑，全部基于现有变量适配明暗模式 */
+
+/* ---- 连续打卡：今日圆点高亮呼吸 + 已完成圆点亮起 ---- */
+.week-dot .dot {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+.week-dot.done .dot {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12), 0 0 12px rgba(16, 185, 129, 0.45);
+}
+.week-dot.today .dot {
+    box-shadow: 0 0 0 3px var(--hover-bg-strong), 0 0 14px rgba(var(--accent-rgb), 0.35);
+}
+.week-dot.done .dot {
+    animation: weekDotPop 0.35s ease-out;
+}
+@keyframes weekDotPop {
+    0% { transform: scale(0.6); opacity: 0.4; }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ---- 学习热力图：细胞圆角统一 + hover 放大提示 ---- */
+.heat-cell {
+    border-radius: var(--radius-xs);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.heat-cell:not([data-l="0"]):hover {
+    transform: scale(1.35);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+    z-index: 1;
+    position: relative;
+}
+.heat-cell.today {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-radius: var(--radius-xs);
+}
+/* 图例与网格间距更舒展 */
+.heat-body {
+    gap: 3px;
+}
+.heat-legend {
+    gap: 5px;
+}
+.heat-legend .heat-cell {
+    transition: transform var(--transition-fast);
+}
+.heat-legend .heat-cell:hover {
+    transform: scale(1.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .week-dot.done .dot,
+    .heat-cell {
+        animation: none;
+        transition: none;
+    }
+}

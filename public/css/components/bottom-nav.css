@@ -1,0 +1,43 @@
+/* ==================== 底部导航 ==================== */
+.bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    gap: 12px;
+}
+
+.bottom-nav .btn {
+    border-radius: var(--radius-xl);
+    padding: 10px 22px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.bottom-nav .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+}
+
+.bottom-nav .btn:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+#navCounter {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+

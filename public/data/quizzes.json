@@ -1,0 +1,6806 @@
+[
+  {
+    "chapterId": "01",
+    "title": "C语言概述",
+    "questions": [
+      {
+        "question": "C语言程序总是从哪个函数开始执行？",
+        "options": [
+          "main",
+          "start",
+          "begin",
+          "程序入口由编译器指定"
+        ],
+        "correct": 0,
+        "explanation": "C标准规定程序从 `main` 函数开始，无论它在文件中的位置。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个是C语言的合法注释？",
+        "options": [
+          "/* comment */",
+          "// comment",
+          "# comment",
+          "A和B都正确"
+        ],
+        "correct": 3,
+        "explanation": "C89只支持 `/* */`，C99后支持 `//`，现代编译器都支持两者。",
+        "difficulty": 1
+      },
+      {
+        "question": "C语言中，源文件扩展名为 `.c` 的编译过程，预处理阶段会做什么？",
+        "options": [
+          "删除注释",
+          "替换宏",
+          "包含头文件",
+          "以上都是"
+        ],
+        "correct": 3,
+        "explanation": "预处理阶段处理宏、头文件包含、条件编译和删除注释等。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下关于C语言特点的说法，错误的是？",
+        "options": [
+          "允许直接访问物理地址",
+          "具有丰富的运算符",
+          "完全面向对象",
+          "可移植性好"
+        ],
+        "correct": 2,
+        "explanation": "C是面向过程的语言，不是面向对象的。",
+        "difficulty": 1
+      },
+      {
+        "question": "一个C程序在编译时，`printf` 函数的定义在哪里？",
+        "options": [
+          "在源文件中",
+          "在标准库中",
+          "在操作系统内核",
+          "由编译器内置"
+        ],
+        "correct": 1,
+        "explanation": "`printf` 是标准库函数，链接时从库中载入。",
+        "difficulty": 2
+      },
+      {
+        "question": "C语言中，标识符的长度是有限制的，这个限制通常是多少？",
+        "options": [
+          "8个字符",
+          "31个字符",
+          "63个字符",
+          "没有限制，取决于编译器"
+        ],
+        "correct": 3,
+        "explanation": "C标准只规定至少31个字符有效，实际长度取决于编译器，但通常没严格限制。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个不是C语言的关键字？",
+        "options": [
+          "auto",
+          "register",
+          "static",
+          "define"
+        ],
+        "correct": 3,
+        "explanation": "`define` 是预处理指令，不是关键字。",
+        "difficulty": 2
+      },
+      {
+        "question": "C语言中，`main` 函数返回 `void` 是否合法？",
+        "options": [
+          "合法，C89允许",
+          "合法，C99允许",
+          "不合法，必须返回int",
+          "取决于编译器"
+        ],
+        "correct": 2,
+        "explanation": "C标准规定 `main` 必须返回 `int`，虽然某些编译器允许 `void`，但不标准。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个头文件不是标准库中的？",
+        "options": [
+          "<stdio.h>",
+          "<stdlib.h>",
+          "<string.h>",
+          "<iostream.h>"
+        ],
+        "correct": 3,
+        "explanation": "`<iostream.h>` 是C++的头文件，不是C标准库。",
+        "difficulty": 1
+      },
+      {
+        "question": "C语言程序编译后，生成的目标文件扩展名通常是？",
+        "options": [
+          ".exe",
+          ".obj",
+          ".o",
+          ".out"
+        ],
+        "correct": 2,
+        "explanation": "在Unix/Linux下目标文件是 `.o`，Windows下是 `.obj`，但 `.o` 更通用。",
+        "difficulty": 1
+      },
+      {
+        "question": "在C语言中，`#include <stdio.h>` 的作用是？",
+        "options": [
+          "包含函数定义",
+          "包含宏定义和函数声明",
+          "链接库文件",
+          "声明外部变量"
+        ],
+        "correct": 1,
+        "explanation": "头文件主要包含函数原型、宏、类型定义等声明。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下关于C语言注释的说法，正确的是？",
+        "options": [
+          "`/* */` 可以嵌套",
+          "`//` 只能注释单行",
+          "注释在编译时会被忽略",
+          "B和C正确"
+        ],
+        "correct": 3,
+        "explanation": "`//` 单行，`/* */` 不能嵌套（除非编译器扩展），注释在预处理时被替换为空格，编译时忽略。",
+        "difficulty": 1
+      },
+      {
+        "question": "C语言中，如何定义一个符号常量？",
+        "options": [
+          "`#define PI 3.14`",
+          "`const double PI = 3.14;`",
+          "两者都可以",
+          "只能用宏"
+        ],
+        "correct": 2,
+        "explanation": "宏和 `const` 都能定义常量，但宏无类型检查，`const` 有类型。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下关于C语言标准库的说法，错误的是？",
+        "options": [
+          "标准库函数是跨平台的",
+          "标准库提供I/O、数学等函数",
+          "标准库函数必须在程序开头包含对应头文件",
+          "标准库函数是开源的"
+        ],
+        "correct": 3,
+        "explanation": "标准库的实现不一定是开源的（如MSVC），但接口标准统一。",
+        "difficulty": 1
+      },
+      {
+        "question": "C语言中，`main` 函数的参数 `argc` 和 `argv` 表示什么？",
+        "options": [
+          "命令行参数个数和数组",
+          "环境变量",
+          "文件描述符",
+          "函数栈大小"
+        ],
+        "correct": 0,
+        "explanation": "`argc` 是参数个数，`argv` 是参数字符串数组。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个不是C语言的编译步骤？",
+        "options": [
+          "预处理",
+          "编译",
+          "汇编",
+          "解释执行"
+        ],
+        "correct": 3,
+        "explanation": "C是编译型语言，需要编译成机器码，不直接解释执行。",
+        "difficulty": 1
+      },
+      {
+        "question": "C语言中，标识符 `_abc` 是否合法？",
+        "options": [
+          "合法",
+          "不合法，不能以下划线开头",
+          "不合法，只能字母开头",
+          "取决于编译器"
+        ],
+        "correct": 0,
+        "explanation": "标识符可以以下划线开头，但应避免以下划线加大写字母，因为保留给库。",
+        "difficulty": 1
+      },
+      {
+        "question": "在C语言中，全局变量和局部变量同名时，局部变量会？",
+        "options": [
+          "覆盖全局变量",
+          "编译错误",
+          "全局变量覆盖局部",
+          "两者共存，使用作用域区分"
+        ],
+        "correct": 3,
+        "explanation": "同名时，局部作用域隐藏全局，在局部作用域内使用局部变量。",
+        "difficulty": 1
+      },
+      {
+        "question": "C语言中，`sizeof` 是在哪个阶段处理的？",
+        "options": [
+          "预处理",
+          "编译时",
+          "链接时",
+          "运行时"
+        ],
+        "correct": 1,
+        "explanation": "`sizeof` 是编译时运算符，计算类型大小（变长数组除外）。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下关于C语言的描述，正确的是？",
+        "options": [
+          "C语言是强类型语言",
+          "C语言是弱类型语言",
+          "C语言允许隐式类型转换，故是弱类型",
+          "C语言类型检查严格，不允许隐式转换"
+        ],
+        "correct": 2,
+        "explanation": "C语言允许许多隐式转换（如int到char），因此常被认为是弱类型，但比汇编强。",
+        "difficulty": 1
+      },
+      {
+        "question": "C 程序编译后，链接器（linker）的作用是什么？",
+        "options": [
+          "把各目标文件和库文件合并成可执行文件",
+          "把 C 源码编译成目标文件",
+          "把汇编代码转成机器码",
+          "把源代码翻译成字节码"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "编译阶段为每个源文件生成目标文件（.o），链接器负责合并它们、解析符号引用，最终生成可执行文件。"
+      },
+      {
+        "question": "`printf` 函数的原型声明在哪个头文件中？",
+        "options": [
+          "<stdio.h>",
+          "<stdlib.h>",
+          "<string.h>",
+          "<math.h>"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "标准输入输出函数（printf、scanf、fopen 等）都在 <stdio.h> 中声明。"
+      },
+      {
+        "question": "C99 标准规定，main 函数没有显式 return 语句时，程序默认返回？",
+        "options": [
+          "0（表示成功）",
+          "1",
+          "-1",
+          "随机值"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "C99 起规定：若 main 函数执行到末尾而未遇到 return，等价于 `return 0;`。C89 中这是未定义行为。"
+      },
+      {
+        "question": "链接阶段报错 `undefined reference to 'foo'`，最可能的原因是？",
+        "options": [
+          "调用了 foo 但它的定义从未被链接进来",
+          "foo 这个名字拼写错误但已定义",
+          "foo 是库函数未包含头文件",
+          "foo 定义所在文件有语法错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "undefined reference 发生在链接期：代码引用了一个符号，但所有目标文件/库中都没有它的定义。头文件缺失会报编译错误，不会走到链接期。"
+      },
+      {
+        "question": "在头文件中写 `int x = 0;`（非 static、非 extern），若该头文件被多个 .c 文件包含，链接时会？",
+        "options": [
+          "多重定义（duplicate definition）错误",
+          "正常链接",
+          "只保留一份定义",
+          "取决于链接器"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "每个包含该头文件的编译单元都会生成一个 x 的全局定义，链接器看到多个相同符号的强定义就报多重定义错误。所以头文件中应写 `extern int x;`，在某个 .c 中定义。"
+      },
+      {
+        "question": "C 语言的语法错误通常在哪个阶段被发现？",
+        "options": [
+          "编译阶段",
+          "预处理阶段",
+          "链接阶段",
+          "运行阶段"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "语法分析属于编译阶段。预处理阶段只做文本替换（不含语法检查），链接阶段只处理符号。"
+      },
+      {
+        "question": "`char c = 128;`（设 char 为有符号 8 位）会发生？",
+        "options": [
+          "值溢出，行为实现定义，通常变成负数",
+          "编译错误",
+          "正常存储 128",
+          "未定义行为，必定崩溃"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "有符号 char 范围是 -128~127。把 128 赋给它属于实现定义行为（modern C 中是无符号溢出规则外的实现定义），常见编译器下得到 -128。"
+      },
+      {
+        "question": "下列哪个特性是 C99 相对于 C89 新增的？",
+        "options": [
+          "允许在 for 循环的初始化部分声明变量",
+          "支持结构体",
+          "支持函数",
+          "支持指针"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "C99 引入了块内声明、`//` 注释、for 内声明变量等。结构体、函数、指针在 C89 就已存在。"
+      },
+      {
+        "question": "多个源文件都定义了同名全局函数（都不是 static），链接时会？",
+        "options": [
+          "报多重定义错误",
+          "最后一个定义生效",
+          "先声明的生效",
+          "正常链接，取其一"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "全局非 static 函数具有外部链接，多个编译单元中同名定义在链接期会冲突，报 duplicate symbol 错误。"
+      },
+      {
+        "question": "main 函数返回 int 类型的意义是什么？",
+        "options": [
+          "向操作系统报告程序的退出状态",
+          "给 printf 提供返回值",
+          "没有实际意义",
+          "返回程序运行行数"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "main 的返回值由操作系统接收，0 表示正常结束，非 0 表示异常，常被 shell 脚本检查。"
+      },
+      {
+        "question": "以下哪一项是函数声明，而不是函数定义？",
+        "options": [
+          "int add(int, int);",
+          "int add(int a, int b) { return a + b; }",
+          "int add(int a, int b) { ... }",
+          "以上全是定义"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "以分号结尾、没有函数体的就是声明（原型）。有花括号函数体的才是定义。"
+      },
+      {
+        "question": "`#ifdef _WIN32` 最常见的用途是？",
+        "options": [
+          "判断当前是否 Windows 平台以便条件编译",
+          "定义一个名为 _WIN32 的常量",
+          "强制包含某个头文件",
+          "取消 _WIN32 宏"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "`#ifdef _WIN32` 用于平台条件编译：在 Windows 编译器下 _WIN32 会自动定义，据此编写跨平台代码。"
+      },
+      {
+        "question": "gcc 编译时加上 `-Wall` 选项的作用是？",
+        "options": [
+          "开启更多编译警告",
+          "进行代码优化",
+          "链接静态库",
+          "生成调试信息"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "-Wall 开启一组常用警告，能提前暴露隐式转换、未使用变量等问题，是良好的编译习惯。"
+      },
+      {
+        "question": "`/* 外层 /* 内层 */ 剩余代码 */` 这段代码会发生什么？",
+        "options": [
+          "内层的 `*/` 提前结束注释，剩余的 `*/` 导致语法错误",
+          "注释正确嵌套，整体被注释",
+          "只注释外层，内层生效",
+          "编译正常，无错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "C 的块注释不支持嵌套，遇到第一个 `*/` 就结束。内层 `*/` 之后的内容会参与编译，末尾多余的 `*/` 是语法错误。"
+      },
+      {
+        "question": "可执行程序运行后，第一个被执行的 C 函数是？",
+        "options": [
+          "main（由启动代码 crt0 先运行再调用它）",
+          "程序中定义的第一个函数",
+          "名为 init 的函数",
+          "printf"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "操作系统先进入启动例程（crt0/startup），完成环境初始化后再调用 main。所以 main 是 C 层面第一个被调用的函数。"
+      },
+      {
+        "question": "头文件中声明 `int f(double);`，但某个 .c 里定义成 `int f(int x) { ... }`，会发生？",
+        "options": [
+          "链接期通常不检查原型一致性，运行时参数解释错误",
+          "编译必然报错",
+          "正常运行无问题",
+          "报重复定义错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "声明与定义分属不同编译单元时，链接器只按符号名匹配、不做类型检查。调用按错误原型解释实参，导致未定义行为。应保证声明与定义一致。"
+      },
+      {
+        "question": "C 编译器把 C 源程序翻译成？",
+        "options": [
+          "目标文件（机器码 + 符号表）",
+          "字节码",
+          "解释执行的脚本",
+          "HTML 页面"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "编译器把 C 源码编译为包含机器码的目标文件，再由链接器链接成可执行程序。C 是编译型语言。"
+      },
+      {
+        "question": "一个可执行程序中能否出现两个 main 函数定义？",
+        "options": [
+          "不能，会报重复定义错误",
+          "可以",
+          "取决于操作系统",
+          "只有 Windows 不允许"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "main 是程序入口，只能有一个定义。出现两个 main 在链接期就是重复符号错误。"
+      },
+      {
+        "question": "printf 写入 stdout 默认是行缓冲/全缓冲的，下列哪种情况会触发缓冲区刷新？",
+        "options": [
+          "以上都是：程序正常退出、缓冲区写满、显式调用 fflush",
+          "只有程序崩溃时",
+          "只有调用 fclose 时",
+          "永远不会自动刷新"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "当 stdout 连接到终端时通常是行缓冲（遇换行刷新），重定向到文件时是全缓冲。程序正常退出、缓冲区满、显式 fflush 都会刷新。"
+      },
+      {
+        "question": "C 源程序经过预处理后，生成的内容接着交给哪个阶段？",
+        "options": [
+          "编译器（编译成汇编/目标代码）",
+          "链接器",
+          "操作系统",
+          "解释器"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "标准编译流程为：预处理 → 编译 → 汇编 → 链接。预处理的输出仍是 C 代码，交给编译器继续处理。"
+      }
+    ]
+  },
+  {
+    "chapterId": "02",
+    "title": "核心语法基础",
+    "questions": [
+      {
+        "question": "int a = 5; printf(\"%d\", a++); 输出是？",
+        "options": [
+          "5",
+          "6",
+          "4",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "`a++` 是后置自增，先返回原值5，再自增。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个整型常量是八进制表示？",
+        "options": [
+          "0123",
+          "123",
+          "0x123",
+          "123L"
+        ],
+        "correct": 0,
+        "explanation": "以0开头的是八进制，如0123等于十进制83。",
+        "difficulty": 1
+      },
+      {
+        "question": "double d = 1.2; int i = (int)d; 此时i的值是？",
+        "options": [
+          "1",
+          "2",
+          "1.2",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "强制类型转换截断小数部分，得到1。",
+        "difficulty": 2
+      },
+      {
+        "question": "char c = 'A'; c = c + 1; 执行后c的值是？",
+        "options": [
+          "'B'",
+          "66",
+          "字符B",
+          "以上都正确（ASCII）"
+        ],
+        "correct": 3,
+        "explanation": "字符参与运算转换为ASCII码，'A'=65，+1得66，即'B'。",
+        "difficulty": 2
+      },
+      {
+        "question": "float f = 3.14; int i = f; 这种隐式转换会导致？",
+        "options": [
+          "编译错误",
+          "截断小数部分",
+          "四舍五入",
+          "未定义行为"
+        ],
+        "correct": 1,
+        "explanation": "隐式转换将浮点数转为整数，截断小数部分，不是四舍五入。",
+        "difficulty": 2
+      },
+      {
+        "question": "unsigned int a = 10; int b = -20; printf(\"%u\", a + b); 输出？",
+        "options": [
+          "4294967286",
+          "-10",
+          "10",
+          "无符号溢出"
+        ],
+        "correct": 0,
+        "explanation": "有符号转为无符号，-20在32位下为4294967276，加10得4294967286。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a = 5, b = 3; printf(\"%d\", a & b); 输出？",
+        "options": [
+          "1",
+          "2",
+          "4",
+          "8"
+        ],
+        "correct": 0,
+        "explanation": "按位与：5(101) & 3(011) = 001 = 1。",
+        "difficulty": 2
+      },
+      {
+        "question": "int x = 7; int y = x >> 1; y的值是？",
+        "options": [
+          "3",
+          "4",
+          "7",
+          "14"
+        ],
+        "correct": 0,
+        "explanation": "右移1位相当于除以2，7>>1=3（向下取整）。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个运算符优先级最高？",
+        "options": [
+          "*",
+          "+",
+          "==",
+          "()"
+        ],
+        "correct": 3,
+        "explanation": "括号优先级最高，其次是乘法等。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a = 0, b = 1, c = 2; int d = a ? b : c; d的值是？",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "未定义"
+        ],
+        "correct": 2,
+        "explanation": "条件运算符 `a ? b : c`：a 为 0（假），取 c 的值，即 2。",
+        "difficulty": 2
+      },
+      {
+        "question": "int i = 1; int j = i++ + ++i; 执行后i和j的值分别是？",
+        "options": [
+          "i=3, j=4",
+          "i=2, j=3",
+          "i=3, j=3",
+          "未定义行为"
+        ],
+        "correct": 3,
+        "explanation": "在两个序列点之间多次修改i，是未定义行为，结果因编译器而异。",
+        "difficulty": 2
+      },
+      {
+        "question": "float a = 0.1; if (a == 0.1) 判断为？",
+        "options": [
+          "真",
+          "假",
+          "编译错误",
+          "可能真也可能假"
+        ],
+        "correct": 1,
+        "explanation": "0.1在二进制中无限循环，浮点数存储有精度损失，比较通常不等。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a = 5; int b = a-- + --a; 执行后a和b的值？",
+        "options": [
+          "a=3, b=10",
+          "a=3, b=8",
+          "a=4, b=9",
+          "未定义"
+        ],
+        "correct": 3,
+        "explanation": "同一表达式中多次修改a，未定义行为。",
+        "difficulty": 2
+      },
+      {
+        "question": "char s[] = \"hello\"; printf(\"%lu\", sizeof(s)); 输出？",
+        "options": [
+          "5",
+          "6",
+          "4",
+          "取决于平台"
+        ],
+        "correct": 1,
+        "explanation": "字符串数组包含末尾的'\\0'，大小为6字节。",
+        "difficulty": 2
+      },
+      {
+        "question": "int arr[10]; int *p = arr; 则 p+1 和 &arr[1] 是否相等？",
+        "options": [
+          "相等",
+          "不相等",
+          "可能相等",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "数组名退化为首元素指针，p+1指向第二个元素。",
+        "difficulty": 3
+      },
+      {
+        "question": "const int a = 10; a = 20; 会发生？",
+        "options": [
+          "编译错误",
+          "运行时错误",
+          "a变成20",
+          "未定义行为"
+        ],
+        "correct": 0,
+        "explanation": "const修饰的变量不可修改，编译器报错。",
+        "difficulty": 3
+      },
+      {
+        "question": "int x = 5, y = 5; printf(\"%d\", x == y); 输出？",
+        "options": [
+          "1",
+          "0",
+          "5",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "关系表达式返回1（真）或0（假）。",
+        "difficulty": 2
+      },
+      {
+        "question": "int x = 0; if (x = 5) printf(\"true\"); else printf(\"false\"); 输出？",
+        "options": [
+          "true",
+          "false",
+          "编译错误",
+          "未定义"
+        ],
+        "correct": 0,
+        "explanation": "赋值表达式x=5值为5，非0为真，输出true。注意是赋值不是比较。",
+        "difficulty": 2
+      },
+      {
+        "question": "char c = 255; printf(\"%d\", c); 假设char是有符号的，输出？",
+        "options": [
+          "255",
+          "-1",
+          "127",
+          "编译错误"
+        ],
+        "correct": 1,
+        "explanation": "有符号char范围-128~127，255超出，按补码解释为-1。",
+        "difficulty": 2
+      },
+      {
+        "question": "int i; for(i=0; i<10; i++); 循环后i的值是？",
+        "options": [
+          "9",
+          "10",
+          "11",
+          "0"
+        ],
+        "correct": 1,
+        "explanation": "当i=10时条件不成立，退出循环，i=10。",
+        "difficulty": 2
+      },
+      {
+        "question": "`int a = 5, b; b = a++ + a++;` 执行后 b 的值是？",
+        "options": [
+          "未定义行为",
+          "11",
+          "12",
+          "13"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "同一表达式中在两个序列点之间对 a 修改了两次，属于未定义行为，不同编译器结果可能不同，绝不能依赖。"
+      },
+      {
+        "question": "表达式 `*p++` 等价于？",
+        "options": [
+          "`*(p++)`（先取 *p 的值，再让 p 后移）",
+          "`(*p)++`",
+          "`*p + 1`",
+          "语法错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "后缀 ++ 优先级高于一元 *，所以 `*p++` 解析为 `*(p++)`：先返回 *p，然后 p 自增指向下一元素。而 `(*p)++` 是让指向的元素自增。"
+      },
+      {
+        "question": "在 C99 中，`-7 % 3` 的值是？",
+        "options": [
+          "-1",
+          "1",
+          "2",
+          "未定义行为"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "C99 规定取模结果的符号与被除数相同：-7 = -2×3 + (-1)，所以余数是 -1。注意这与 Python 的结果不同。"
+      },
+      {
+        "question": "`int a = 5 / 2;` a 的值是？",
+        "options": [
+          "2",
+          "2.5",
+          "3",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "两个整数相除做整数除法，直接截断小数部分，结果 2。若想得到 2.5 需写成 5.0/2 或 (double)5/2。"
+      },
+      {
+        "question": "`a = b = c = 5;` 中赋值运算符的结合方向是？",
+        "options": [
+          "右结合（从右往左依次赋值）",
+          "左结合",
+          "无结合性",
+          "从左往右"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "赋值运算符是右结合的，`a = b = c = 5` 相当于 `a = (b = (c = 5))`，先把 5 赋给 c，再赋给 b，最后赋给 a。"
+      },
+      {
+        "question": "`int x=1, y=2, z; z = x > y ? x : y;` 执行后 z 的值是？",
+        "options": [
+          "2",
+          "1",
+          "3",
+          "0"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "条件表达式 `x>y?x:y`：x>y 为假，取 y 的值，即 2。"
+      },
+      {
+        "question": "`sizeof` 运算符的结果类型是？",
+        "options": [
+          "size_t（无符号整型）",
+          "int",
+          "long",
+          "unsigned char"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "sizeof 返回 size_t（定义在 stddef.h），是无符号整型。用 %zu 打印，不要误用 %d。"
+      },
+      {
+        "question": "`int i = 10; i = i >> 1;` 之后 i 的值是？",
+        "options": [
+          "5",
+          "4",
+          "10",
+          "20"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "右移一位相当于整除 2（对正数），10>>1 = 5。"
+      },
+      {
+        "question": "`char c; short s;` 在表达式 `c + s` 中，c 和 s 会被提升为哪种类型？",
+        "options": [
+          "int（整型提升）",
+          "char",
+          "long",
+          "float"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "C 中 char 和 short 在参与运算前会进行整型提升（integer promotion），统一提升为 int。这是 `printf(\"%d\", c+s)` 能正确打印的原因。"
+      },
+      {
+        "question": "在 IEEE 754 浮点数下，`0.1 + 0.2 == 0.3` 的结果是？",
+        "options": [
+          "假（false）",
+          "真（true）",
+          "编译错误",
+          "取决于编译器，通常为真"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "0.1 和 0.2 在二进制中无法精确表示，0.1+0.2 实际约等于 0.30000000000000004，不等于 0.3。浮点比较应使用误差范围。"
+      },
+      {
+        "question": "`a += b;` 与 `a = a + b;` 最本质的区别是？",
+        "options": [
+          "复合赋值中 a 只求值一次，且隐含一次到 a 类型的转换",
+          "完全没有区别",
+          "复合赋值优先级更高",
+          "复合赋值不能用于表达式"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`a += b` 中 a 只被求值一次（如 `p[i++] += b` 中 i++ 只执行一次），并且结果会转换为 a 的类型。例如 `char c; c += 300;` 会按 char 截断。"
+      },
+      {
+        "question": "`!(x < y)` 等价于下面哪个表达式？",
+        "options": [
+          "x >= y",
+          "x > y",
+          "x <= y",
+          "x != y"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "x<y 为假即 x>=y。取反后 `!(x<y)` 当且仅当 x>=y 时为真。"
+      },
+      {
+        "question": "`int a; a = (1, 2, 3);` 执行后 a 的值是？",
+        "options": [
+          "3",
+          "1",
+          "2",
+          "语法错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "逗号表达式 `(1,2,3)` 依次求值每个操作数，结果是最后一个表达式的值，即 3。注意赋值号 `=` 的优先级高于逗号，所以必须加括号。"
+      },
+      {
+        "question": "`unsigned char c = 250; c = c + 10;` 执行后 c 的值是？",
+        "options": [
+          "4（无符号溢出按模回绕）",
+          "260",
+          "溢出报错",
+          "未定义行为"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "无符号整型的溢出是良定义的：按模 2^n 回绕。250+10=260，模 256 得 4。这与有符号溢出（未定义行为）不同。"
+      },
+      {
+        "question": "`int a = 0, b = 5; if (a && b++) ...` 这之后 b 的值是？",
+        "options": [
+          "5（短路求值，b++ 未执行）",
+          "6",
+          "0",
+          "未定义行为"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "`&&` 左操作数 a 为 0（假），整个表达式已确定为假，右侧 b++ 不再求值，因此 b 保持 5。"
+      },
+      {
+        "question": "`int x = 5; const int *p = &x; *p = 10;` 会？",
+        "options": [
+          "编译错误（p 指向的对象不可修改）",
+          "运行时错误",
+          "x 变为 10",
+          "未定义行为"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`const int *p` 表示 p 指向一个 const int，通过 p 修改 *p 会编译报错。注意 x 本身可改，只是不能通过 p 改。"
+      },
+      {
+        "question": "`(double)5 / 2` 的结果是？",
+        "options": [
+          "2.5",
+          "2",
+          "2.0",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "先把 5 强制转为 double 再除以 2，结果为 2.5。若写成 `(double)(5/2)` 则先整数除法得 2 再转成 2.0。"
+      },
+      {
+        "question": "`int x = -1; unsigned y = 1;` 表达式 `x > y` 的结果是？",
+        "options": [
+          "真（true）",
+          "假（false）",
+          "未定义行为",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "有符号与无符号比较时，有符号数隐式转为无符号：-1 变成 4294967295（32 位），4294967295 > 1 为真。这是常见的隐藏陷阱。"
+      },
+      {
+        "question": "单独成句的 `i++;` 产生的副作用是？",
+        "options": [
+          "i 增加 1，语句的值是自增前或自增后的值但不被使用",
+          "i 不变",
+          "i 变为 0",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "`i++;` 作为表达式语句，其副作用是让 i 加 1。单独使用时前后缀效果一样，只有返回值不同。"
+      },
+      {
+        "question": "`int i = 010;` 执行后 i 的值是？",
+        "options": [
+          "8（八进制）",
+          "10",
+          "编译错误",
+          "二进制 010 = 2"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "以 0 开头的整型常量是八进制，010 = 1×8 + 0 = 8。写数字时前导 0 极易造成误解，是经典陷阱。"
+      }
+    ]
+  },
+  {
+    "chapterId": "03",
+    "title": "程序流程控制",
+    "questions": [
+      {
+        "question": "switch语句中，如果没有break，会发生？",
+        "options": [
+          "编译错误",
+          "继续执行下一个case",
+          "跳出switch",
+          "无限循环"
+        ],
+        "correct": 1,
+        "explanation": "没有break会穿透执行后续case直到break或结束。",
+        "difficulty": 1
+      },
+      {
+        "question": "int a = 2; switch(a) { case 1: printf(\"1\"); case 2: printf(\"2\"); default: printf(\"3\"); } 输出？",
+        "options": [
+          "2",
+          "23",
+          "12",
+          "123"
+        ],
+        "correct": 1,
+        "explanation": "匹配case 2，无break，继续执行default，输出23。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个不是循环控制语句？",
+        "options": [
+          "for",
+          "while",
+          "do-while",
+          "if"
+        ],
+        "correct": 3,
+        "explanation": "if是选择结构，不是循环。",
+        "difficulty": 1
+      },
+      {
+        "question": "do-while循环的循环体至少执行几次？",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "取决于条件"
+        ],
+        "correct": 1,
+        "explanation": "do-while先执行一次再判断，至少执行一次。",
+        "difficulty": 2
+      },
+      {
+        "question": "for(;;) 循环等价于？",
+        "options": [
+          "无限循环",
+          "不执行",
+          "编译错误",
+          "执行一次"
+        ],
+        "correct": 0,
+        "explanation": "for的三个表达式都省略，条件默认为真，无限循环。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下关于break和continue的说法，正确的是？",
+        "options": [
+          "break用于终止循环或switch",
+          "continue用于跳过本次循环剩余语句",
+          "break和continue都可用于switch",
+          "A和B正确"
+        ],
+        "correct": 3,
+        "explanation": "break可用于循环和switch，continue仅用于循环。",
+        "difficulty": 1
+      },
+      {
+        "question": "if(0) printf(\"A\"); else if(1) printf(\"B\"); else printf(\"C\"); 输出？",
+        "options": [
+          "A",
+          "B",
+          "C",
+          "无输出"
+        ],
+        "correct": 1,
+        "explanation": "条件0假，进入else if(1)真，输出B。",
+        "difficulty": 2
+      },
+      {
+        "question": "int i = 0; while(i++ < 3) printf(\"%d\", i); 输出？",
+        "options": [
+          "123",
+          "012",
+          "0123",
+          "1234"
+        ],
+        "correct": 0,
+        "explanation": "i++先取值0<3真，输出i=1；i=1<3真输出2；i=2<3真输出3；i=3<3假停止。",
+        "difficulty": 2
+      },
+      {
+        "question": "int i = 0; do { printf(\"%d\", i); } while(i++ < 0); 输出？",
+        "options": [
+          "0",
+          "无输出",
+          "01",
+          "1"
+        ],
+        "correct": 0,
+        "explanation": "先执行循环体输出0，然后i++得1，判断1<0假，结束。",
+        "difficulty": 2
+      },
+      {
+        "question": "switch的表达式可以是float类型吗？",
+        "options": [
+          "可以",
+          "不可以",
+          "可以但会警告",
+          "取决于编译器"
+        ],
+        "correct": 1,
+        "explanation": "switch表达式必须是整型或枚举类型，不能是浮点。",
+        "difficulty": 1
+      },
+      {
+        "question": "goto语句可以跳出函数吗？",
+        "options": [
+          "可以",
+          "不可以",
+          "可以跳出但需要标签",
+          "取决于编译器"
+        ],
+        "correct": 1,
+        "explanation": "goto只能在当前函数内跳转，不能跨函数。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下代码：if (a = 5) { } else { } 是否正确？",
+        "options": [
+          "正确，a被赋值为5",
+          "错误，条件必须为布尔表达式",
+          "编译错误",
+          "运行时错误"
+        ],
+        "correct": 0,
+        "explanation": "C语言中赋值表达式有值，可作为条件，a=5值为5真。",
+        "difficulty": 2
+      },
+      {
+        "question": "循环嵌套中，break默认跳出哪一层？",
+        "options": [
+          "最内层",
+          "最外层",
+          "所有层",
+          "用户指定层"
+        ],
+        "correct": 0,
+        "explanation": "break跳出所在的最内层循环或switch。",
+        "difficulty": 1
+      },
+      {
+        "question": "for(i=0; i<5; i++) { if(i==3) continue; printf(\"%d\", i); } 输出？",
+        "options": [
+          "0124",
+          "01234",
+          "0134",
+          "124"
+        ],
+        "correct": 0,
+        "explanation": "当i=3时跳过打印，输出0,1,2,4。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个不是合法的跳转语句？",
+        "options": [
+          "break",
+          "continue",
+          "return",
+          "jump"
+        ],
+        "correct": 3,
+        "explanation": "C语言没有jump关键字，只有goto。",
+        "difficulty": 1
+      },
+      {
+        "question": "while(1) { break; } 中break的作用是？",
+        "options": [
+          "终止循环",
+          "终止程序",
+          "跳出switch",
+          "无作用"
+        ],
+        "correct": 0,
+        "explanation": "break立即终止所在循环。",
+        "difficulty": 2
+      },
+      {
+        "question": "条件运算符 ?: 是左结合还是右结合？",
+        "options": [
+          "左结合",
+          "右结合",
+          "不结合",
+          "结合方向不确定"
+        ],
+        "correct": 1,
+        "explanation": "条件运算符是右结合的，如 a?b:c?d:e 解释为 a?b:(c?d:e)。",
+        "difficulty": 2
+      },
+      {
+        "question": "if (x > 0) if (y > 0) printf(\"A\"); else printf(\"B\"); 当 x>0, y<=0 时输出？",
+        "options": [
+          "A",
+          "B",
+          "无输出",
+          "编译错误"
+        ],
+        "correct": 1,
+        "explanation": "else与最近的if匹配，即内层if，所以y<=0时输出B。",
+        "difficulty": 2
+      },
+      {
+        "question": "for (int i=0; i<3; i++) ; 这种写法在C89中是否合法？",
+        "options": [
+          "合法",
+          "不合法，变量声明不能在for中",
+          "合法但警告",
+          "取决于编译器"
+        ],
+        "correct": 1,
+        "explanation": "C89不允许在for中声明变量，C99允许。",
+        "difficulty": 2
+      },
+      {
+        "question": "switch语句中，default子句必须放在最后吗？",
+        "options": [
+          "必须",
+          "可以放在任何位置",
+          "只能放在开头",
+          "不能使用default"
+        ],
+        "correct": 1,
+        "explanation": "default可以放在任意位置，但通常放在最后。",
+        "difficulty": 1
+      },
+      {
+        "question": "switch 语句中，case 标签的值必须满足什么条件？",
+        "options": [
+          "是整型常量表达式",
+          "可以是任意变量",
+          "可以是浮点常量",
+          "可以是字符串"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "case 标签必须是编译期可求值的整型常量表达式（可以是枚举值或字符常量），不能是变量。"
+      },
+      {
+        "question": "以下哪种循环结构至少会执行一次循环体？",
+        "options": [
+          "do-while",
+          "while",
+          "for",
+          "以上都不是"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "do-while 先执行循环体再判断条件，所以至少执行一次；while 和 for 先判断，可能一次都不执行。"
+      },
+      {
+        "question": "break 语句能跳出？",
+        "options": [
+          "所在的最内层循环或 switch",
+          "所有外层循环",
+          "整个函数",
+          "整个程序"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "break 只终止包含它的最内层循环或 switch，不能跳出多层嵌套。"
+      },
+      {
+        "question": "`for(i=0;i<3;i++){ if(i==1) continue; printf(\"%d\",i); }` 中执行 continue 之后会？",
+        "options": [
+          "先执行 for 的更新表达式 i++，再进入下一次条件判断",
+          "立即退出循环",
+          "执行循环体剩余语句",
+          "什么都不做，循环卡住"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "continue 在 for 循环中会跳到更新表达式（i++），然后才判断条件。初学者常误以为 continue 会直接跳到条件判断。"
+      },
+      {
+        "question": "悬空 else（dangling else）与哪个 if 配对？",
+        "options": [
+          "与最近的、尚未配对的 if 配对",
+          "与最外层的 if 配对",
+          "与第一个 if 配对",
+          "由编译器选项决定"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "C 规定 else 与最近的未配对 if 结合。因此嵌套 if-else 时应加花括号明确意图。"
+      },
+      {
+        "question": "`if (a = b)` 当 b 的值为 0 时，条件的结果是？",
+        "options": [
+          "假（赋值表达式值为 0）",
+          "真",
+          "编译错误",
+          "未定义行为"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "`a = b` 是赋值表达式，其值等于 b 被赋的值。b=0 时条件为假。这是 `=` 与 `==` 混淆的经典陷阱。"
+      },
+      {
+        "question": "`for(;;)` 是一个？",
+        "options": [
+          "无限循环",
+          "只执行一次的循环",
+          "不执行的循环",
+          "语法错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "for 的三个表达式都可省略，省略条件时默认为真，形成无限循环。常用 `for(;;)` 或 `while(1)`。"
+      },
+      {
+        "question": "switch 语句中 default 子句可以放在？",
+        "options": [
+          "任意位置（通常放最后）",
+          "只能放在最后",
+          "只能放在最前",
+          "不能使用 default"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "default 的位置不影响匹配逻辑，习惯放最后。但无论放哪，未匹配 case 都会进入 default。"
+      },
+      {
+        "question": "宏中常写 `do { ... } while(0)` 包装多条语句，其目的是？",
+        "options": [
+          "让宏能安全地包含多条语句并在调用处正常加分号",
+          "制造一个无限循环",
+          "提高运行速度",
+          "减少宏展开体积"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "`do{...}while(0)` 只执行一次，但它把多条语句包成一个整体，避免宏在 if/else 中只绑定第一条语句的问题，且调用处加分号合法。"
+      },
+      {
+        "question": "`if (x)` 当 x 为非零值时会？",
+        "options": [
+          "执行 if 分支",
+          "执行 else 分支",
+          "编译错误",
+          "取决于 x 的类型"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "C 的条件判断以非 0 为真。x 非零即真，执行 if 分支。"
+      },
+      {
+        "question": "switch 的表达式可以是什么类型？",
+        "options": [
+          "char（会提升为 int）",
+          "float",
+          "double",
+          "字符串"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "switch 表达式必须是整型或枚举类型。char 在 C 中属于整型类别，会提升为 int 参与匹配。浮点型和字符串都不合法。"
+      },
+      {
+        "question": "两层嵌套循环中，内层的 break 会？",
+        "options": [
+          "只跳出内层循环",
+          "同时跳出内、外层循环",
+          "跳到外层循环的下一条语句",
+          "产生编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "break 只作用于最内层。要从多重循环一次性跳出，需用标志变量或 goto。"
+      },
+      {
+        "question": "`while(i < n)` 中若 i 从 0 开始每次自增，循环体会执行 n 次；若 i 从 1 开始，则执行？",
+        "options": [
+          "n-1 次",
+          "n 次",
+          "n+1 次",
+          "无限循环"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "i 从 1 到 n-1，共 n-1 个值满足 i<n，因此循环体执行 n-1 次。边界条件是最常出错的点。"
+      },
+      {
+        "question": "在循环体内修改循环变量 i 的值，会？",
+        "options": [
+          "可能导致死循环或跳过部分迭代，行为由逻辑决定",
+          "必然导致死循环",
+          "必然编译错误",
+          "对循环无任何影响"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "循环变量由自己维护时修改它必须格外小心。例如 `for(i=0;i<10;i++){ i++; }` 实际只迭代 5 次。这不是语法错误，而是逻辑陷阱。"
+      },
+      {
+        "question": "case 标签后面可以写多条语句吗？",
+        "options": [
+          "可以，无需花括号",
+          "不可以，只能一条语句",
+          "必须用花括号包裹",
+          "最多两条语句"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "case 只是入口标签，其后的语句可以是任意多条，不需要花括号。若希望局部变量作用域隔离，则用花括号包裹。"
+      },
+      {
+        "question": "`if (scanf(\"%d\", &n) == 1)` 这种写法的含义是？",
+        "options": [
+          "只有成功读取到 1 个整数才进入分支",
+          "条件永远为真",
+          "条件永远为假",
+          "语法错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "scanf 返回成功读取并赋值的项数。检查返回值是防御式编程的基本做法，可避免处理无效输入。"
+      },
+      {
+        "question": "switch 表达式为 int 时，case 常量可以写成？",
+        "options": [
+          "整型常量或字符常量（如 1、'a'）",
+          "变量",
+          "浮点常量",
+          "含变量的表达式"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "字符常量 'a' 本质是整型常量（ASCII 码），可作为 case 标签；变量和浮点常量都不合法。"
+      },
+      {
+        "question": "在 switch 的 case 之间（无花括号）直接声明变量，会发生什么？",
+        "options": [
+          "可声明，但可能被跳过失初始化，读取其值属未定义行为",
+          "编译必然失败",
+          "正常且安全",
+          "运行时必定崩溃"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "C 允许在 case 后声明变量，但声明可能被 goto 式的跳转跳过，导致使用未初始化的变量。最佳实践是用 `case N: { ... }` 包裹声明。"
+      },
+      {
+        "question": "`for(i=0, j=10; i<j; i++, j--);` 执行结束后 i 与 j 的关系是？",
+        "options": [
+          "i >= j（此处 i==j==5）",
+          "i < j",
+          "i == j-1",
+          "无法确定"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "i 从 0 增大、j 从 10 减小。当 i=5、j=5 时 `5<5` 为假循环结束，因此结束时 i==j==5。"
+      },
+      {
+        "question": "要从多层嵌套循环中一次性跳出，推荐的做法是？",
+        "options": [
+          "用 goto 或标志变量",
+          "使用 break",
+          "使用 continue",
+          "使用 return"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "break 只能跳出一层。需要跳出多层时，可用 `goto out;`（跳转前先释放资源）或用标志变量逐层判断。"
+      }
+    ]
+  },
+  {
+    "chapterId": "04",
+    "title": "数组与字符串",
+    "questions": [
+      {
+        "question": "int a[5]; sizeof(a) 返回的值是？",
+        "options": [
+          "4",
+          "20",
+          "5",
+          "取决于int大小"
+        ],
+        "correct": 1,
+        "explanation": "sizeof(a)是整个数组大小，int占4字节，5*4=20。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a[5] = {1,2,3}; 未初始化的元素默认是？",
+        "options": [
+          "0",
+          "垃圾值",
+          "随机值",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "局部数组部分初始化，其余元素自动初始化为0。",
+        "difficulty": 2
+      },
+      {
+        "question": "char s[] = \"abc\"; sizeof(s) 和 strlen(s) 分别是？",
+        "options": [
+          "4, 3",
+          "3, 3",
+          "4, 4",
+          "3, 4"
+        ],
+        "correct": 0,
+        "explanation": "sizeof包括'\\0'为4，strlen不含'\\0'为3。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a[3][4]; 则 a[1][2] 和 *(*(a+1)+2) 是否等价？",
+        "options": [
+          "等价",
+          "不等价",
+          "语法错误",
+          "仅在特定编译器"
+        ],
+        "correct": 0,
+        "explanation": "数组名退化为指针，等价于通过指针访问。",
+        "difficulty": 3
+      },
+      {
+        "question": "char *p = \"hello\"; p[0] = 'H'; 会发生？",
+        "options": [
+          "编译错误",
+          "运行时错误（段错误）",
+          "成功修改",
+          "未定义行为"
+        ],
+        "correct": 1,
+        "explanation": "字符串常量在只读段，试图修改导致段错误。",
+        "difficulty": 3
+      },
+      {
+        "question": "int arr[] = {1,2,3,4}; printf(\"%d\", 3[arr]); 输出？",
+        "options": [
+          "3",
+          "4",
+          "编译错误",
+          "未定义"
+        ],
+        "correct": 0,
+        "explanation": "3[arr] 等价于 arr[3]，值为4。这是合法的语法。",
+        "difficulty": 2
+      },
+      {
+        "question": "char str[10]; str = \"hello\"; 是否正确？",
+        "options": [
+          "正确",
+          "错误，数组名不能赋值",
+          "错误，类型不匹配",
+          "可以但警告"
+        ],
+        "correct": 1,
+        "explanation": "数组名是地址常量，不能作为左值被赋值。",
+        "difficulty": 2
+      },
+      {
+        "question": "二维数组 int a[2][3]; 以下哪个表达式表示元素a[1][0]？",
+        "options": [
+          "*(a[1])",
+          "*(*(a+1))",
+          "a[1][0]",
+          "以上都是"
+        ],
+        "correct": 3,
+        "explanation": "三种方式都等效。",
+        "difficulty": 2
+      },
+      {
+        "question": "char s[20] = \"hello\"; strcat(s, \"world\"); 执行后s的长度是？",
+        "options": [
+          "5",
+          "10",
+          "11",
+          "9"
+        ],
+        "correct": 1,
+        "explanation": "\"hello\"长度5，\"world\"长度5，总10，不含'\\0'。",
+        "difficulty": 2
+      },
+      {
+        "question": "strcmp(\"abc\", \"abd\") 返回值是？",
+        "options": [
+          "负数",
+          "0",
+          "正数",
+          "不确定"
+        ],
+        "correct": 0,
+        "explanation": "'c'比'd'小，返回负数（具体值取决于实现）。",
+        "difficulty": 1
+      },
+      {
+        "question": "int a[5] = {0}; 是否将所有元素初始化为0？",
+        "options": [
+          "是",
+          "否，只初始化第一个",
+          "编译错误",
+          "取决于编译器"
+        ],
+        "correct": 0,
+        "explanation": "使用{0}初始化第一个元素0，其余自动0。",
+        "difficulty": 2
+      },
+      {
+        "question": "若定义 int a[5]; 则 a 和 &a 的值是否相等？",
+        "options": [
+          "相等",
+          "不相等",
+          "类型不同但值相等",
+          "编译错误"
+        ],
+        "correct": 2,
+        "explanation": "a是首元素地址，&a是整个数组地址，值相同但类型不同。",
+        "difficulty": 2
+      },
+      {
+        "question": "char *p = \"hello\"; char arr[] = \"hello\"; p 和 arr 的区别？",
+        "options": [
+          "p指向只读区，arr在栈上",
+          "两者都指向只读区",
+          "两者都可修改",
+          "没有区别"
+        ],
+        "correct": 0,
+        "explanation": "p指向字符串常量只读；arr是数组在栈上，可修改。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a[3][3] = {1,2,3,4,5,6,7,8,9}; a[1][2] 的值是？",
+        "options": [
+          "6",
+          "7",
+          "8",
+          "9"
+        ],
+        "correct": 0,
+        "explanation": "按行存储，第1行（从0开始）第2列为6。",
+        "difficulty": 2
+      },
+      {
+        "question": "sizeof 作用于数组名时，如果数组名作为函数参数传递，函数内 sizeof 结果是？",
+        "options": [
+          "数组总大小",
+          "指针大小",
+          "编译错误",
+          "不确定"
+        ],
+        "correct": 1,
+        "explanation": "数组参数退化为指针，sizeof返回指针大小（如8字节）。",
+        "difficulty": 3
+      },
+      {
+        "question": "以下哪个函数可以安全地复制字符串，防止溢出？",
+        "options": [
+          "strcpy",
+          "strncpy",
+          "strcat",
+          "sprintf"
+        ],
+        "correct": 1,
+        "explanation": "strncpy可以指定最大复制长度，但注意它不会自动添加'\\0'。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a[5]; 则 a[5] 是合法访问吗？",
+        "options": [
+          "合法，访问最后一个元素",
+          "不合法，越界",
+          "编译时错误",
+          "运行时错误"
+        ],
+        "correct": 1,
+        "explanation": "a[5]越界，下标范围0~4，访问未定义行为。",
+        "difficulty": 3
+      },
+      {
+        "question": "char s[] = {'a','b','c'}; 则 strlen(s) 的值是？",
+        "options": [
+          "3",
+          "不确定",
+          "0",
+          "编译错误"
+        ],
+        "correct": 1,
+        "explanation": "未以'\\0'结尾，strlen会持续查找'\\0'，导致未知结果。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a[][3] = {1,2,3,4,5,6}; 该数组的行数是？",
+        "options": [
+          "2",
+          "3",
+          "1",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "每行3个元素，共6个，自动推断为2行。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个表达式能正确访问二维数组 a[2][3] 的最后一个元素？",
+        "options": [
+          "a[1][2]",
+          "a[2][2]",
+          "a[1][3]",
+          "a[2][3]"
+        ],
+        "correct": 0,
+        "explanation": "行下标0~1，列0~2，最后一个为a[1][2]。",
+        "difficulty": 1
+      },
+      {
+        "question": "`int a[10]; void f(int a[]) { ... }` 在 f 内部执行 `sizeof(a)` 得到的是？",
+        "options": [
+          "指针的大小（如 4 或 8）",
+          "40",
+          "10",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "数组作为函数参数会退化为指针，函数内 sizeof(a) 是指针大小，而不是数组大小。要获取长度必须额外传入长度参数。"
+      },
+      {
+        "question": "`char *p = \"hi\"; p[0] = 'H';` 会发生什么？",
+        "options": [
+          "未定义行为（字符串字面量通常位于只读区，会段错误）",
+          "正常运行并修改成功",
+          "编译错误",
+          "只产生警告"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "字符串字面量位于只读存储区，修改它属于未定义行为，通常表现为段错误。若想可修改，应定义 `char p[] = \"hi\";`。"
+      },
+      {
+        "question": "`strcpy(dst, src)` 的主要危险在于？",
+        "options": [
+          "dst 空间不足时会发生缓冲区越界写",
+          "函数执行速度慢",
+          "无法复制字符串",
+          "必须传入指向指针的指针"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "strcpy 不检查目标空间，若 src 比 dst 长就会越界写，破坏相邻内存，可能被利用为安全漏洞。应改用 strncpy 或 snprintf。"
+      },
+      {
+        "question": "`char s[10] = \"hello\";` 那么 `sizeof(s)` 的值是？",
+        "options": [
+          "10",
+          "6",
+          "5",
+          "4"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "sizeof 返回数组实际占用的字节数，即声明的大小 10，而不是字符串长度。这是 sizeof 与 strlen 的重要区别。"
+      },
+      {
+        "question": "`int a[2][3];` 在内存中的布局是？",
+        "options": [
+          "12 个 int 连续存放（行优先）",
+          "6 个 int",
+          "各元素不连续",
+          "按列优先存储"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "二维数组按行优先连续存储：先存第 0 行的 3 个元素，再存第 1 行，共 6 个 int 连续排列。"
+      },
+      {
+        "question": "对于二维数组 `int a[3][4]`，`a[i][j]` 与下面哪个等价？",
+        "options": [
+          "`*(*(a+i)+j)` 和 `*(a[i]+j)` 都等价",
+          "仅 `*(*(a+i)+j)` 等价",
+          "仅 `*(a+i)[j]` 等价",
+          "三者都不等价"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "a[i] 等价于 *(a+i)，所以 a[i][j] = *(a[i]+j) = *(*(a+i)+j)。而 `*(a+i)[j]` 解析为 *(a+i+j) 是指向行的指针，不是元素。"
+      },
+      {
+        "question": "`int a[5]; a[5] = 100;` 会发生什么？",
+        "options": [
+          "越界写，属于未定义行为",
+          "正常写入第 5 个元素",
+          "编译错误",
+          "必定立即崩溃"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "a[5] 已超出数组范围（下标 0~4），越界写是未定义行为。C 不检查下标越界，可能悄悄破坏相邻内存，也可能崩溃。"
+      },
+      {
+        "question": "`strlen(\"abc\")` 的返回值是？",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "strlen 返回字符串长度，不包括末尾的 '\\0'，因此是 3。而 sizeof(\"abc\") 是 4。"
+      },
+      {
+        "question": "`char *p[] = {\"ab\", \"cd\"};` 中 p 是什么？",
+        "options": [
+          "指针数组（每个元素是 char*）",
+          "指向数组的指针",
+          "char 的二维数组",
+          "一个字符串"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "[] 优先级高于 *，所以 p 先构成数组，元素类型是 char*。p 是指针数组，可退化为 char**。区分它和 `char (*p)[N]`。"
+      },
+      {
+        "question": "`int *p[3]` 与 `int (*p)[3]` 分别表示？",
+        "options": [
+          "指针数组（3 个 int*）与 数组指针（指向含 3 个 int 的数组）",
+          "都是数组",
+          "都是指针",
+          "前者是函数指针"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`int *p[3]`：[] 先与 p 结合，p 是含 3 个 int* 的数组。`int (*p)[3]`：括号使 * 先与 p 结合，p 是指向含 3 个 int 的数组的指针。"
+      },
+      {
+        "question": "`char dst[5]; strncpy(dst, \"abcdef\", 5);` 之后 dst 是？",
+        "options": [
+          "没有 '\\0' 结尾，若用 printf(\"%s\",dst) 会越界读",
+          "正确的字符串 \"abcd\"",
+          "正确的字符串 \"abcde\"",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "strncpy 只复制最多 n 个字符，源串长度大于等于 n 时不会补 '\\0'。这里是经典陷阱：应复制 n-1 个字符并手动补 '\\0'。"
+      },
+      {
+        "question": "`scanf(\"%s\", s);` 当输入 \"hello world\" 时，s 得到？",
+        "options": [
+          "\"hello\"（%s 遇到空白字符就停止）",
+          "\"hello world\"",
+          "空串",
+          "读取失败"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "%s 以空白字符（空格、制表、换行）作为分隔符，因此只读入 \"hello\"。要读含空格的整行应使用 fgets。"
+      },
+      {
+        "question": "`void f(int a[])` 与 `void f(int *a)` 是否等价？",
+        "options": [
+          "完全等价",
+          "不等价",
+          "语法不同但含义相同",
+          "前者更高效"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "在函数参数列表中，`int a[]` 会退化为 `int *a`，两者完全等价。这是 C 中数组参数传递的本质。"
+      },
+      {
+        "question": "`char a[20] = \"hi\"; strcat(a, \"world\");` 之后 `strlen(a)` 是？",
+        "options": [
+          "7",
+          "5",
+          "6",
+          "越界错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "\"hi\" 长 2，\"world\" 长 5，拼接后字符串长度为 7。前提是 a 有足够空间容纳拼接结果。"
+      },
+      {
+        "question": "`sizeof(\"abc\")` 的值是？",
+        "options": [
+          "4",
+          "3",
+          "5",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "字符串字面量 \"abc\" 是含 4 个 char 的数组（包含末尾 '\\0'），因此 sizeof 为 4。"
+      },
+      {
+        "question": "`int a[] = {1, 2, 3};` 中数组 a 的大小是？",
+        "options": [
+          "由初始化列表自动推断为 3 个元素",
+          "不确定",
+          "10",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "省略数组长度时，编译器根据初始化列表的元素个数自动确定大小，这里为 3 个 int。"
+      },
+      {
+        "question": "`if (strcmp(s1, s2))` 在什么情况下为真？",
+        "options": [
+          "两字符串不相等时（返回非 0）",
+          "两字符串相等时",
+          "永远为假",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "strcmp 返回 0 表示相等，非 0 表示不等。所以 `strcmp(s1,s2)` 为真表示两串不相等。初学者常误以为返回真表示相等。"
+      },
+      {
+        "question": "`char s[3] = {'a', 'b', 'c'};` 执行 `strlen(s)` 结果是？",
+        "options": [
+          "无法预测（s 没有 '\\0' 结尾）",
+          "3",
+          "0",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "s 用单个字符初始化，不含 '\\0'。strlen 会继续向后扫描直到找到 '\\0'，结果是不可预测的，还可能越界读。"
+      },
+      {
+        "question": "`int a[3][4];` 中共有多少个元素？",
+        "options": [
+          "12",
+          "7",
+          "34",
+          "4"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "3 行 × 4 列 = 12 个 int 元素。"
+      },
+      {
+        "question": "向数组越界写入数据最可能的后果是？",
+        "options": [
+          "破坏相邻内存数据，行为未定义",
+          "一定会立即崩溃",
+          "一定被忽略",
+          "编译阶段报错"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "C 不提供越界检查，越界写是未定义行为：可能覆盖相邻变量、破坏栈、损坏堆元数据，也可能碰巧没崩，是最危险的错误之一。"
+      }
+    ]
+  },
+  {
+    "chapterId": "05",
+    "title": "函数与程序结构",
+    "questions": [
+      {
+        "question": "C语言中，函数默认的返回值类型是？",
+        "options": [
+          "int",
+          "void",
+          "double",
+          "未指定则编译错误"
+        ],
+        "correct": 0,
+        "explanation": "若未指定返回值类型，默认为int（旧标准），但现代编译器可能警告。",
+        "difficulty": 1
+      },
+      {
+        "question": "函数原型的作用是？",
+        "options": [
+          "声明函数",
+          "定义函数",
+          "分配内存",
+          "调用函数"
+        ],
+        "correct": 0,
+        "explanation": "函数原型告诉编译器函数签名，便于类型检查。",
+        "difficulty": 1
+      },
+      {
+        "question": "void func(int arr[]) 等效于 void func(int *arr) 吗？",
+        "options": [
+          "等效",
+          "不等效",
+          "语法不同，意义相同",
+          "有细微差别"
+        ],
+        "correct": 2,
+        "explanation": "数组参数退化为指针，两者等价。",
+        "difficulty": 3
+      },
+      {
+        "question": "static 修饰函数时，作用是什么？",
+        "options": [
+          "使函数成为内部函数，仅在当前文件可见",
+          "使函数成为全局函数",
+          "使函数不能被调用",
+          "使函数不能返回"
+        ],
+        "correct": 0,
+        "explanation": "static函数有内部链接，只在定义它的文件内可见。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下关于递归函数的说法，错误的是？",
+        "options": [
+          "递归必须有终止条件",
+          "递归效率通常低于循环",
+          "递归可能导致栈溢出",
+          "所有递归都能转为迭代"
+        ],
+        "correct": 3,
+        "explanation": "并非所有递归都能简单转为迭代，有些需要手动栈。",
+        "difficulty": 2
+      },
+      {
+        "question": "局部变量默认的存储类别是？",
+        "options": [
+          "auto",
+          "register",
+          "static",
+          "extern"
+        ],
+        "correct": 0,
+        "explanation": "局部变量默认为auto，但auto关键字很少写。",
+        "difficulty": 2
+      },
+      {
+        "question": "register 变量是否一定存储在寄存器中？",
+        "options": [
+          "是，必定",
+          "否，只是建议",
+          "否，编译器忽略",
+          "取决于标准"
+        ],
+        "correct": 1,
+        "explanation": "register是建议，编译器可能忽略。",
+        "difficulty": 1
+      },
+      {
+        "question": "extern 关键字用于声明全局变量时，主要作用是？",
+        "options": [
+          "分配内存",
+          "引用外部变量",
+          "定义变量",
+          "初始化变量"
+        ],
+        "correct": 1,
+        "explanation": "extern声明变量是在其他文件定义的，不分配内存。",
+        "difficulty": 2
+      },
+      {
+        "question": "函数中的静态局部变量在什么时候初始化？",
+        "options": [
+          "每次函数调用时",
+          "程序启动时",
+          "第一次调用时",
+          "编译时"
+        ],
+        "correct": 2,
+        "explanation": "静态局部变量在第一次执行到声明时初始化，且只初始化一次。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个不是函数参数传递的方式？",
+        "options": [
+          "值传递",
+          "指针传递",
+          "引用传递（C++）",
+          "地址传递"
+        ],
+        "correct": 2,
+        "explanation": "C不支持引用传递，只能值传递和指针（模拟地址传递）。",
+        "difficulty": 2
+      },
+      {
+        "question": "若函数声明为 int func(int a, int b); 调用时 func(2,3); 参数传递是？",
+        "options": [
+          "值传递",
+          "地址传递",
+          "引用传递",
+          "由编译器决定"
+        ],
+        "correct": 0,
+        "explanation": "C语言总是值传递，传递的是值的副本。",
+        "difficulty": 2
+      },
+      {
+        "question": "递归函数必须满足哪个条件才能正常终止？",
+        "options": [
+          "有返回值",
+          "有静态变量",
+          "有终止条件且每次递归逼近",
+          "无参"
+        ],
+        "correct": 2,
+        "explanation": "必须包含基线条件，且每次调用向基线靠近。",
+        "difficulty": 1
+      },
+      {
+        "question": "在C语言中，函数是否可以返回局部变量的地址？",
+        "options": [
+          "可以",
+          "不可以，会导致悬空指针",
+          "可以但需static修饰",
+          "取决于编译器"
+        ],
+        "correct": 1,
+        "explanation": "返回局部变量地址，函数返回后该地址被释放，使用未定义。",
+        "difficulty": 3
+      },
+      {
+        "question": "static全局变量和普通全局变量的区别是？",
+        "options": [
+          "作用域不同",
+          "生命周期不同",
+          "存储位置不同",
+          "没有区别"
+        ],
+        "correct": 0,
+        "explanation": "static全局变量只在当前文件可见，普通全局变量跨文件。",
+        "difficulty": 2
+      },
+      {
+        "question": "函数声明可以不写形参名吗？如 int func(int, int);",
+        "options": [
+          "可以",
+          "不可以，必须有名",
+          "可以，但无法使用",
+          "C标准禁止"
+        ],
+        "correct": 0,
+        "explanation": "函数原型可以省略形参名，只需类型。",
+        "difficulty": 2
+      },
+      {
+        "question": "关于 inline 函数，以下说法正确的是？",
+        "options": [
+          "inline函数一定会内联展开",
+          "inline是建议，编译器可能忽略",
+          "inline函数不能递归",
+          "inline函数必须在头文件中定义"
+        ],
+        "correct": 1,
+        "explanation": "inline只是建议，编译器可忽略；inline函数通常定义在头文件中。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个关键字用于定义可变参数函数？",
+        "options": [
+          "va_list",
+          "va_start",
+          "va_arg",
+          "以上都是"
+        ],
+        "correct": 3,
+        "explanation": "stdarg.h中定义这些宏用于处理可变参数。",
+        "difficulty": 3
+      },
+      {
+        "question": "函数内定义的静态变量，其作用域是？",
+        "options": [
+          "整个文件",
+          "整个函数",
+          "整个程序",
+          "代码块"
+        ],
+        "correct": 1,
+        "explanation": "静态局部变量作用域局限在函数内部，但生命周期贯穿程序。",
+        "difficulty": 1
+      },
+      {
+        "question": "C语言中，函数不能返回数组，但可以返回指向数组的指针，这种说法？",
+        "options": [
+          "正确",
+          "错误，可以返回数组",
+          "错误，只能返回指针",
+          "部分正确"
+        ],
+        "correct": 0,
+        "explanation": "函数不能直接返回数组，但可返回指针（需注意生命周期）。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下关于函数指针的声明，哪个是正确的？",
+        "options": [
+          "int (*p)(int, int);",
+          "int *p(int, int);",
+          "int (*p)(int, int) = &func;",
+          "A和C都正确"
+        ],
+        "correct": 3,
+        "explanation": "A声明函数指针，C初始化，都正确。B是返回指针的函数。",
+        "difficulty": 2
+      },
+      {
+        "question": "函数内的 static 局部变量，其初始化与生命周期的特点是？",
+        "options": [
+          "只初始化一次，生命周期延续到程序结束",
+          "每次调用都会重新初始化",
+          "不进行初始化",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "static 局部变量存储在静态区，只在第一次执行到声明处初始化一次，之后每次调用保留上一次的值，直到程序结束才销毁。"
+      },
+      {
+        "question": "`f(i++, i++);` 两个实参的求值顺序是？",
+        "options": [
+          "未指定/未定义，不应写出这种代码",
+          "严格从左到右",
+          "严格从右到左",
+          "按参数个数决定"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "函数实参的求值顺序是未指定的，且这里 i 在相邻的序列点之间被修改多次，属于未定义行为。结果不可依赖。"
+      },
+      {
+        "question": "要用一个函数交换两个 int 变量的值，正确做法是？",
+        "options": [
+          "传指针：`void swap(int *a, int *b)` 并调用 `swap(&x, &y)`",
+          "直接传值",
+          "用 return 一次返回两个值",
+          "使用全局变量"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "C 是值传递，直接传 int 只是复制副本，改形参不影响实参。必须传地址，通过指针解引用修改实参。"
+      },
+      {
+        "question": "函数返回局部数组名（`return arr;`），调用方使用返回的指针？",
+        "options": [
+          "是悬空指针，未定义行为",
+          "正常运行",
+          "编译器自动拷贝数组",
+          "只产生警告但安全"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "局部数组在函数返回后生命周期结束，其内存失效。返回它的地址就成了悬空指针。应改为 static 数组或动态分配。"
+      },
+      {
+        "question": "递归求 n! 比循环版本慢，主要原因是？",
+        "options": [
+          "每次递归调用都有函数调用与栈帧建立的开销",
+          "数学计算结果不同",
+          "代码更长",
+          "无法被编译器优化"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "递归每层调用都要建立栈帧、保存现场、传递参数，开销比循环大。深度过深还会栈溢出。"
+      },
+      {
+        "question": "`extern int g;` 写在某个 .c 文件（非定义处）的作用是？",
+        "options": [
+          "声明 g 在别处定义，本文件可以使用它",
+          "在这里定义 g",
+          "初始化 g 为 0",
+          "复制一份 g"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "extern 只是声明：告诉编译器 g 在其他编译单元定义，不分配存储。真正的定义（如 `int g = 0;`）只能出现一次。"
+      },
+      {
+        "question": "函数原型 `int f(int);` 的作用是？",
+        "options": [
+          "告诉编译器 f 的返回值和参数类型，便于编译期类型检查",
+          "定义函数 f",
+          "调用函数 f",
+          "为 f 分配存储"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "函数原型（声明）向编译器提供函数的签名信息，使调用处能做参数个数和类型检查，避免隐式声明。"
+      },
+      {
+        "question": "可变参数函数中写 `va_arg(ap, char)` 会？",
+        "options": [
+          "出错：char 会被提升为 int，应使用 int 读取",
+          "正常工作",
+          "返回 0",
+          "产生编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "变参中 char、short 会默认整型提升为 int，float 提升为 double。va_arg 必须使用提升后的类型，否则行为未定义。"
+      },
+      {
+        "question": "用 static 修饰函数后，该函数？",
+        "options": [
+          "仅在其所在的源文件内可见（内部链接）",
+          "在整个程序可见",
+          "不能被调用",
+          "会自动内联"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "static 函数具有内部链接，只在定义它的编译单元内可见，可避免与其他文件同名函数冲突，也防止被外部调用。"
+      },
+      {
+        "question": "`void f(const char *s)`，调用时传入字符串字面量 `f(\"hello\");` 是否合法？",
+        "options": [
+          "合法，字符串字面量可传给 const char*",
+          "不合法",
+          "需要强转",
+          "会有警告但禁止"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "字符串字面量的类型是 char 数组（可转换为 const char*），传给 const char* 参数完全合法，也推荐这样做以表达『不修改』的意图。"
+      },
+      {
+        "question": "递归调用过深会导致什么？",
+        "options": [
+          "栈溢出",
+          "堆溢出",
+          "死循环",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "每层递归占用一块栈帧，深度过大会耗尽栈空间导致栈溢出（Stack Overflow），程序崩溃。"
+      },
+      {
+        "question": "把函数指针作为参数传递（回调机制）的典型例子是？",
+        "options": [
+          "qsort 的比较函数参数",
+          "减少代码体积",
+          "循环优化",
+          "动态内存分配"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "qsort 接受一个比较函数指针作为回调，由库调用用户的比较逻辑。这是函数指针最常见的用途之一。"
+      },
+      {
+        "question": "main 函数返回非 0 值表示？",
+        "options": [
+          "程序以异常/失败状态结束",
+          "程序正常结束",
+          "无任何意义",
+          "编译器会报错"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "main 的返回值传递给操作系统，0 表示成功，非 0 表示失败或错误码，shell 可用 `echo $?` 查看。"
+      },
+      {
+        "question": "局部变量与全局变量同名时，在函数内部访问该名字会？",
+        "options": [
+          "使用局部变量（局部遮蔽全局）",
+          "使用全局变量",
+          "编译错误",
+          "两者合并"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "内层作用域的变量会遮蔽外层同名变量。函数内访问的是局部变量；要访问全局变量需用 `::`（C++）或改名。"
+      },
+      {
+        "question": "`int f(int a[10])` 中的形参 a 实际上是？",
+        "options": [
+          "指针 int*，数组长度 10 会被忽略",
+          "int[10] 数组",
+          "int**",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "数组参数会退化为指针，`int a[10]` 与 `int a[]`、`int *a` 完全等价，方括号里的 10 只是文档性说明，被编译器忽略。"
+      },
+      {
+        "question": "未显式初始化的全局变量，其默认值是？",
+        "options": [
+          "0",
+          "随机值",
+          "垃圾值",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "全局变量（静态存储期）未初始化时自动清零。只有局部（自动）变量才是不确定的随机值。"
+      },
+      {
+        "question": "函数内 static 局部变量，把它的地址返回给调用方，是否安全？",
+        "options": [
+          "安全（static 变量生命周期到程序结束）",
+          "是悬空指针",
+          "编译错误",
+          "运行必定崩溃"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "static 局部变量存活于整个程序生命周期，返回其地址是安全的，不会悬空。但注意所有调用共享同一份数据。"
+      },
+      {
+        "question": "值传递中，函数内修改形参会影响实参吗？",
+        "options": [
+          "不会，形参是实参的副本",
+          "会影响",
+          "取决于参数类型",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "C 函数参数一律值传递，形参是实参的拷贝，修改形参不影响实参。要修改实参必须传指针。"
+      },
+      {
+        "question": "`int f(void){ static int n = 0; n++; return n; }` 连续调用 3 次，返回值依次是？",
+        "options": [
+          "1, 2, 3",
+          "0, 1, 2",
+          "1, 1, 1",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "static 局部变量只在第一次调用时初始化为 0，之后保留上次的值并递增，因此三次调用返回 1、2、3。"
+      },
+      {
+        "question": "函数声明中省略形参名，如 `int f(int, int);` 是否合法？",
+        "options": [
+          "合法，声明只需要类型",
+          "不合法",
+          "合法但必须给出名字",
+          "需要编译器选项支持"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "函数原型（声明）只需类型，形参名可省略。只有在定义函数时才需要给出形参名。"
+      }
+    ]
+  },
+  {
+    "chapterId": "06",
+    "title": "指针",
+    "questions": [
+      {
+        "question": "int *p = NULL; *p = 10; 会导致？",
+        "options": [
+          "段错误",
+          "输出10",
+          "p指向10",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "对空指针解引用是未定义行为，通常段错误。",
+        "difficulty": 3
+      },
+      {
+        "question": "int a = 5; int *p = &a; int **pp = &p; 则 **pp 的值是？",
+        "options": [
+          "5",
+          "a的地址",
+          "p的地址",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "pp指向p，p指向a，*pp得到p，**pp得到a的值5。",
+        "difficulty": 2
+      },
+      {
+        "question": "指针的大小是固定的吗？",
+        "options": [
+          "是，固定为4字节",
+          "是，固定为8字节",
+          "取决于系统架构",
+          "取决于指针类型"
+        ],
+        "correct": 2,
+        "explanation": "32位系统指针4字节，64位系统8字节。",
+        "difficulty": 2
+      },
+      {
+        "question": "int arr[10]; int *p = arr; p++; 此时p指向？",
+        "options": [
+          "arr[1]",
+          "arr[0]",
+          "arr[-1]",
+          "未定义"
+        ],
+        "correct": 0,
+        "explanation": "p自增指向下一个元素。",
+        "difficulty": 2
+      },
+      {
+        "question": "char *s = \"hello\"; sizeof(s) 和 sizeof(*s) 分别是？",
+        "options": [
+          "8, 1",
+          "6, 1",
+          "4, 1",
+          "取决于平台，但第二个为1"
+        ],
+        "correct": 3,
+        "explanation": "sizeof(s)是指针大小（8或4），sizeof(*s)是char大小1。",
+        "difficulty": 2
+      },
+      {
+        "question": "void *p; 这种指针可以参与算术运算吗？",
+        "options": [
+          "可以",
+          "不可以，因为类型不完整",
+          "可以，但按1字节步长",
+          "取决于编译器"
+        ],
+        "correct": 1,
+        "explanation": "void指针不能直接算术，需转换为其他类型。",
+        "difficulty": 2
+      },
+      {
+        "question": "int *p = (int*)malloc(sizeof(int)); 如果malloc失败，p的值是？",
+        "options": [
+          "NULL",
+          "0",
+          "随机值",
+          "未定义"
+        ],
+        "correct": 0,
+        "explanation": "malloc失败返回NULL。",
+        "difficulty": 2
+      },
+      {
+        "question": "const int *p 和 int const *p 是否等价？",
+        "options": [
+          "等价",
+          "不等价",
+          "前者指向常量，后者常量指针",
+          "语法错误"
+        ],
+        "correct": 0,
+        "explanation": "两者都表示指向const int的指针，即指针所指对象不可修改。",
+        "difficulty": 3
+      },
+      {
+        "question": "int * const p; 表示什么？",
+        "options": [
+          "p是常量指针，不能改变指向",
+          "p指向常量",
+          "p和指向都不可变",
+          "p是变量"
+        ],
+        "correct": 0,
+        "explanation": "const在*后表示指针本身是常量，不能修改p的指向。",
+        "difficulty": 3
+      },
+      {
+        "question": "char *p = malloc(10); free(p); free(p); 会发生？",
+        "options": [
+          "第二次free报错或未定义",
+          "正常",
+          "内存泄漏",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "释放已释放的内存是未定义行为，通常崩溃。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a[5]; int *p = a + 5; 对p进行*p操作？",
+        "options": [
+          "越界访问，未定义",
+          "访问最后一个元素",
+          "编译错误",
+          "访问a[5]"
+        ],
+        "correct": 0,
+        "explanation": "a+5指向数组最后一个元素之后，解引用未定义。",
+        "difficulty": 3
+      },
+      {
+        "question": "以下哪个表示指针数组？",
+        "options": [
+          "int *p[5];",
+          "int (*p)[5];",
+          "int *p();",
+          "int (*p)();"
+        ],
+        "correct": 0,
+        "explanation": "int *p[5]是数组，元素是int*；int (*p)[5]是数组指针。",
+        "difficulty": 2
+      },
+      {
+        "question": "void func(int **p) { *p = malloc(10); } 调用时传入什么？",
+        "options": [
+          "传入指针的地址",
+          "传入指针",
+          "传入数组",
+          "传入值"
+        ],
+        "correct": 0,
+        "explanation": "需要在函数内修改指针，所以传指针的地址。",
+        "difficulty": 2
+      },
+      {
+        "question": "指针相减的结果类型是什么？",
+        "options": [
+          "ptrdiff_t",
+          "int",
+          "long",
+          "size_t"
+        ],
+        "correct": 0,
+        "explanation": "两个指针相减得到ptrdiff_t（有符号整型）。",
+        "difficulty": 2
+      },
+      {
+        "question": "int a = 10; int *p = &a; 那么 &p 和 &a 是否相等？",
+        "options": [
+          "相等",
+          "不相等",
+          "可能相等",
+          "无意义"
+        ],
+        "correct": 1,
+        "explanation": "&p是p的地址，&a是a的地址，不同。",
+        "difficulty": 2
+      },
+      {
+        "question": "若 char *p = \"abc\"; char *q = p; q[1] = 'd'; 会怎样？",
+        "options": [
+          "修改成功",
+          "段错误",
+          "编译错误",
+          "未定义行为"
+        ],
+        "correct": 1,
+        "explanation": "字符串常量只读，试图修改导致段错误。",
+        "difficulty": 3
+      },
+      {
+        "question": "以下哪个是野指针？",
+        "options": [
+          "未初始化的指针",
+          "NULL指针",
+          "指向已释放内存的指针",
+          "A和C都是"
+        ],
+        "correct": 3,
+        "explanation": "野指针指指向无效地址的指针，包括未初始化和释放后。",
+        "difficulty": 2
+      },
+      {
+        "question": "int arr[2][3]; int (*p)[3] = arr; 则 p+1 指向？",
+        "options": [
+          "第二行",
+          "第三行",
+          "第二列",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "p是行指针，p+1指向下一行（第二行）。",
+        "difficulty": 2
+      },
+      {
+        "question": "void *p = malloc(100); char *c = (char*)p; c += 10; 这种操作是否合法？",
+        "options": [
+          "合法",
+          "不合法，void*不能运算",
+          "合法但需注意对齐",
+          "编译错误"
+        ],
+        "correct": 2,
+        "explanation": "转换为char*后可运算，但需考虑内存对齐（通常没问题）。",
+        "difficulty": 2
+      },
+      {
+        "question": "函数指针 int (*func)(int) 和 普通函数 int func(int) 可以相互赋值吗？",
+        "options": [
+          "可以，函数名即地址",
+          "不可以",
+          "可以但需要取地址符",
+          "取决于编译器"
+        ],
+        "correct": 0,
+        "explanation": "函数名可隐式转为函数指针，func和&func等效。",
+        "difficulty": 3
+      },
+      {
+        "question": "`int *p, q;` 中 q 的类型是？",
+        "options": [
+          "int（不是指针）",
+          "int*",
+          "int**",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`*` 只作用于紧邻的标识符 p，因此 p 是 int*，而 q 是普通 int。若想声明两个指针应写 `int *p, *q;`。"
+      },
+      {
+        "question": "对于指针 p，`p[i]` 等价于？",
+        "options": [
+          "`*(p + i)`",
+          "`&p[i]`",
+          "`p + i`",
+          "`*p + i`"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "下标运算的本质就是指针解引用：p[i] 严格等价于 *(p+i)。这也是数组下标和指针运算统一的根本。"
+      },
+      {
+        "question": "`int a[5];` 表达式 `&a` 的类型是？",
+        "options": [
+          "`int (*)[5]`，指向含 5 个 int 的数组的指针",
+          "`int*`",
+          "`int[5]`",
+          "`int**`"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`a` 退化为 int*（首元素地址），而 `&a` 是整个数组的地址，类型为 int(*)[5]。两者数值相同但类型不同，`&a + 1` 会跳过整个数组。"
+      },
+      {
+        "question": "解引用一个未初始化的指针（`*p = 10;`）？",
+        "options": [
+          "未定义行为（野指针），通常崩溃",
+          "安全返回 0",
+          "编译错误",
+          "自动指向合法内存"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "未初始化指针值是随机的，指向的地址不可知。对它解引用是未定义行为，是段错误的常见来源。"
+      },
+      {
+        "question": "对指针而言，下列哪种运算是合法的？",
+        "options": [
+          "加/减整数、两个指针相减、指针比较",
+          "指针相乘",
+          "指针与浮点数混合运算",
+          "指针取模"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "指针只支持与整数的加减（移动元素）、同类指针相减（得到元素个数）、指针比较等，不支持乘除等算术。"
+      },
+      {
+        "question": "`void*` 指针在使用前需要？",
+        "options": [
+          "先强转为具体类型指针再进行解引用或算术",
+          "直接解引用",
+          "不能用于任何场合",
+          "先赋值给 int"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "void* 是通用指针，不能直接解引用也不能做算术运算（缺少目标类型）。使用前需强转为具体类型，如 `(int*)p`。"
+      },
+      {
+        "question": "`int **p` 最常见的用途是？",
+        "options": [
+          "在函数中修改调用者的指针变量",
+          "表示二维数组",
+          "函数指针",
+          "数组指针"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "二级指针用于『指针的指针』，典型场景是函数内需要修改传入的指针本身（如 `void alloc(int **p){ *p = malloc(...); }`）。"
+      },
+      {
+        "question": "已知 `int (*fp)(int);` 是函数指针，调用它 `fp(5)` 与 `(*fp)(5)`？",
+        "options": [
+          "两者等价",
+          "只有 fp(5) 合法",
+          "只有 (*fp)(5) 合法",
+          "两者都错"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "C 标准允许函数指针直接当函数调用，`fp(5)` 与 `(*fp)(5)` 完全等价。两种写法都合法。"
+      },
+      {
+        "question": "`void f(int *p){ *p = 10; }` 要在调用处修改 int 变量 x，应该写成？",
+        "options": [
+          "`f(&x)`",
+          "`f(x)`",
+          "`f(*x)`",
+          "`f(10)`"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "函数内通过解引用 p 修改的是 p 指向的内存，因此调用时必须传入 x 的地址 `&x`。"
+      },
+      {
+        "question": "`int *p = malloc(4); free(p); *p = 1;` 会发生什么？",
+        "options": [
+          "悬空指针解引用，未定义行为",
+          "正常执行",
+          "编译错误",
+          "内存泄漏"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "free 后 p 成为悬空指针（指向已释放的内存）。再解引用是未定义行为。最佳实践是 free 后置 NULL：`free(p); p = NULL;`。"
+      },
+      {
+        "question": "main 函数的 argv 参数类型是？",
+        "options": [
+          "`char **`（指向参数字符串数组的指针）",
+          "`char*`",
+          "`int**`",
+          "`char[10][10]`"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "argv 等价于 `char *argv[]`，即一个 char* 数组，数组名退化为 char**。argv[0] 通常是程序名。"
+      },
+      {
+        "question": "`int *p = NULL;` 这里的 NULL 通常是？",
+        "options": [
+          "空指针常量（标准上 `(void*)0` 或 0）",
+          "地址 0 上的一块合法内存",
+          "字符串",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "NULL 是空指针常量，通常定义为 `((void*)0)`。判断指针是否为空用 `p == NULL`，但解引用空指针是未定义行为。"
+      },
+      {
+        "question": "`int (*p)[4]; p = a;` 这里的 a 应当是什么？",
+        "options": [
+          "行数为若干、列数为 4 的二维数组名，如 `int a[3][4]`",
+          "一维数组 `int a[4]`",
+          "`int* a`",
+          "`int** a`"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "p 是指向含 4 个 int 的数组的指针（数组指针/行指针）。`p = a` 要求 a 的每一行都是含 4 个 int 的数组，即 `int a[N][4]`。"
+      },
+      {
+        "question": "同一数组内 `p2 - p1` 的结果类型和含义是？",
+        "options": [
+          "ptrdiff_t，表示两指针间相隔的元素个数",
+          "表示字节数差",
+          "是地址差值",
+          "无意义"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "两个指向同一数组元素的指针相减，结果是它们之间元素的个数，类型为 ptrdiff_t（有符号）。"
+      },
+      {
+        "question": "多级指针 `int ***p` 表示？",
+        "options": [
+          "指向 int** 的指针，即指针的指针的指针",
+          "三维数组",
+          "函数指针",
+          "非法声明"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "`int ***p`：p 是指向 int** 的指针。解引用三次才能得到 int 值。多级指针常用于指针数组参数传递。"
+      },
+      {
+        "question": "`int (*fp[3])(int);` 声明的是什么？",
+        "options": [
+          "含 3 个函数指针的数组",
+          "指向数组的指针",
+          "返回指针的函数",
+          "普通 int 数组"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`fp[3]` 先构成数组，元素类型是 `int (*)(int)`，即指向『接收 int 返回 int 的函数』的指针。这是函数指针数组，常用于分派表。"
+      },
+      {
+        "question": "`for (p = s; *p; p++);` 遍历字符串后，循环结束时 p 指向？",
+        "options": [
+          "字符串末尾的 '\\0' 处",
+          "字符串开头",
+          "字符串外越界",
+          "未定义位置"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "循环在 *p == '\\0'（值为 0）时退出，此时 p 正好指向字符串末尾的 '\\0' 字符。"
+      },
+      {
+        "question": "下面哪个指针属于野指针？",
+        "options": [
+          "释放后未置 NULL 的指针",
+          "值为 NULL 的指针",
+          "指向全局变量的指针",
+          "指向函数内静态变量的指针"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "野指针指向未知/无效的内存。free 后未置 NULL 的指针、未初始化的指针都是野指针。NULL 指针与它们不同。"
+      },
+      {
+        "question": "`char *p = \"hi\"; p = \"hello\";` 是否合法？",
+        "options": [
+          "合法，p 本身可以改变指向",
+          "不合法",
+          "会段错误",
+          "会造成内存泄漏"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "字符串字面量只读，但指针 p 本身是变量，可以重新指向其他字符串字面量。要分清『p 指向的内容』与『p 本身』。"
+      },
+      {
+        "question": "要把整数表示的地址转换为指针，最可移植的做法是用什么类型？",
+        "options": [
+          "`intptr_t` / `uintptr_t`",
+          "int",
+          "long",
+          "unsigned"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`intptr_t`/`uintptr_t`（定义于 <stdint.h>）是保证能容纳任何指针的整数类型，可安全地在整数与指针间转换。用 int 或 long 都不保证宽度足够。"
+      }
+    ]
+  },
+  {
+    "chapterId": "07",
+    "title": "内存管理",
+    "questions": [
+      {
+        "question": "以下哪个内存区域用于存储全局变量？",
+        "options": [
+          "栈",
+          "堆",
+          "数据段",
+          "代码段"
+        ],
+        "correct": 2,
+        "explanation": "全局变量存储在数据段（静态区）。",
+        "difficulty": 1
+      },
+      {
+        "question": "malloc(0) 的返回值是？",
+        "options": [
+          "NULL",
+          "非NULL指针",
+          "未定义",
+          "取决于实现"
+        ],
+        "correct": 3,
+        "explanation": "标准说行为是实现定义的，可能返回NULL或可被free的指针。",
+        "difficulty": 2
+      },
+      {
+        "question": "calloc(10, sizeof(int)) 和 malloc(10*sizeof(int)) 的区别？",
+        "options": [
+          "calloc初始化0，malloc不初始化",
+          "calloc分配二维数组",
+          "两者一样",
+          "calloc更高效"
+        ],
+        "correct": 0,
+        "explanation": "calloc将分配的内存初始化为0。",
+        "difficulty": 2
+      },
+      {
+        "question": "realloc 失败时，原来的指针是否会被释放？",
+        "options": [
+          "会释放",
+          "不会释放",
+          "释放但置NULL",
+          "未定义"
+        ],
+        "correct": 1,
+        "explanation": "realloc失败返回NULL，原指针仍有效，需手动释放。",
+        "difficulty": 3
+      },
+      {
+        "question": "使用 free 释放内存后，指针仍指向原地址，这种指针称为？",
+        "options": [
+          "野指针",
+          "空指针",
+          "悬空指针",
+          "无意义"
+        ],
+        "correct": 2,
+        "explanation": "释放后指针指向已释放内存，称为悬空指针。",
+        "difficulty": 3
+      },
+      {
+        "question": "内存泄漏是指什么？",
+        "options": [
+          "程序耗尽内存",
+          "申请内存未释放",
+          "内存越界",
+          "内存碎片"
+        ],
+        "correct": 1,
+        "explanation": "内存泄漏是指已分配内存无法被释放，导致可用内存减少。",
+        "difficulty": 2
+      },
+      {
+        "question": "栈溢出通常是由于什么引起的？",
+        "options": [
+          "分配太大局部变量",
+          "递归太深",
+          "无限循环",
+          "A和B都可能"
+        ],
+        "correct": 3,
+        "explanation": "栈溢出可能由大局部变量或过深递归引起。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个函数将内存块初始化为指定值？",
+        "options": [
+          "memset",
+          "memcpy",
+          "memmove",
+          "strcpy"
+        ],
+        "correct": 0,
+        "explanation": "memset用于设置内存为特定字节值。",
+        "difficulty": 2
+      },
+      {
+        "question": "在堆上分配的内存，其生命周期是？",
+        "options": [
+          "从分配到释放",
+          "整个程序周期",
+          "函数调用期间",
+          "由变量作用域决定"
+        ],
+        "correct": 0,
+        "explanation": "堆内存的生命周期由程序员控制，直到free。",
+        "difficulty": 1
+      },
+      {
+        "question": "int *p = alloca(10); 这种分配方式有什么特点？",
+        "options": [
+          "从栈分配，自动释放",
+          "从堆分配",
+          "全局分配",
+          "不标准"
+        ],
+        "correct": 0,
+        "explanation": "alloca在栈上分配，函数返回时自动释放，但非标准（有风险）。",
+        "difficulty": 2
+      },
+      {
+        "question": "如果忘记释放动态内存，程序结束时会自动释放吗？",
+        "options": [
+          "会，操作系统回收",
+          "不会，永久泄漏",
+          "取决于编译器",
+          "会但只能部分"
+        ],
+        "correct": 0,
+        "explanation": "程序结束，操作系统会回收所有资源，但长时间运行程序应主动释放。",
+        "difficulty": 1
+      },
+      {
+        "question": "内存对齐的作用是？",
+        "options": [
+          "提高访问速度",
+          "节省空间",
+          "防止段错误",
+          "便于寻址"
+        ],
+        "correct": 0,
+        "explanation": "对齐使数据在自然边界上，提高CPU访问效率。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个不是动态内存分配函数？",
+        "options": [
+          "malloc",
+          "calloc",
+          "realloc",
+          "alloca"
+        ],
+        "correct": 3,
+        "explanation": "alloca不是标准库函数，且分配在栈上。",
+        "difficulty": 2
+      },
+      {
+        "question": "strdup 函数内部使用了什么分配方式？",
+        "options": [
+          "malloc",
+          "calloc",
+          "realloc",
+          "栈分配"
+        ],
+        "correct": 0,
+        "explanation": "strdup使用malloc复制字符串，需要free。",
+        "difficulty": 2
+      },
+      {
+        "question": "free(NULL) 是否安全？",
+        "options": [
+          "安全，什么也不做",
+          "不安全，导致段错误",
+          "未定义",
+          "取决于实现"
+        ],
+        "correct": 0,
+        "explanation": "free(NULL)是安全的，标准规定无操作。",
+        "difficulty": 2
+      },
+      {
+        "question": "内存碎片是如何产生的？",
+        "options": [
+          "频繁申请释放小块内存",
+          "内存泄漏",
+          "栈溢出",
+          "对齐问题"
+        ],
+        "correct": 0,
+        "explanation": "频繁分配和释放不同大小内存会导致碎片。",
+        "difficulty": 2
+      },
+      {
+        "question": "在C语言中，静态局部变量存储在哪个区域？",
+        "options": [
+          "栈",
+          "堆",
+          "数据段",
+          "代码段"
+        ],
+        "correct": 2,
+        "explanation": "静态局部变量也存储在数据段（静态存储区）。",
+        "difficulty": 1
+      },
+      {
+        "question": "如果realloc的第一个参数为NULL，其行为等同于？",
+        "options": [
+          "malloc",
+          "calloc",
+          "free",
+          "未定义"
+        ],
+        "correct": 0,
+        "explanation": "realloc(NULL, size) 等同于 malloc(size)。",
+        "difficulty": 2
+      },
+      {
+        "question": "内存管理函数定义在哪个头文件中？",
+        "options": [
+          "<stdlib.h>",
+          "<stdio.h>",
+          "<string.h>",
+          "<memory.h>"
+        ],
+        "correct": 0,
+        "explanation": "malloc、free等在stdlib.h中声明。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个操作可能导致野指针？",
+        "options": [
+          "释放后未置NULL",
+          "返回局部变量地址",
+          "未初始化指针",
+          "以上都是"
+        ],
+        "correct": 3,
+        "explanation": "所有情况都可能导致野指针。",
+        "difficulty": 2
+      },
+      {
+        "question": "malloc 返回 NULL 通常表示？",
+        "options": [
+          "内存分配失败",
+          "成功分配了 0 字节",
+          "一切正常",
+          "返回值被截断"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "malloc 失败时返回 NULL。严谨的程序应在使用前检查返回值是否为 NULL，避免解引用空指针。"
+      },
+      {
+        "question": "`free(p);` 之后立即 `p = NULL;` 的目的是？",
+        "options": [
+          "避免 p 成为悬空指针，防止二次 free 出错",
+          "立即归还内存给系统",
+          "提高程序速度",
+          "这是编译器强制要求的"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "free 后 p 仍保存原地址，再次 free 或解引用会出错。置 NULL 后，再次 free(NULL) 是安全的（空操作），也便于判断。"
+      },
+      {
+        "question": "`int *p = malloc(10); int *q = realloc(p, 100);` 若 realloc 失败返回 NULL，此时？",
+        "options": [
+          "p 仍然有效，需要手动 free(p)",
+          "p 已被释放",
+          "q 指向原来的 p",
+          "必须 free(q)"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "realloc 失败时返回 NULL，且原内存块保持不变、仍有效。若直接 `p = realloc(...)` 而不检查返回值，会丢失原指针造成泄漏。"
+      },
+      {
+        "question": "`calloc(n, size)` 与 `malloc(n*size)` 的区别是？",
+        "options": [
+          "calloc 会把分配的内存初始化为 0",
+          "malloc 会清零",
+          "calloc 不分配内存",
+          "两者完全相同"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "calloc 分配并清零，适合数组。malloc 不初始化，内容不确定。另外 calloc 内部会做溢出检查（n*size 相乘溢出）。"
+      },
+      {
+        "question": "检测内存泄漏的常用工具是？",
+        "options": [
+          "valgrind",
+          "gdb",
+          "gcc",
+          "make"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "valgrind 的 memcheck 工具能报告泄漏、越界、未初始化读等内存问题。gdb 是调试器，gcc 是编译器。"
+      },
+      {
+        "question": "与堆上分配相比，栈上分配内存的特点是？",
+        "options": [
+          "速度快（不需管理、自动释放）",
+          "速度慢",
+          "速度相同",
+          "无法比较"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "栈分配只需移动栈指针，且函数返回自动回收，无碎片问题，比堆分配快得多。堆分配需要查找空闲块、可能涉及系统调用。"
+      },
+      {
+        "question": "malloc 分配的内存起始地址通常？",
+        "options": [
+          "对齐到最大的基本对齐要求（常为 8 或 16 字节）",
+          "任意地址",
+          "总是 1 字节对齐",
+          "随机且不保证可用"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "标准保证 malloc 返回的指针满足所有基本类型的对齐要求，因此可以直接强转为任何类型指针使用。"
+      },
+      {
+        "question": "对同一个指针连续调用两次 free？",
+        "options": [
+          "未定义行为（double free），通常崩溃或破坏堆",
+          "完全安全",
+          "被忽略",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "重复释放同一块内存是未定义行为，是常见崩溃原因。应遵循『free 后置 NULL』的习惯来避免。"
+      },
+      {
+        "question": "悬空指针（dangling pointer）是指？",
+        "options": [
+          "指向已释放内存的指针",
+          "从未初始化的指针",
+          "值为 NULL 的指针",
+          "指向字符串常量的指针"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "悬空指针是『曾指向合法对象，但对象已被释放』的指针。与野指针（未初始化）不同，悬空指针曾有效。"
+      },
+      {
+        "question": "在 C 语言中 `int *p = malloc(4);` 是否需要把 void* 强转为 int*？",
+        "options": [
+          "不需要，void* 可自动转换为任意对象指针",
+          "必须强转否则编译失败",
+          "只有 C++ 中不需要",
+          "必须强转且用 (int*)malloc"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "C 中 void* 可以隐式转换为任何对象指针类型，所以无需强转。这是 C 与 C++ 的重要区别（C++ 必须强转）。"
+      },
+      {
+        "question": "在函数内定义一个大数组 `int a[1000000];`，最可能发生？",
+        "options": [
+          "栈溢出（默认栈通常只有几 MB）",
+          "分配在堆上",
+          "正常运行",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "局部大数组在栈上分配，栈空间有限（常见默认 1~8MB），百万级 int 会耗尽栈导致溢出。应改用 malloc 或 static。"
+      },
+      {
+        "question": "`int *p = malloc(n);` 想分配 n 个 int 时写错成 `malloc(n)`（漏写 `* sizeof(int)`），后果是？",
+        "options": [
+          "分配的字节不足，后续写入越界",
+          "一切正常",
+          "返回值溢出",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "malloc 的参数是字节数。写 `malloc(n)` 只分配 n 字节，而 n 个 int 需要 n*sizeof(int) 字节，会缓冲区越界。"
+      },
+      {
+        "question": "长时间运行的程序反复 malloc 而不 free，最终影响是？",
+        "options": [
+          "可用内存逐渐减少，最终可能分配失败",
+          "立即崩溃",
+          "无任何影响",
+          "程序变快"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "内存泄漏导致进程占用的内存只增不减，长期运行（如服务器、嵌入式）会最终耗尽内存。"
+      },
+      {
+        "question": "对一块并非 malloc 获得的内存（如栈变量地址）调用 free()？",
+        "options": [
+          "未定义行为",
+          "安全",
+          "被忽略",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "free 只能释放 malloc/calloc/realloc 等返回的堆内存。释放栈变量、静态区或非堆指针是未定义行为，通常崩溃。"
+      },
+      {
+        "question": "realloc 可能移动内存块，移动之后原来的指针 p？",
+        "options": [
+          "失效，不能再使用，也不能 free",
+          "仍然有效",
+          "会自动更新为新地址",
+          "必须手动 free"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "realloc 可能把内存搬到新位置并释放旧块。成功后旧指针 p 已失效，必须使用返回值，且不要再 free(p)。"
+      },
+      {
+        "question": "动态创建 n 个 int 的数组，正确写法是？",
+        "options": [
+          "`int *p = malloc(n * sizeof(int));`",
+          "`int *p = malloc(n);`",
+          "`int *p = calloc(n);`",
+          "`int *p = malloc(sizeof(n));`"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "malloc 需要总字节数，即元素个数 × 每个元素字节数。应写 `n * sizeof(int)` 而不是 n。"
+      },
+      {
+        "question": "未包含 <stdlib.h> 就直接调用 malloc（在 C89/C90 环境），会发生？",
+        "options": [
+          "隐式声明返回 int，64 位下指针被截断，风险极大",
+          "正常工作",
+          "编译错误",
+          "链接错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "C89 允许隐式声明：编译器假定 malloc 返回 int。在 64 位平台指针 8 字节而 int 4 字节，返回值被截断，导致未定义行为。"
+      },
+      {
+        "question": "频繁申请和释放大小不一的小内存块，会导致？",
+        "options": [
+          "内存碎片（free 块分散，大块分配困难）",
+          "栈溢出",
+          "死循环",
+          "数据错乱"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "反复分配释放不同大小的块会使堆中留下许多小空闲块，导致外部碎片，后续大块分配可能失败。"
+      },
+      {
+        "question": "`free(p); p = NULL;` 这样双重保护的价值在于？",
+        "options": [
+          "避免对同一地址二次 free 导致的未定义行为",
+          "能立即释放物理内存",
+          "提高执行速度",
+          "是编译器的要求"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "置 NULL 后，即使代码路径重复执行 free(p)，free(NULL) 也是合法的空操作，从而避免 double free。"
+      },
+      {
+        "question": "`malloc(0)` 的行为是？",
+        "options": [
+          "实现定义：可能返回空指针，也可能返回一个可被 free 的非空指针",
+          "必定返回 NULL",
+          "必定崩溃",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "C 标准规定 malloc(0) 行为是实现定义的。关键是：若返回非 NULL，该指针不能解引用但必须用 free 释放。"
+      }
+    ]
+  },
+  {
+    "chapterId": "08",
+    "title": "构造数据类型",
+    "questions": [
+      {
+        "question": "结构体成员在内存中是否连续？",
+        "options": [
+          "是，完全连续",
+          "否，可能有填充",
+          "取决于编译器",
+          "是，但顺序可调整"
+        ],
+        "correct": 2,
+        "explanation": "结构体成员会进行对齐填充，可能不连续。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪种方式能正确访问结构体指针的成员？",
+        "options": [
+          "(*p).member",
+          "p->member",
+          "两者都正确",
+          "两者都不正确"
+        ],
+        "correct": 2,
+        "explanation": "两种方式等效。",
+        "difficulty": 2
+      },
+      {
+        "question": "联合体（union）的成员共享什么？",
+        "options": [
+          "内存空间",
+          "类型",
+          "值",
+          "地址"
+        ],
+        "correct": 0,
+        "explanation": "联合体所有成员共享同一块内存。",
+        "difficulty": 2
+      },
+      {
+        "question": "结构体自引用（包含指向自身的指针）是否合法？",
+        "options": [
+          "合法",
+          "不合法，无限递归",
+          "合法但需使用指针",
+          "不合法，不能包含自己"
+        ],
+        "correct": 2,
+        "explanation": "结构体可以包含指向自身类型的指针，但不能包含自身实例。",
+        "difficulty": 2
+      },
+      {
+        "question": "枚举值默认从几开始？",
+        "options": [
+          "0",
+          "1",
+          "随机",
+          "取决于定义"
+        ],
+        "correct": 0,
+        "explanation": "枚举第一个成员默认值为0，后续依次加1。",
+        "difficulty": 1
+      },
+      {
+        "question": "typedef 的作用是？",
+        "options": [
+          "定义新类型",
+          "取别名",
+          "分配内存",
+          "声明变量"
+        ],
+        "correct": 1,
+        "explanation": "typedef为已有类型创建别名，不定义新类型。",
+        "difficulty": 1
+      },
+      {
+        "question": "结构体变量作为函数参数时，默认是值传递还是地址传递？",
+        "options": [
+          "值传递",
+          "地址传递",
+          "引用传递",
+          "由编译器决定"
+        ],
+        "correct": 0,
+        "explanation": "结构体变量作为参数是值传递，复制整个结构体。",
+        "difficulty": 1
+      },
+      {
+        "question": "联合体的大小取决于什么？",
+        "options": [
+          "最大成员的大小",
+          "所有成员大小之和",
+          "第一个成员的大小",
+          "最后一个成员的大小"
+        ],
+        "correct": 0,
+        "explanation": "联合体大小至少为最大成员的大小，并进行对齐。",
+        "difficulty": 2
+      },
+      {
+        "question": "enum Color {RED, GREEN, BLUE}; 则 GREEN 的值是？",
+        "options": [
+          "0",
+          "1",
+          "2",
+          "未定义"
+        ],
+        "correct": 1,
+        "explanation": "RED=0，GREEN=1，BLUE=2。",
+        "difficulty": 2
+      },
+      {
+        "question": "结构体指针变量 p 指向结构体 s，则 p++ 会跳过整个结构体大小吗？",
+        "options": [
+          "会",
+          "不会，跳过指针大小",
+          "取决于结构体大小",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "指针算术按指向的类型大小移动，p++移动sizeof(结构体)。",
+        "difficulty": 2
+      },
+      {
+        "question": "typedef int (*func_ptr)(int, int); 这个声明表示什么？",
+        "options": [
+          "定义函数指针类型",
+          "声明函数",
+          "定义函数",
+          "声明指针"
+        ],
+        "correct": 0,
+        "explanation": "为函数指针类型取别名。",
+        "difficulty": 3
+      },
+      {
+        "question": "在结构体中，位域（bit-field）的使用场景是？",
+        "options": [
+          "节省内存",
+          "提高访问速度",
+          "实现位操作",
+          "以上都是"
+        ],
+        "correct": 0,
+        "explanation": "位域主要用于节省内存，但可能降低可移植性。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下关于结构体对齐的说法，正确的是？",
+        "options": [
+          "对齐由编译器自动完成，不可控",
+          "可以使用 #pragma pack 控制对齐",
+          "对齐只影响大小不影响性能",
+          "所有成员必须按最大成员对齐"
+        ],
+        "correct": 1,
+        "explanation": "可以通过 #pragma pack 修改对齐方式。",
+        "difficulty": 2
+      },
+      {
+        "question": "enum 与 #define 定义常量的区别？",
+        "options": [
+          "enum有类型检查，#define无类型",
+          "enum在编译阶段，#define在预处理阶段",
+          "以上都是",
+          "以上都不是"
+        ],
+        "correct": 2,
+        "explanation": "枚举提供类型安全，宏只是文本替换。",
+        "difficulty": 2
+      },
+      {
+        "question": "结构体可以包含函数吗？",
+        "options": [
+          "可以",
+          "不可以，C结构体只能包含数据",
+          "可以包含函数指针",
+          "C++才可以"
+        ],
+        "correct": 2,
+        "explanation": "C结构体不能包含函数定义，但可以包含函数指针。",
+        "difficulty": 2
+      },
+      {
+        "question": "如果定义结构体时使用了 typedef，则结构体标签可以省略吗？",
+        "options": [
+          "可以",
+          "不可以",
+          "取决于是否自引用",
+          "必须省略"
+        ],
+        "correct": 0,
+        "explanation": "使用typedef可以省略结构体标签，但自引用时需要标签。",
+        "difficulty": 1
+      },
+      {
+        "question": "联合体中可以包含结构体成员吗？",
+        "options": [
+          "可以",
+          "不可以",
+          "可以但只能有一个",
+          "取决于编译器"
+        ],
+        "correct": 0,
+        "explanation": "联合体成员可以是任意类型，包括结构体。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个不是构造数据类型？",
+        "options": [
+          "数组",
+          "结构体",
+          "联合体",
+          "指针"
+        ],
+        "correct": 3,
+        "explanation": "指针是基本数据类型派生，不是构造类型（构造类型指数组、结构体、联合体）。",
+        "difficulty": 2
+      },
+      {
+        "question": "结构体变量的地址和它第一个成员的地址是否相同？",
+        "options": [
+          "相同",
+          "不同",
+          "可能相同",
+          "取决于对齐"
+        ],
+        "correct": 0,
+        "explanation": "结构体地址与其第一个成员地址相同，没有填充偏移。",
+        "difficulty": 2
+      },
+      {
+        "question": "typedef 可以和结构体一起使用，如 typedef struct S {int a;} S; 这样 S 既是类型名又是结构体标签，是否正确？",
+        "options": [
+          "正确",
+          "错误，重复定义",
+          "可以但会引起歧义",
+          "取决于编译器"
+        ],
+        "correct": 0,
+        "explanation": "这是常见的用法，S是类型别名，struct S是标签。",
+        "difficulty": 2
+      },
+      {
+        "question": "`struct S { char c; int i; };` 在 32 位平台上 sizeof(struct S) 通常是？",
+        "options": [
+          "8（char 后有 3 字节填充对齐）",
+          "5",
+          "6",
+          "12"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "int 需要 4 字节对齐，char 占第 0 字节后，第 1~3 字节被填充，int 从第 4 字节开始，总大小为 8。这就是结构体对齐与填充。"
+      },
+      {
+        "question": "联合体（union）的 sizeof 由什么决定？",
+        "options": [
+          "最大成员的大小（并按最大对齐要求对齐）",
+          "所有成员大小之和",
+          "第一个成员的大小",
+          "最后一个成员的大小"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "联合体的所有成员共享同一块内存，其大小至少等于最大成员的大小（还要满足对齐）。与结构体相加不同，union 是取最大。"
+      },
+      {
+        "question": "`#pragma pack(1)` 的作用是？",
+        "options": [
+          "把结构体按 1 字节对齐，取消填充（节省空间但可能降低性能）",
+          "把结构体按最大成员对齐",
+          "产生编译错误",
+          "没有任何效果"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "`#pragma pack(1)` 强制 1 字节对齐，消除填充字节，用于网络协议、文件格式等需要紧凑布局的场景。代价是可能非对齐访问，影响性能与可移植性。"
+      },
+      {
+        "question": "定义含 10 个 `struct Point` 的数组，正确写法是？",
+        "options": [
+          "`struct Point pts[10];`",
+          "`struct Point pts = 10;`",
+          "`Point[10] pts;`",
+          "`struct pts[10] Point;`"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "结构体数组的声明与普通数组一致：`struct Point pts[10];`。访问元素用 `pts[i].x`。"
+      },
+      {
+        "question": "通过结构体指针 p 访问成员，使用？",
+        "options": [
+          "`p->member`",
+          "`p.member`",
+          "`*p.member`",
+          "`p..member`"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "结构体指针用箭头 `->` 访问成员，等价于 `(*p).member`。点号 `.` 用于结构体变量本身。"
+      },
+      {
+        "question": "两个结构体变量直接赋值 `s1 = s2;` 会发生什么？",
+        "options": [
+          "逐成员浅拷贝（若含指针则只是拷贝指针值）",
+          "编译错误",
+          "共享同一块内存",
+          "只拷贝第一个成员"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "结构体可以直接整体赋值，执行逐成员拷贝（浅拷贝）。若含指针成员，只复制指针值，两个结构体将指向同一块数据。"
+      },
+      {
+        "question": "结构体的位域（bit-field）成员不能进行哪个操作？",
+        "options": [
+          "取地址（&s.bit 是非法的）",
+          "读取值",
+          "赋值",
+          "在 if 条件中使用"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "位域成员可能不占据完整字节、没有独立地址，因此标准禁止对其取地址 `&`。但可以读写。"
+      },
+      {
+        "question": "枚举（enum）的每个成员默认的底层类型大小通常是？",
+        "options": [
+          "int",
+          "char",
+          "unsigned long",
+          "由运行时决定"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "C 标准规定 enum 兼容某种整型，实现通常使用 int。成员值默认从 0 开始递增，可显式指定。"
+      },
+      {
+        "question": "typedef 与 #define 的核心区别是？",
+        "options": [
+          "typedef 由编译器处理且做类型检查，#define 是纯文本替换",
+          "typedef 是文本替换",
+          "两者毫无区别",
+          "#define 有类型检查"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "typedef 是编译期特性，创建类型别名且遵循作用域、能参与类型检查；#define 只是预处理器文本替换，无类型概念。"
+      },
+      {
+        "question": "结构体能否包含另一个结构体类型的成员？",
+        "options": [
+          "可以，作为普通成员嵌套",
+          "不可以",
+          "只有 C++ 可以",
+          "必须用指针"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "结构体可以嵌套包含其他结构体作为成员（值嵌套）。但注意不能无限包含自身类型的『实例』，只能包含指向自身的指针。"
+      },
+      {
+        "question": "链表节点要实现自引用（指向下一个节点），成员必须用？",
+        "options": [
+          "指向同类型结构体的指针，如 `struct Node *next;`",
+          "同类型结构体实例",
+          "联合体",
+          "数组"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "结构体不能包含自身的实例（会无限递归导致大小无穷），但可以包含指向自身类型的指针。链表、树都靠指针自引用。"
+      },
+      {
+        "question": "联合体中以 int 写入、以 double 读取，会？",
+        "options": [
+          "标准上属未定义行为（读取非激活成员）",
+          "自动类型转换",
+          "正常工作",
+          "编译报错"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "读取 union 中非激活（未写入）的成员，按标准是未定义行为。实践中常用于类型双关（type punning），但 GCC/Clang 有扩展保证其行为。"
+      },
+      {
+        "question": "结构体较大时按值传给函数开销很大，推荐的写法是？",
+        "options": [
+          "传结构体指针（如 `const struct S *`）",
+          "仍然按值传",
+          "用全局变量代替",
+          "用宏展开"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "按值传结构体会复制整个结构体，开销随大小增长。传指针只复制一个地址，配合 const 表明只读意图，是推荐做法。"
+      },
+      {
+        "question": "成员的声明顺序会影响 sizeof 吗？",
+        "options": [
+          "会影响（不同排列的填充不同）",
+          "完全不影响",
+          "只影响运行速度",
+          "取决于编译器版本"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "按从大到小或从小到大合理排列成员可减少填充。如 `char, int, char` 是 12 字节，而 `int, char, char` 是 8 字节。"
+      },
+      {
+        "question": "结构体成员可以是数组吗？",
+        "options": [
+          "可以，如 `char name[32];`",
+          "不可以",
+          "只能是一维数组",
+          "只能是 char 数组"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "结构体成员可以是任意类型，包括数组、指针、其他结构体、union 等。数组成员会被整体拷贝。"
+      },
+      {
+        "question": "C11 的匿名结构体/联合体（anonymous struct/union）的用途是？",
+        "options": [
+          "把嵌套类型成员当作外层直接成员访问，简化代码",
+          "减少内存占用",
+          "加快编译",
+          "替代 typedef"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "匿名嵌套结构体/联合体使得内层成员可被直接通过外层变量访问（如 `s.x` 而非 `s.inner.x`），常用于包装结构。"
+      },
+      {
+        "question": "位域的跨平台主要问题在于？",
+        "options": [
+          "位分配方向（大端/小端）和存储布局由实现定义，不可移植",
+          "无法读取值",
+          "无法给位域赋值",
+          "编译必定失败"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "位域是从高位还是低位开始分配、跨字节边界的行为都未标准化，因此在网络协议等场景使用位域需谨慎，必要时改用位掩码。"
+      },
+      {
+        "question": "`typedef int Arr[5]; Arr a;` 表示 a 是？",
+        "options": [
+          "含 5 个 int 的数组",
+          "int* 指针",
+          "函数",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "typedef 可以为数组类型取别名，`Arr a` 等价于 `int a[5]`。这是 typedef 常被忽略的用途之一。"
+      },
+      {
+        "question": "结构体默认的对齐规则通常是？",
+        "options": [
+          "每个成员对齐到其自身大小的整数倍，结构体整体对齐到最大成员对齐值",
+          "全部按 1 字节对齐",
+          "由代码书写顺序决定",
+          "没有规则"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "常见规则（ABI 定义）：成员按其对齐值（通常等于其大小）对齐；结构体总大小必须是最大成员对齐值的整数倍。可用 `_Alignof` 查看。"
+      },
+      {
+        "question": "访问 union 中尚未激活（未写入）的成员的值？",
+        "options": [
+          "标准上属未定义行为",
+          "一定会得到正确值",
+          "一定是 0",
+          "编译报错"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "标准规定只能读取最近写入的成员（激活成员）。读取其他成员的值是未定义行为，但许多编译器在整型之间实现为位模式重解释。"
+      }
+    ]
+  },
+  {
+    "chapterId": "09",
+    "title": "C预处理器",
+    "questions": [
+      {
+        "question": "宏定义 #define SQUARE(x) x*x 中，SQUARE(2+3) 的结果是？",
+        "options": [
+          "25",
+          "11",
+          "13",
+          "编译错误"
+        ],
+        "correct": 1,
+        "explanation": "展开为 2+3*2+3=2+6+3=11，没有括号导致错误。",
+        "difficulty": 2
+      },
+      {
+        "question": "如何编写宏以安全计算平方？",
+        "options": [
+          "#define SQUARE(x) (x)*(x)",
+          "#define SQUARE(x) (x*x)",
+          "#define SQUARE(x) ((x)*(x))",
+          "以上皆可"
+        ],
+        "correct": 2,
+        "explanation": "最安全是加多层括号避免运算符优先级问题。",
+        "difficulty": 2
+      },
+      {
+        "question": "#ifdef 和 #if defined() 是否等价？",
+        "options": [
+          "等价",
+          "不等价",
+          "前者只能检查一个宏",
+          "后者可以组合条件"
+        ],
+        "correct": 3,
+        "explanation": "#if defined(MACRO) 更灵活，可使用逻辑运算。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个预处理指令用于取消宏定义？",
+        "options": [
+          "#undef",
+          "#define",
+          "#ifdef",
+          "#endif"
+        ],
+        "correct": 0,
+        "explanation": "#undef 用于删除宏定义。",
+        "difficulty": 2
+      },
+      {
+        "question": "宏展开时，参数是否会被多次求值？",
+        "options": [
+          "是，可能导致副作用",
+          "否，只求值一次",
+          "取决于宏定义",
+          "由编译器决定"
+        ],
+        "correct": 0,
+        "explanation": "宏参数是文本替换，可能被多次求值，如 SQUARE(++x) 会有副作用。",
+        "difficulty": 2
+      },
+      {
+        "question": "#include 可以包含任意类型的文件吗？",
+        "options": [
+          "可以，只要是文本文件",
+          "不可以，只能是头文件",
+          "可以，但编译器会报错",
+          "取决于扩展名"
+        ],
+        "correct": 0,
+        "explanation": "理论上可以包含任何文本文件，但通常只包含头文件。",
+        "difficulty": 1
+      },
+      {
+        "question": "条件编译 #if 后面可以跟什么表达式？",
+        "options": [
+          "整型常量表达式",
+          "变量",
+          "浮点数",
+          "字符串"
+        ],
+        "correct": 0,
+        "explanation": "#if 只允许整型常量表达式，不能包含变量。",
+        "difficulty": 2
+      },
+      {
+        "question": "在宏定义中，使用 # 运算符的作用是？",
+        "options": [
+          "将参数转为字符串",
+          "连接两个参数",
+          "注释掉",
+          "取消参数"
+        ],
+        "correct": 0,
+        "explanation": "# 将宏参数转换为字符串字面量。",
+        "difficulty": 2
+      },
+      {
+        "question": "使用 ## 运算符的目的是？",
+        "options": [
+          "连接两个记号",
+          "比较两个参数",
+          "取地址",
+          "类型转换"
+        ],
+        "correct": 0,
+        "explanation": "## 用于连接两个标识符形成新记号。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个宏定义可以在调试时打印信息？",
+        "options": [
+          "#define DEBUG printf",
+          "#define DEBUG(...) printf(__VA_ARGS__)",
+          "#define DEBUG(...) do{printf(__VA_ARGS__);}while(0)",
+          "B和C都可以"
+        ],
+        "correct": 3,
+        "explanation": "B和C都能实现，但C更安全（do-while）。",
+        "difficulty": 2
+      },
+      {
+        "question": "文件包含的两种方式 #include <file> 和 #include \"file\" 的区别？",
+        "options": [
+          "前者从标准库路径查找，后者从当前目录",
+          "两者一样",
+          "前者用于系统头文件，后者用于用户头文件",
+          "A和C都正确"
+        ],
+        "correct": 3,
+        "explanation": "<> 通常用于标准库，\"\" 用于自定义头文件，搜索路径不同。",
+        "difficulty": 1
+      },
+      {
+        "question": "预处理器是否理解类型定义？",
+        "options": [
+          "不理解，只做文本替换",
+          "理解，会进行类型检查",
+          "部分理解",
+          "取决于宏"
+        ],
+        "correct": 0,
+        "explanation": "预处理器不进行类型检查，只做文本处理。",
+        "difficulty": 2
+      },
+      {
+        "question": "如何避免头文件被重复包含？",
+        "options": [
+          "使用 #pragma once",
+          "使用 #ifndef 守卫",
+          "两种方法都可以",
+          "无法避免"
+        ],
+        "correct": 2,
+        "explanation": "两种方法都能防止重复包含，但 #ifndef 更通用。",
+        "difficulty": 1
+      },
+      {
+        "question": "#error 指令的作用是？",
+        "options": [
+          "产生编译错误",
+          "产生警告",
+          "终止预处理",
+          "无作用"
+        ],
+        "correct": 0,
+        "explanation": "#error 用于在条件编译中产生致命错误。",
+        "difficulty": 1
+      },
+      {
+        "question": "宏定义中可以使用括号改变优先级，但以下哪个选项可能导致问题？",
+        "options": [
+          "SQUARE(x) (x)*(x)",
+          "SQUARE(x) ((x)*(x))",
+          "SQUARE(x) (x*x)",
+          "DIVIDE(x,y) (x)/(y)"
+        ],
+        "correct": 3,
+        "explanation": "DIVIDE(a+b,c-d) 展开为 (a+b)/(c-d)，没有问题；但若用户传递表达式，可能因优先级出错，但加了括号一般安全。不过如果写成 DIVIDE(a+b,c-d) 没问题。可能所有都安全。但其实选项C容易出问题，因为没加外层括号，如 SQUARE(2+3) 展开为 (2+3*2+3) = 11，错误。而D中加括号了。所以C是不安全的。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个是预定义宏，表示当前源文件名？",
+        "options": [
+          "__FILE__",
+          "__LINE__",
+          "__DATE__",
+          "__TIME__"
+        ],
+        "correct": 0,
+        "explanation": "__FILE__ 是当前文件名，__LINE__ 是行号。",
+        "difficulty": 2
+      },
+      {
+        "question": "宏可以递归展开吗？",
+        "options": [
+          "可以",
+          "不可以，会报错",
+          "可以，但有限制",
+          "只有函数宏可以"
+        ],
+        "correct": 1,
+        "explanation": "宏不允许递归，预处理器会阻止递归展开。",
+        "difficulty": 2
+      },
+      {
+        "question": "使用 #if 0 ... #endif 可以注释大段代码吗？",
+        "options": [
+          "可以",
+          "不可以，必须用 /* */",
+          "可以，但需注意嵌套",
+          "可以，但会被预处理丢弃"
+        ],
+        "correct": 0,
+        "explanation": "这是常用技巧，条件为假，代码被预处理忽略。",
+        "difficulty": 2
+      },
+      {
+        "question": "宏定义是否可以有空格？如 #define A  B ？",
+        "options": [
+          "可以，多个空格无影响",
+          "不可以，只能一个空格",
+          "可以，但会作为参数",
+          "取决于编译器"
+        ],
+        "correct": 0,
+        "explanation": "宏定义中空白符作为分隔，多个空格无影响。",
+        "difficulty": 2
+      },
+      {
+        "question": "预处理器中的 #line 指令有什么作用？",
+        "options": [
+          "改变当前行号",
+          "改变文件名",
+          "产生错误",
+          "A和B都可以"
+        ],
+        "correct": 3,
+        "explanation": "#line 用于改变编译器报告的行号和文件名，用于代码生成工具。",
+        "difficulty": 1
+      },
+      {
+        "question": "`#define PI 3.14` 中的 PI 是？",
+        "options": [
+          "无类型的宏，预处理期纯文本替换为 3.14",
+          "浮点常量变量",
+          "const 变量",
+          "函数"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "宏在预处理阶段被文本替换为 3.14，没有类型、没有作用域、不做类型检查。与 const 常量有本质区别。"
+      },
+      {
+        "question": "`#define MAX(a,b) a>b?a:b` 调用 `MAX(i++, j)` 时的问题？",
+        "options": [
+          "参数被多次求值，i++ 可能执行多次或产生副作用",
+          "完全安全",
+          "编译错误",
+          "i 保持不变"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "宏是文本替换，a 出现几次就被替换几次。`MAX(i++,j)` 展开为 `i++>j?i++:j`，i++ 被执行两次。这是宏的经典副作用陷阱。"
+      },
+      {
+        "question": "宏定义的有效范围是？",
+        "options": [
+          "从定义处到文件末尾，或遇到 #undef 为止",
+          "整个程序",
+          "当前函数内",
+          "当前一行"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "宏的作用域从 #define 处开始，到文件结束或 #undef。它不受函数作用域限制，也没有块级作用域。"
+      },
+      {
+        "question": "`#define ADD(a,b) ((a)+(b))` 使用双层括号的原因是？",
+        "options": [
+          "防止外层表达式因运算符优先级出错",
+          "加快展开",
+          "语法必须如此",
+          "减少展开体积"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "参数和外层各加一层括号，确保 `ADD(a,b)*2` 展开为 `((a)+(b))*2` 而不是 `(a)+(b)*2`。加括号是宏的安全写法。"
+      },
+      {
+        "question": "宏能否递归展开？",
+        "options": [
+          "不能，预处理器会阻止自我递归",
+          "可以",
+          "可以但仅限一层",
+          "取决于宏参数"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "宏不支持递归：在展开过程中遇到与当前宏同名的记号，预处理器不再展开它。"
+      },
+      {
+        "question": "`#ifdef X` 与 `#if defined(X)` 的区别是？",
+        "options": [
+          "#ifdef 只能判断单个宏，#if defined() 可以用逻辑运算符组合多个条件",
+          "两者完全等价",
+          "前者更强",
+          "后者只能判断单个"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "`#if defined(A) && !defined(B)` 能表达复杂条件，`#ifdef` 只能判断一个。功能上有重叠，但 defined() 更灵活。"
+      },
+      {
+        "question": "防止头文件被重复包含，哪种做法是有效的？",
+        "options": [
+          "include guard（#ifndef/#define/#endif）和 #pragma once 都可以",
+          "只有 include guard 有效",
+          "只有 #pragma once 有效",
+          "无法避免重复包含"
+        ],
+        "correct": 2,
+        "difficulty": 1,
+        "explanation": "include guard 是标准做法，`#pragma once` 是广为支持的编译器扩展，两者都能防止重复包含。#pragma once 更简洁但可移植性略差。"
+      },
+      {
+        "question": "`#pragma once` 与 include guard 相比？",
+        "options": [
+          "是编译器扩展、非标准但普遍支持",
+          "是 C 标准要求的",
+          "执行更慢",
+          "只能用于 C++"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "#pragma once 是大多数主流编译器（GCC、Clang、MSVC）支持的扩展，不是标准 C 的一部分，但实际可移植性已足够好。"
+      },
+      {
+        "question": "宏定义中 `##` 运算符的作用是？",
+        "options": [
+          "把两个记号连接成一个新的记号",
+          "把参数转为字符串",
+          "注释一段代码",
+          "比较两个参数"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "`##`（token pasting）将左右两个记号拼接，如 `#define CAT(a,b) a##b`，CAT(foo,bar) 变成 foobar。"
+      },
+      {
+        "question": "宏定义中单个 `#` 运算符的作用是？",
+        "options": [
+          "把宏参数转换为字符串字面量",
+          "连接两个记号",
+          "取地址",
+          "结束宏定义"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "单个 `#`（stringizing）把参数原样转为带引号的字符串，如 `#define STR(x) #x`，STR(hello) 变成 \"hello\"。"
+      },
+      {
+        "question": "预定义宏 `__LINE__` 展开后是？",
+        "options": [
+          "当前源文件行号（整型常量）",
+          "当前文件名",
+          "当前日期",
+          "当前时间"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "__LINE__ 展开为当前行号整数，__FILE__ 是文件名，常用于日志与断言消息。"
+      },
+      {
+        "question": "预处理阶段是否进行类型检查？",
+        "options": [
+          "不做，纯文本替换",
+          "做完整的类型检查",
+          "检查一部分",
+          "检查宏参数类型"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "预处理器不理解类型，只做文本处理。类型检查发生在编译阶段。因此宏的错误往往在展开后编译时才暴露。"
+      },
+      {
+        "question": "`#define SWAP(a,b) { a^=b; b^=a; a^=b; }` 作为宏放在 if/else 中的问题？",
+        "options": [
+          "花括号后加分号会导致 else 前语法错误，应改用 do{...}while(0)",
+          "没有副作用",
+          "交换结果错误",
+          "编译必定失败"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`if(x) SWAP(a,b); else ...` 展开后是 `if(x) { ... }; else`，多余的分号导致语法错误。用 `do{...}while(0)` 包裹可避免。"
+      },
+      {
+        "question": "`#if sizeof(int) == 4` 是否可行？",
+        "options": [
+          "不可行，预处理阶段不知道类型的大小",
+          "可行",
+          "会报错",
+          "结果取决于编译器"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "#if 中只能使用整型常量表达式，sizeof 在预处理阶段不计算（此时尚无类型信息）。应改用 `#if UINTPTR_MAX` 或编译器宏判断。"
+      },
+      {
+        "question": "`#ifdef DEBUG` 常用于？",
+        "options": [
+          "条件编译调试代码，发布时关闭",
+          "定义函数",
+          "引入库",
+          "取消宏"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "开发时用 `-DDEBUG` 定义 DEBUG 宏启用调试代码，发布时不定义即自动移除，是常见的调试手段。"
+      },
+      {
+        "question": "宏定义要跨多行书写，使用？",
+        "options": [
+          "行尾加反斜杠 `\\` 续行",
+          "花括号",
+          "逗号",
+          "缩进"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "宏定义很长时，在每行末尾加反斜杠 `\\` 表示续行，下一行接着写。注意反斜杠后不能有空格。"
+      },
+      {
+        "question": "与普通函数相比，函数宏（宏函数）的缺点是？",
+        "options": [
+          "参数被多次求值、无类型检查、可能代码膨胀",
+          "运行更慢",
+          "无法返回结果",
+          "不能接受参数"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "宏的缺点正是它只是文本替换：参数副作用、无类型检查、每次使用都内联展开导致代码体积增大。现代 C 更推荐用内联函数。"
+      },
+      {
+        "question": "`#define M(x) x+1`，调用 `M(a) * 2` 展开为？",
+        "options": [
+          "`a+1*2`（未加括号导致优先级错误）",
+          "`(a+1)*2`",
+          "`a+2`",
+          "语法错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "展开为 `a+1*2`，乘法优先于加法，结果与期望的 `(a+1)*2` 不同。定义宏时应把每个参数和外层都加括号。"
+      },
+      {
+        "question": "`#error` 指令的作用是？",
+        "options": [
+          "在预处理阶段产生编译错误并输出自定义消息",
+          "忽略后续代码",
+          "产生警告",
+          "跳过当前文件"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "`#error 消息` 用于在条件编译中主动终止编译并给出错误信息，常用于检查不支持的环境。"
+      },
+      {
+        "question": "变参宏 `#define LOG(...) printf(__VA_ARGS__)` 中的 `__VA_ARGS__` 表示？",
+        "options": [
+          "宏调用中省略号对应的全部可变参数",
+          "文件名",
+          "行号",
+          "返回地址"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`__VA_ARGS__` 代表 `...` 捕获的实参列表，展开后原样插入调用处，使 LOG(\"%d\", x) 变成 printf(\"%d\", x)。"
+      }
+    ]
+  },
+  {
+    "chapterId": "10",
+    "title": "标准库与系统调用",
+    "questions": [
+      {
+        "question": "printf 函数的返回值是什么？",
+        "options": [
+          "输出字符数",
+          "0",
+          "1",
+          "无返回值"
+        ],
+        "correct": 0,
+        "explanation": "printf返回成功输出的字符数，负数表示错误。",
+        "difficulty": 2
+      },
+      {
+        "question": "scanf 的返回值表示什么？",
+        "options": [
+          "成功读取的数据项数",
+          "读取的字节数",
+          "是否成功",
+          "无返回值"
+        ],
+        "correct": 0,
+        "explanation": "scanf返回成功匹配并赋值的参数个数。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个函数用于获取随机数？",
+        "options": [
+          "rand",
+          "random",
+          "srand",
+          "rand和random都可用"
+        ],
+        "correct": 0,
+        "explanation": "标准C库使用 rand，random是POSIX扩展。",
+        "difficulty": 1
+      },
+      {
+        "question": "srand 函数的作用是？",
+        "options": [
+          "设置随机数种子",
+          "生成随机数",
+          "结束随机数",
+          "初始化随机数状态"
+        ],
+        "correct": 0,
+        "explanation": "srand设置种子，通常用time(NULL)作为参数。",
+        "difficulty": 1
+      },
+      {
+        "question": "math.h 中的 pow 函数原型是 double pow(double, double)，使用时如果参数为 int 会怎样？",
+        "options": [
+          "自动转换为double",
+          "编译错误",
+          "结果错误",
+          "取决于编译器"
+        ],
+        "correct": 0,
+        "explanation": "整数会隐式转换为double。",
+        "difficulty": 2
+      },
+      {
+        "question": "sqrt(-1) 的返回值是？",
+        "options": [
+          "NaN",
+          "0",
+          "1",
+          "编译错误"
+        ],
+        "correct": 0,
+        "explanation": "sqrt负数返回NaN（域错误）。",
+        "difficulty": 1
+      },
+      {
+        "question": "time_t 类型表示什么？",
+        "options": [
+          "日历时间",
+          "时钟时间",
+          "进程时间",
+          "文件时间"
+        ],
+        "correct": 0,
+        "explanation": "time_t 通常表示从1970年1月1日UTC开始的秒数。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个函数用于获取当前时间（以字符串形式）？",
+        "options": [
+          "ctime",
+          "asctime",
+          "strftime",
+          "三者都可以"
+        ],
+        "correct": 3,
+        "explanation": "ctime和asctime返回固定格式字符串，strftime自定义格式。",
+        "difficulty": 1
+      },
+      {
+        "question": "stdlib.h 中的 atoi 函数处理非数字字符串时返回？",
+        "options": [
+          "0",
+          "随机值",
+          "未定义",
+          "部分转换"
+        ],
+        "correct": 0,
+        "explanation": "atoi遇到非数字返回0，但无错误检查。",
+        "difficulty": 2
+      },
+      {
+        "question": "strtol 和 atoi 的区别是？",
+        "options": [
+          "strtol支持错误检查和不同进制",
+          "atoi支持浮点",
+          "strtol更快",
+          "没有区别"
+        ],
+        "correct": 0,
+        "explanation": "strtol更健壮，能检测错误并指定基数。",
+        "difficulty": 1
+      },
+      {
+        "question": "调用 system(\"pause\") 在Linux下是否有效？",
+        "options": [
+          "有效，暂停",
+          "无效，命令不存在",
+          "导致错误",
+          "取决于shell"
+        ],
+        "correct": 1,
+        "explanation": "pause是Windows命令，Linux下通常没有，可能执行失败。",
+        "difficulty": 1
+      },
+      {
+        "question": "getchar() 函数返回值类型是 int，为什么不是 char？",
+        "options": [
+          "为了能返回EOF",
+          "为了兼容历史",
+          "为了提高效率",
+          "没有原因"
+        ],
+        "correct": 0,
+        "explanation": "int类型可以区分有效字符和EOF(-1)。",
+        "difficulty": 2
+      },
+      {
+        "question": "putchar 函数参数类型是 int，如果传入 char 会发生？",
+        "options": [
+          "自动转换",
+          "编译错误",
+          "输出错误",
+          "未定义"
+        ],
+        "correct": 0,
+        "explanation": "char自动提升为int，正常输出。",
+        "difficulty": 3
+      },
+      {
+        "question": "以下哪个头文件包含字符串处理函数？",
+        "options": [
+          "<string.h>",
+          "<strings.h>",
+          "<cstring>",
+          "A和B"
+        ],
+        "correct": 0,
+        "explanation": "标准C使用 <string.h>。",
+        "difficulty": 1
+      },
+      {
+        "question": "strlen 函数在计算字符串长度时是否包括 '\\0'？",
+        "options": [
+          "包括",
+          "不包括",
+          "取决于实现",
+          "包括但不计入"
+        ],
+        "correct": 1,
+        "explanation": "strlen 返回字符串长度，不包括结束符。",
+        "difficulty": 1
+      },
+      {
+        "question": "memcpy 和 memmove 的区别是？",
+        "options": [
+          "memmove处理重叠，memcpy不保证",
+          "memcpy更快",
+          "两者一样",
+          "memmove更快"
+        ],
+        "correct": 0,
+        "explanation": "memmove能正确处理源和目标重叠的情况，memcpy不行。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个函数用于设置环境变量？",
+        "options": [
+          "putenv",
+          "setenv",
+          "getenv",
+          "A和B都可以"
+        ],
+        "correct": 3,
+        "explanation": "putenv和setenv都可用于设置环境变量（但setenv更标准）。",
+        "difficulty": 1
+      },
+      {
+        "question": "在printf中，%p 用于打印什么？",
+        "options": [
+          "指针地址",
+          "整数",
+          "字符串",
+          "浮点数"
+        ],
+        "correct": 0,
+        "explanation": "%p 专门用于打印指针值（十六进制）。",
+        "difficulty": 2
+      },
+      {
+        "question": "scanf 读取字符串时，使用 %s 是否会读取空格？",
+        "options": [
+          "会",
+          "不会，遇空格停止",
+          "会读取包括空格",
+          "取决于格式"
+        ],
+        "correct": 1,
+        "explanation": "%s 读取直到空白字符（空格、制表、换行）。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个函数可以安全地格式化字符串到缓冲区？",
+        "options": [
+          "sprintf",
+          "snprintf",
+          "vsprintf",
+          "三者都安全"
+        ],
+        "correct": 1,
+        "explanation": "snprintf 限制写入长度，防止溢出。",
+        "difficulty": 2
+      },
+      {
+        "question": "`printf(\"%d\", 5.5);` 会发生什么？",
+        "options": [
+          "未定义行为：格式串与实际参数类型不匹配，输出垃圾值",
+          "打印 5",
+          "打印 5.5",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "%d 期望 int，却传入 double。printf 不检查参数类型，会按错误类型解释内存位模式，结果不可预测（未定义行为）。"
+      },
+      {
+        "question": "`scanf(\"%d\", n);`（n 是 int，忘写 &）会？",
+        "options": [
+          "未定义行为：把 n 的值当地址写入，通常崩溃",
+          "正常读取",
+          "自动取地址",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "scanf 需要变量地址才能写入。`&n` 是地址，`n` 是值，把值当地址写会导致段错误或破坏内存。"
+      },
+      {
+        "question": "`getchar()` 的返回类型是 int 而不是 char，原因是？",
+        "options": [
+          "为了能返回 EOF（通常是 -1）来区分正常字符",
+          "提高运行速度",
+          "历史遗留无意义",
+          "便于内存对齐"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "getchar 需要同时返回 0~255 的字符和 EOF（-1）。char 无法表示 256 个不同值，所以用 int。用 char 存 getchar 返回值是常见错误。"
+      },
+      {
+        "question": "`strcmp(s1, s2)` 返回 0 表示？",
+        "options": [
+          "两字符串相等",
+          "s1 更小",
+          "发生错误",
+          "长度相同但内容不同"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "strcmp 返回 0 表示两串完全相等，负数/正数分别表示 s1 小于/大于 s2。注意不要用 `!strcmp` 来表示相等。"
+      },
+      {
+        "question": "相比 atoi，strtol 的优势是？",
+        "options": [
+          "能检测转换错误并可指定进制",
+          "速度更快",
+          "支持浮点数",
+          "两者没有区别"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "strtol 通过 endptr 报告停止位置、可检测溢出（检查 errno）、支持 2~36 进制。atoi 无法区分 0 与转换失败。"
+      },
+      {
+        "question": "`srand(time(NULL));` 的目的是？",
+        "options": [
+          "用当前时间做种子，使每次运行的 rand 序列不同",
+          "加快随机数生成",
+          "清空屏幕",
+          "对随机数排序"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "rand 是伪随机序列，相同种子产生相同序列。srand(time(NULL)) 让每次运行序列不同。只应调用一次。"
+      },
+      {
+        "question": "memcpy 与 memmove 在处理源/目标内存重叠时的区别是？",
+        "options": [
+          "memmove 能正确处理重叠，memcpy 重叠时行为未定义",
+          "memcpy 能处理重叠",
+          "两者相同",
+          "memmove 更快"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "标准只保证 memmove 在重叠时安全（如同临时缓冲再复制），memcpy 要求不重叠。重叠用 memcpy 是未定义行为。"
+      },
+      {
+        "question": "相比 sprintf，`snprintf(buf, n, ...)` 的好处是？",
+        "options": [
+          "限制最多写入 n-1 个字符并保证 '\\0' 结尾，防止缓冲区溢出",
+          "速度更快",
+          "支持更多格式符",
+          "自动换行"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "snprintf 指定缓冲大小，写满即停止并补 '\\0'，从根本上避免 sprintf 的缓冲区溢出漏洞。"
+      },
+      {
+        "question": "printf 的返回值是？",
+        "options": [
+          "成功输出的字符总数",
+          "总是 0",
+          "一个布尔成功标志",
+          "无返回值"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "printf 返回实际输出的字符数，出错返回负值。检查返回值可判断写入是否成功。"
+      },
+      {
+        "question": "`fflush(stdout);` 的作用是？",
+        "options": [
+          "立即把标准输出缓冲区的内容刷到终端/文件",
+          "清空标准输入",
+          "关闭标准输出",
+          "无任何作用"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "stdout 默认缓冲，fflush 强制立刻输出缓冲内容。常用于『printf 后无换行但希望立即显示』的场景。"
+      },
+      {
+        "question": "`rand() % 6 + 1` 能生成？",
+        "options": [
+          "1 ~ 6 的随机数",
+          "0 ~ 5",
+          "0 ~ 6",
+          "6 ~ 12"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "rand()%6 得 0~5，加 1 得 1~6。注意 rand()%n 存在模偏差（modulo bias），对均匀性要求高的场合应使用更好的方法。"
+      },
+      {
+        "question": "`abs()` 在 <stdlib.h>，`fabs()` 在哪个头文件？",
+        "options": [
+          "<math.h>",
+          "<stdio.h>",
+          "<string.h>",
+          "<ctype.h>"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "整数绝对值 abs() 在 <stdlib.h>，浮点绝对值 fabs() 在 <math.h>。两者易混淆，用错头文件会因隐式声明而出错。"
+      },
+      {
+        "question": "qsort 的比较函数返回值含义是？",
+        "options": [
+          "负数表示 a<b，0 表示相等，正数表示 a>b",
+          "只返回 0 或 1",
+          "返回是否相等",
+          "返回交换标志"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "比较函数返回 a 与 b 的大小关系：<0 表示 a 排前面，>0 表示 b 排前面。很多初学者写反导致排序顺序颠倒。"
+      },
+      {
+        "question": "`sscanf(str, \"%d\", &n)` 的作用是？",
+        "options": [
+          "从字符串 str 中解析整数",
+          "把整数写入字符串",
+          "从文件读取",
+          "把字符串转为大写"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "sscanf 从内存字符串中按格式解析，相当于 fscanf 的字符串版本。常用于从字符串中提取数字。"
+      },
+      {
+        "question": "`strtok(str, \",\")` 的特点与隐患是？",
+        "options": [
+          "会修改原字符串，且使用静态缓冲区、非线程安全",
+          "不修改原串",
+          "线程安全",
+          "自动分配新内存"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "strtok 把分隔符替换为 '\\0' 破坏原串，且用静态存储记住位置，多线程并发调用会串。POSIX 提供了线程安全的 strtok_r。"
+      },
+      {
+        "question": "`isalpha(c)` 的参数类型是？",
+        "options": [
+          "int（通常是 EOF 或 unsigned char 提升后的值）",
+          "char*",
+          "double",
+          "unsigned char*"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "ctype 函数参数是 int，须为 EOF 或可表示为 unsigned char 的值。直接传负 char（如扩展字符）是未定义行为。"
+      },
+      {
+        "question": "`printf(\"%s\", str);` 要求 str？",
+        "options": [
+          "指向以 '\\0' 结尾的合法内存的指针",
+          "是任意指针",
+          "必须是数组",
+          "长度非零"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "%s 会一直读到 '\\0'。若指针无效或缺少 '\\0'，会越界读甚至崩溃。必须保证 str 指向有效的以 '\\0' 结尾的字符串。"
+      },
+      {
+        "question": "printf 打印 double 用 `%f` 而非 `%lf`，原因是什么？",
+        "options": [
+          "变参中 float 被提升为 double，%f 与 double 对应，%lf 在 printf 中是多余的",
+          "printf 不支持 double",
+          "%f 对应 int",
+          "必须用 %lf"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "在变参列表中 float 自动提升为 double，所以 printf 中 %f 已经对应 double；%lf 也是合法的（C99 起）。而在 scanf 中必须用 %lf 对应 double*。"
+      },
+      {
+        "question": "`getenv(\"PATH\")` 可能返回？",
+        "options": [
+          "NULL（环境变量不存在时）",
+          "必定非空",
+          "空字符串而不是 NULL",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "若环境变量不存在，getenv 返回 NULL。使用返回值前应检查是否为 NULL，否则解引用空指针崩溃。"
+      },
+      {
+        "question": "调用 `system()` 函数的主要风险是？",
+        "options": [
+          "命令注入漏洞和平台可移植性差",
+          "没有风险",
+          "执行更快",
+          "更加安全"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "system() 把字符串交给 shell 执行，若拼接用户输入存在命令注入风险；且依赖平台 shell，可移植性差。能用库函数就避免使用。"
+      }
+    ]
+  },
+  {
+    "chapterId": "11",
+    "title": "文件操作",
+    "questions": [
+      {
+        "question": "fopen 返回的指针类型是？",
+        "options": [
+          "FILE*",
+          "void*",
+          "int*",
+          "char*"
+        ],
+        "correct": 0,
+        "explanation": "fopen 返回 FILE* 结构体指针。",
+        "difficulty": 2
+      },
+      {
+        "question": "fopen 打开文件失败返回什么？",
+        "options": [
+          "NULL",
+          "0",
+          "EOF",
+          "错误码"
+        ],
+        "correct": 0,
+        "explanation": "失败返回 NULL。",
+        "difficulty": 1
+      },
+      {
+        "question": "以下哪个模式用于追加写入？",
+        "options": [
+          "\"a\"",
+          "\"w\"",
+          "\"r\"",
+          "\"a+\""
+        ],
+        "correct": 0,
+        "explanation": "\"a\" 追加模式，文件末尾写入。",
+        "difficulty": 1
+      },
+      {
+        "question": "fclose 函数成功返回什么？",
+        "options": [
+          "0",
+          "EOF",
+          "1",
+          "NULL"
+        ],
+        "correct": 0,
+        "explanation": "fclose 成功返回0，失败返回 EOF。",
+        "difficulty": 1
+      },
+      {
+        "question": "fread 函数的返回值表示什么？",
+        "options": [
+          "成功读取的元素个数",
+          "读取的字节数",
+          "是否成功",
+          "无返回值"
+        ],
+        "correct": 0,
+        "explanation": "fread返回成功读取的完整元素数，可能小于请求。",
+        "difficulty": 1
+      },
+      {
+        "question": "fwrite 写入时，如果写入失败，返回值？",
+        "options": [
+          "0",
+          "-1",
+          "小于请求的数",
+          "未定义"
+        ],
+        "correct": 0,
+        "explanation": "fwrite返回成功写入的元素个数，失败可能返回0或小于请求。",
+        "difficulty": 2
+      },
+      {
+        "question": "fseek 中的 whence 参数 SEEK_END 表示？",
+        "options": [
+          "文件末尾",
+          "文件开头",
+          "当前位置",
+          "文件大小"
+        ],
+        "correct": 0,
+        "explanation": "SEEK_END 定位到文件末尾。",
+        "difficulty": 1
+      },
+      {
+        "question": "ftell 函数返回什么类型？",
+        "options": [
+          "long",
+          "int",
+          "off_t",
+          "size_t"
+        ],
+        "correct": 0,
+        "explanation": "ftell 返回 long 类型，表示当前偏移量。",
+        "difficulty": 1
+      },
+      {
+        "question": "rewind 函数的作用是？",
+        "options": [
+          "将文件指针移到开头",
+          "重置文件",
+          "清空文件",
+          "关闭文件"
+        ],
+        "correct": 0,
+        "explanation": "rewind 使文件指针回到文件开头，并清除错误指示器。",
+        "difficulty": 2
+      },
+      {
+        "question": "feof 函数检测文件结束是否正确？",
+        "options": [
+          "在读取到文件末尾后返回真",
+          "在即将读取末尾时返回真",
+          "在文件打开时返回真",
+          "不确定"
+        ],
+        "correct": 0,
+        "explanation": "feof 只有在尝试读取越过末尾后才为真，不是在未读之前。",
+        "difficulty": 1
+      },
+      {
+        "question": "使用 fscanf 从文件读取数据时，如果遇到不匹配的格式，会怎样？",
+        "options": [
+          "返回0，停止读取",
+          "跳过不匹配字符",
+          "出错退出",
+          "未定义"
+        ],
+        "correct": 0,
+        "explanation": "fscanf 遇到匹配失败返回0，不处理后续。",
+        "difficulty": 2
+      },
+      {
+        "question": "fprintf 和 printf 的区别是？",
+        "options": [
+          "前者输出到文件，后者输出到标准输出",
+          "两者一样",
+          "fprintf需要文件指针",
+          "A和C正确"
+        ],
+        "correct": 3,
+        "explanation": "fprintf 第一个参数是文件指针，printf 默认到 stdout。",
+        "difficulty": 2
+      },
+      {
+        "question": "二进制文件和文本文件的区别在C语言中主要体现在？",
+        "options": [
+          "换行符转换",
+          "数据存储方式",
+          "文件扩展名",
+          "访问速度"
+        ],
+        "correct": 0,
+        "explanation": "文本模式下换行符可能转换（如 \n 转 \r\n），二进制模式不转换。",
+        "difficulty": 1
+      },
+      {
+        "question": "fopen 中使用 \"r+\" 模式，如果文件不存在会？",
+        "options": [
+          "创建文件",
+          "返回NULL",
+          "报错",
+          "未定义"
+        ],
+        "correct": 1,
+        "explanation": "\"r+\" 用于读写，但文件必须存在，否则失败。",
+        "difficulty": 2
+      },
+      {
+        "question": "tmpfile 函数创建临时文件，其特点是什么？",
+        "options": [
+          "文件自动删除",
+          "文件可持久",
+          "文件可指定名称",
+          "文件在固定目录"
+        ],
+        "correct": 0,
+        "explanation": "tmpfile 创建的临时文件在关闭或程序结束时自动删除。",
+        "difficulty": 1
+      },
+      {
+        "question": "remove 函数用于删除文件，成功返回？",
+        "options": [
+          "0",
+          "-1",
+          "EOF",
+          "1"
+        ],
+        "correct": 0,
+        "explanation": "remove 成功返回0，失败返回非0。",
+        "difficulty": 1
+      },
+      {
+        "question": "rename 函数用于重命名文件，成功返回？",
+        "options": [
+          "0",
+          "-1",
+          "1",
+          "EOF"
+        ],
+        "correct": 0,
+        "explanation": "rename 成功返回0。",
+        "difficulty": 1
+      },
+      {
+        "question": "缓冲区的刷新可以使用 fflush，其作用对象是？",
+        "options": [
+          "输出流",
+          "输入流",
+          "文件指针",
+          "所有流"
+        ],
+        "correct": 0,
+        "explanation": "fflush 用于输出流，强制写入数据，不能用于输入流。",
+        "difficulty": 2
+      },
+      {
+        "question": "perror 函数的作用是？",
+        "options": [
+          "打印最近的系统错误信息",
+          "打印自定义错误",
+          "设置错误码",
+          "清空错误"
+        ],
+        "correct": 0,
+        "explanation": "perror 输出全局 errno 对应的错误字符串。",
+        "difficulty": 1
+      },
+      {
+        "question": "在文件操作中，使用 fgetc 读取到文件末尾时返回？",
+        "options": [
+          "EOF",
+          "0",
+          "-1",
+          "NULL"
+        ],
+        "correct": 0,
+        "explanation": "fgetc 返回 EOF（通常是-1）表示文件结束或错误。",
+        "difficulty": 1
+      },
+      {
+        "question": "逐行读取文本文件，正确的循环写法是？",
+        "options": [
+          "`while (fgets(buf, size, fp) != NULL) { ... }`",
+          "`while (!feof(fp)) { ... }`",
+          "`while (fp) { ... }`",
+          "`while (fgetc(fp)) { ... }`"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "feof 只有在读取操作尝试越过文件末尾后才置位，用它做循环条件会多读一次。正确做法是直接检查读取函数返回值。"
+      },
+      {
+        "question": "用 \"r\" 模式 fopen 一个不存在的文件，返回？",
+        "options": [
+          "NULL",
+          "一个空文件指针",
+          "直接崩溃",
+          "错误码 1"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "\"r\" 要求文件存在，否则 fopen 返回 NULL。使用前必须检查返回值。"
+      },
+      {
+        "question": "fscanf 之后为什么要检查返回值？",
+        "options": [
+          "判断成功转换的项数是否等于期望值，防止处理无效数据",
+          "没有意义",
+          "为了性能",
+          "让编译器高兴"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "fscanf 返回成功赋值的项数。若文件格式不符会返回较少项数或 EOF，不检查就使用变量会读到未初始化/陈旧数据。"
+      },
+      {
+        "question": "用 fwrite 直接写结构体到文件的问题？",
+        "options": [
+          "结构体含填充字节且布局随平台而异，跨平台不可移植",
+          "完全没问题",
+          "速度更慢",
+          "更省空间"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "结构体有对齐填充、各平台对齐规则和字节序不同，直接写二进制结构体在不同编译器/机器间无法互换。应逐字段序列化或按协议打包。"
+      },
+      {
+        "question": "文本模式写文件时，Windows 上 `\\n` 会被？",
+        "options": [
+          "转换成 `\\r\\n` 写入",
+          "原样写入",
+          "忽略",
+          "报错"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "文本模式下，写 '\\n' 会自动转成 '\\r\\n'，读时反向转换。二进制模式（\"wb\"）不做转换。"
+      },
+      {
+        "question": "fseek 的 whence 参数 SEEK_SET 表示？",
+        "options": [
+          "从文件开头定位",
+          "从文件末尾定位",
+          "从当前位置定位",
+          "由 offset 决定"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "SEEK_SET（开头）、SEEK_CUR（当前）、SEEK_END（末尾）。fseek(fp, offset, SEEK_SET) 从文件头偏移 offset 字节。"
+      },
+      {
+        "question": "`char c = fgetc(fp);` 然后用 c 判断 EOF，有什么问题？",
+        "options": [
+          "fgetc 返回 int，用 char 存会把 EOF(-1) 与字符 0xFF 混淆",
+          "没有问题",
+          "这样更高效",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "fgetc 返回 int 以区分 EOF(-1) 与 0~255 的字符。若用 char 存储，有符号 char 会把合法字符 0xFF 也当成 -1（EOF）。必须用 int 接收。"
+      },
+      {
+        "question": "fopen 的 \"a+\" 模式表示？",
+        "options": [
+          "读 + 追加写（文件不存在则创建）",
+          "只读",
+          "只写（截断）",
+          "二进制读"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "\"a+\" 打开用于读取和追加，文件不存在则创建，写操作总在末尾。\"w+\" 则会截断原文件。"
+      },
+      {
+        "question": "文件使用完毕后应该？",
+        "options": [
+          "调用 fclose(fp) 关闭并释放资源",
+          "调用 free(fp)",
+          "调用 close(fp)",
+          "什么都不用做"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "FILE* 由 fopen 分配，fclose 释放其占用的系统资源并刷新缓冲。忘记关闭会造成资源泄漏和缓冲丢失。"
+      },
+      {
+        "question": "`fputs(s, fp)` 写入文件的内容是？",
+        "options": [
+          "字符串 s（不含末尾的 '\\0'）",
+          "单个字符",
+          "一个字节",
+          "结构体"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "fputs 把字符串写入文件但不会写结尾 '\\0'。fputc 写单个字符。"
+      },
+      {
+        "question": "fseek 的 offset 类型是 long，要定位超大型文件（>2GB）时可用？",
+        "options": [
+          "fseeko / ftello（使用 off_t，64 位）",
+          "fflush",
+          "freopen",
+          "fread"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "long 在 32 位平台只有 4 字节，无法表示大文件偏移。POSIX 提供 fseeko/ftello 用 off_t（可 64 位），或用 fsetpos/fgetpos。"
+      },
+      {
+        "question": "`ferror(fp)` 用来检测？",
+        "options": [
+          "文件流是否发生了错误",
+          "是否到达文件末尾",
+          "文件指针位置",
+          "缓冲区大小"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "ferror 返回非 0 表示该流上发生过读写错误。feof 检测的是文件末尾。两者常配合 perror 使用。"
+      },
+      {
+        "question": "多个 FILE* 同时指向同一文件并写入，会？",
+        "options": [
+          "结果不确定，需要加锁或串行访问",
+          "自动安全合并",
+          "一定更快",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "标准不保证对同一文件的并发访问安全，可能交错写入或丢失数据。多线程/多进程写同一文件需自行同步。"
+      },
+      {
+        "question": "删除一个文件用哪个函数？",
+        "options": [
+          "`remove(\"file.txt\")`",
+          "`delete(\"file.txt\")`",
+          "`fclose(\"file.txt\")`",
+          "`unlink()`（POSIX）"
+        ],
+        "correct": 2,
+        "difficulty": 1,
+        "explanation": "标准库用 remove() 删除文件（也可删空目录）。unlink 是 POSIX 系统调用。题目选项中最标准、可移植的是 remove。"
+      },
+      {
+        "question": "把可变内容格式化到固定大小的栈缓冲区，隐患是？",
+        "options": [
+          "缓冲区溢出，应使用 snprintf 限制长度",
+          "没有隐患",
+          "速度慢",
+          "更安全"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "sprintf 不限制写入长度，内容超出缓冲区就会越界写。安全做法是 snprintf(buf, sizeof buf, ...) 或直接 fprintf 到文件。"
+      },
+      {
+        "question": "向文件进行格式化输出，使用？",
+        "options": [
+          "`fprintf(fp, \"%d\", x);`",
+          "`printf(\"%d\", x);`",
+          "`fputc(x);`",
+          "`sprintf(x);`"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "fprintf 与 printf 格式相同，只是多一个 FILE* 参数作为输出目标。printf 只输出到 stdout。"
+      },
+      {
+        "question": "fopen 之后没有检查返回值就直接 fread/fprintf，会发生？",
+        "options": [
+          "对 NULL 文件指针操作，崩溃（未定义行为）",
+          "正常",
+          "被忽略",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "fopen 失败返回 NULL，未检查就直接使用空指针进行 I/O 是未定义行为，典型表现是段错误。"
+      },
+      {
+        "question": "`fread(a, sizeof(int), n, fp)` 一次调用会读取？",
+        "options": [
+          "最多 n 个 int 元素",
+          "n 个字节",
+          "恰好 1 个元素",
+          "1 个字节"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "fread 的参数是元素大小和元素个数。它返回成功读到的完整元素个数（可能小于 n），应检查返回值判断是否读满。"
+      },
+      {
+        "question": "`FILE*` 与文件描述符（file descriptor）的关系是？",
+        "options": [
+          "FILE* 是标准库带缓冲的封装，fd 是系统调用层",
+          "两者完全相同",
+          "两者无关",
+          "FILE* 更底层"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "FILE* 在 fd 之上提供缓冲、格式化等功能（由 fopen 返回）；fd 是整数，用于 open/read/write 等系统调用。fileno() 可取得 fd。"
+      },
+      {
+        "question": "用 `tmpnam` 生成临时文件名的主要风险是？",
+        "options": [
+          "文件名可被猜测，存在竞争条件，推荐用 tmpfile",
+          "没有风险",
+          "速度太慢",
+          "文件名不唯一"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "tmpnam 返回的文件名可能被攻击者预创建（TOCTOU 竞态），且规范建议避免使用。tmpfile 直接创建并自动删除，更安全。"
+      }
+    ]
+  },
+  {
+    "chapterId": "12",
+    "title": "高级与底层专题",
+    "questions": [
+      {
+        "question": "位运算中，左移操作 << 对于有符号整数的行为是？",
+        "options": [
+          "左移不改变符号位",
+          "左移可能溢出",
+          "左移相当于乘以2的幂",
+          "以上都正确"
+        ],
+        "correct": 3,
+        "explanation": "左移可能改变符号位，导致溢出，但通常用于乘以2的幂。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个位运算可以实现清零操作？",
+        "options": [
+          "按位与 (&) 与掩码",
+          "按位或 (|)",
+          "按位异或 (^)",
+          "取反 (~)"
+        ],
+        "correct": 0,
+        "explanation": "按位与特定掩码可清除某些位。",
+        "difficulty": 1
+      },
+      {
+        "question": "可变参数函数必须包含哪个头文件？",
+        "options": [
+          "<stdarg.h>",
+          "<stddef.h>",
+          "<stdlib.h>",
+          "<stdio.h>"
+        ],
+        "correct": 0,
+        "explanation": "stdarg.h 定义了 va_list 及相关宏。",
+        "difficulty": 2
+      },
+      {
+        "question": "在可变参数函数中，va_start 的第二个参数是什么？",
+        "options": [
+          "最后一个固定参数",
+          "第一个可变参数",
+          "参数个数",
+          "va_list变量"
+        ],
+        "correct": 0,
+        "explanation": "va_start 需要最后一个固定参数来定位可变参数起始位置。",
+        "difficulty": 2
+      },
+      {
+        "question": "setjmp 和 longjmp 的作用是什么？",
+        "options": [
+          "实现非局部跳转",
+          "实现异常处理",
+          "跨函数跳转",
+          "以上都是"
+        ],
+        "correct": 3,
+        "explanation": "它们用于实现类似异常处理的非局部跳转。",
+        "difficulty": 2
+      },
+      {
+        "question": "setjmp 函数第一次调用返回什么？",
+        "options": [
+          "0",
+          "非0",
+          "1",
+          "未定义"
+        ],
+        "correct": 0,
+        "explanation": "setjmp 首次调用返回0，longjmp 跳转回来时返回非0。",
+        "difficulty": 3
+      },
+      {
+        "question": "内联汇编在C语言中的通常写法是？",
+        "options": [
+          "使用 __asm__ 关键字",
+          "使用 asm 关键字",
+          "两者都可以",
+          "C语言不支持内联汇编"
+        ],
+        "correct": 2,
+        "explanation": "GCC 支持 __asm__ 和 asm，具体取决于编译器。",
+        "difficulty": 2
+      },
+      {
+        "question": "位域（bit-field）中的成员类型通常是？",
+        "options": [
+          "int",
+          "unsigned int",
+          "char",
+          "所有整型都可以"
+        ],
+        "correct": 3,
+        "explanation": "位域可以使用 _Bool、signed int、unsigned int 等。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个操作可以交换两个整数值而不使用临时变量？",
+        "options": [
+          "a ^= b; b ^= a; a ^= b;",
+          "a = a + b; b = a - b; a = a - b;",
+          "两种都可以",
+          "两种都不可以"
+        ],
+        "correct": 2,
+        "explanation": "两种方法均可交换，但异或法可能出现同一变量问题。",
+        "difficulty": 1
+      },
+      {
+        "question": "对于位运算，~0 的结果是什么？",
+        "options": [
+          "全1（所有位为1）",
+          "0",
+          "-1",
+          "取决于类型"
+        ],
+        "correct": 0,
+        "explanation": "~0 对所有位取反，得到全1，在补码中表示-1（对于有符号），但无符号为最大值。",
+        "difficulty": 1
+      },
+      {
+        "question": "可变参数函数中，va_arg 的第二个参数指示什么？",
+        "options": [
+          "参数类型",
+          "参数值",
+          "参数个数",
+          "参数名称"
+        ],
+        "correct": 0,
+        "explanation": "va_arg 需要指定参数类型以正确读取。",
+        "difficulty": 2
+      },
+      {
+        "question": "longjmp 可能导致什么安全问题？",
+        "options": [
+          "破坏栈帧",
+          "跳过清理",
+          "资源泄漏",
+          "以上都是"
+        ],
+        "correct": 3,
+        "explanation": "longjmp 可能跳过函数结束，导致资源未释放等问题。",
+        "difficulty": 2
+      },
+      {
+        "question": "在C语言中，是否允许在函数内部定义静态函数？",
+        "options": [
+          "允许",
+          "不允许",
+          "可以但无意义",
+          "取决于编译器"
+        ],
+        "correct": 1,
+        "explanation": "static 只能修饰全局函数或局部变量，不能修饰局部函数。",
+        "difficulty": 2
+      },
+      {
+        "question": "使用 __attribute__((packed)) 可以做什么？",
+        "options": [
+          "紧凑结构体，取消对齐",
+          "增加对齐",
+          "优化速度",
+          "禁用优化"
+        ],
+        "correct": 0,
+        "explanation": "packed 属性使结构体按紧凑方式存储，节省空间但可能影响性能。",
+        "difficulty": 2
+      },
+      {
+        "question": "位运算中，右移符号 >> 对于有符号负数的行为是？",
+        "options": [
+          "算术右移（补符号位）",
+          "逻辑右移（补0）",
+          "未定义",
+          "取决于编译器"
+        ],
+        "correct": 0,
+        "explanation": "C标准规定右移对有符号数是实现定义的，但通常使用算术右移。",
+        "difficulty": 2
+      },
+      {
+        "question": "可变参数函数必须至少有一个固定参数吗？",
+        "options": [
+          "必须",
+          "不必",
+          "取决于标准",
+          "可以没有"
+        ],
+        "correct": 0,
+        "explanation": "C标准规定可变参数函数必须有至少一个固定参数以便定位。",
+        "difficulty": 1
+      },
+      {
+        "question": "setjmp 保存的上下文包括什么？",
+        "options": [
+          "程序计数器",
+          "栈指针",
+          "信号掩码",
+          "以上所有"
+        ],
+        "correct": 3,
+        "explanation": "setjmp 保存寄存器状态，包括PC、SP等，具体实现可能包括信号掩码。",
+        "difficulty": 2
+      },
+      {
+        "question": "内联汇编中使用 volatile 关键字的作用是？",
+        "options": [
+          "防止被优化",
+          "表示可变",
+          "表示只读",
+          "表示内存访问"
+        ],
+        "correct": 0,
+        "explanation": "volatile 告诉编译器不要优化该 asm 语句。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个不是位运算符？",
+        "options": [
+          "&",
+          "|",
+          "^",
+          "!"
+        ],
+        "correct": 3,
+        "explanation": "! 是逻辑非，不是位运算符。",
+        "difficulty": 1
+      },
+      {
+        "question": "在嵌入式编程中，位操作常用于？",
+        "options": [
+          "寄存器配置",
+          "标志位检查",
+          "位掩码",
+          "以上都是"
+        ],
+        "correct": 3,
+        "explanation": "位操作是嵌入式编程基础，用于硬件操作。",
+        "difficulty": 1
+      },
+      {
+        "question": "有符号负整数右移一位，常见编译器（如 GCC）的行为是？",
+        "options": [
+          "算术右移：补符号位（相当于除以 2 向负无穷取整）",
+          "逻辑右移：补 0",
+          "未定义行为",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "对有符号负数的右移，C 标准规定为实现定义。主流编译器采用算术右移：高位补符号位，-8>>1 = -4，-9>>1 = -5（向负无穷舍入）。"
+      },
+      {
+        "question": "要判断一个数 x 是否为 2 的幂，常用技巧是？",
+        "options": [
+          "`(x & (x - 1)) == 0`（且 x 不为 0）",
+          "`x % 2 == 0`",
+          "`x / 2 == 1`",
+          "`x & 1 == 1`"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "2 的幂的二进制只有一个 1 位。x-1 会把该 1 位及其后全变 1，与 x 相与为 0。需额外排除 x==0 的情况。"
+      },
+      {
+        "question": "`a ^ a` 的结果是？",
+        "options": [
+          "0",
+          "1",
+          "a",
+          "2a"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "任何数与自身异或，每一位相同，异或结果为 0。利用 `a^b^b = a` 可实现简单加密/交换。"
+      },
+      {
+        "question": "`~0`（按位取反）在无符号类型下等于？",
+        "options": [
+          "该类型的最大值（所有位为 1）",
+          "0",
+          "1",
+          "负数"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "按位取反把所有位变 1。对 unsigned 类型这就是其最大值，对有符号补码类型则解释为 -1。"
+      },
+      {
+        "question": "判断奇偶用 `x & 1`，对于负数 x，`x % 2` 可能为 -1 而 `x & 1` 为 1，下列说法正确的是？",
+        "options": [
+          "`x % 2` 可能为 -1（符号与被除数相同），`x & 1` 只判断最低位",
+          "两者结果永远相同",
+          "`x & 1` 用于负数会出错",
+          "`x % 2` 永远正确"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "C99 规定取模结果符号与被除数一致，-3%2 = -1。用 `x & 1` 只看最低位，-3 & 1 = 1，能正确判断奇数。两者判断奇偶的语义不同。"
+      },
+      {
+        "question": "用位运算实现乘以 2 的 n 次幂，使用？",
+        "options": [
+          "`x << n`",
+          "`x >> n`",
+          "`x ^ n`",
+          "`x & n`"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "左移 n 位相当于乘以 2^n（对无溢出/无符号数）。`x << 2` 等价于 `x * 4`。"
+      },
+      {
+        "question": "可变参数函数中，无法确定参数个数的常见解决方法是？",
+        "options": [
+          "用一个参数（如 count 或格式串）显式说明个数",
+          "靠猜",
+          "靠随机",
+          "编译器自动推断"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "变参没有自动计数，必须由第一个固定参数（如 printf 的格式串、或显式 count）给出个数/类型信息，否则 va_arg 无法正确推进。"
+      },
+      {
+        "question": "va_arg 读取参数时若与传入的实际类型不符，结果是？",
+        "options": [
+          "未定义行为（可能读到垃圾值或崩溃）",
+          "自动转换",
+          "编译器报错",
+          "返回 0"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "va_arg 完全依赖程序员指定的类型去解释内存，类型不符是未定义行为。且 char/short 会提升为 int、float 提升为 double，必须按提升后的类型读取。"
+      },
+      {
+        "question": "setjmp 与 longjmp 的典型用途是？",
+        "options": [
+          "在深层嵌套出错时直接跳回起点，模拟异常/错误恢复",
+          "普通函数调用",
+          "优化循环",
+          "处理字符串"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "longjmp 可跳过多层函数调用直接回到之前 setjmp 保存的环境，常用于嵌套深度大的错误处理。但会跳过栈上资源的清理，需小心。"
+      },
+      {
+        "question": "longjmp 之后，哪些变量应声明为 volatile 以免取值未定义？",
+        "options": [
+          "可能被 longjmp 跳过的栈上的非 volatile 自动变量",
+          "全局变量",
+          "static 变量",
+          "堆变量"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "longjmp 越过 setjmp 所在函数时，该函数的自动变量在 setjmp 后的变化未定义，除非声明为 volatile。C 标准建议依赖非 volatile 自动变量值的代码慎用 longjmp。"
+      },
+      {
+        "question": "内联汇编通常用于？",
+        "options": [
+          "性能关键路径、直接操作硬件指令",
+          "替代所有 C 代码",
+          "编译提速",
+          "代码混淆"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "内联汇编允许在 C 中嵌入特定 CPU 指令，用于高性能计算、内核驱动、原子操作等场景。但可移植性差、易错。"
+      },
+      {
+        "question": "C11 提供的原子操作头文件是？",
+        "options": [
+          "<stdatomic.h>",
+          "<thread.h>",
+          "<atomic.h>",
+          "<stdint.h>"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "C11 原子操作 API 在 <stdatomic.h>（定义 atomic_int、atomic_store、atomic_fetch_add 等）。<atomic.h> 是 POSIX/旧平台头文件。"
+      },
+      {
+        "question": "用位掩码测试某一位是否被置位，正确的表达式是？",
+        "options": [
+          "`(x & mask) != 0`",
+          "`x | mask`",
+          "`x & mask == 1`",
+          "`x ^ mask`"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`x & mask` 提取对应位，结果非 0 即该位为 1。注意 `x & mask == 1` 会因优先级先比较 `mask == 1` 再按位与，是错误写法。"
+      },
+      {
+        "question": "用位运算快速清零某一位（mask 中该位为 1），使用？",
+        "options": [
+          "`x &= ~mask`",
+          "`x |= mask`",
+          "`x ^= mask`",
+          "`x &= mask`"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "`~mask` 把要清的位变 0，其余位变 1，与 x 相与即可清零指定的一位而保持其他位不变。"
+      },
+      {
+        "question": "`_Generic` 关键字（C11）的作用是？",
+        "options": [
+          "根据参数类型选择不同表达式（编译期类型分派）",
+          "泛型内存分配",
+          "模板函数",
+          "类型转换"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "`_Generic` 根据第一个表达式的类型，在编译期选择一个匹配的表达式，是 C 实现『重载』的一种方式。"
+      },
+      {
+        "question": "可变参数宏中如何转发到 printf 等函数？",
+        "options": [
+          "用 `__VA_ARGS__` 原样传给 printf，如 `#define LOG(...) printf(__VA_ARGS__)`",
+          "无法转发",
+          "只能转发单个参数",
+          "需用 va_list"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "变参宏用 `__VA_ARGS__` 直接把可变参数展开到调用中，即可转发给 printf 等函数。"
+      },
+      {
+        "question": "`char x = 0x80;` 若 char 有符号，那么 `x >> 3` 的结果取决于？",
+        "options": [
+          "实现定义：可能是算术右移（-16）或逻辑右移（16）",
+          "一定是 16",
+          "一定是 -16",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "x 为 -128，右移负值是实现定义行为。算术右移补 1 得 -16，逻辑右移补 0 得 16。可移植代码应避免对有符号负数做右移。"
+      },
+      {
+        "question": "longjmp 必须在调用 setjmp 的哪个范围内调用才安全？",
+        "options": [
+          "必须在 setjmp 所在的函数仍存活（未返回）时调用",
+          "任意位置都可以",
+          "只能在 setjmp 的同一函数内",
+          "只能在 main 中"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "setjmp 保存的环境在其所在函数返回后就失效，此时 longjmp 是未定义行为。安全用法是让 setjmp 函数保持活跃（如保持栈帧）。"
+      },
+      {
+        "question": "`a ^= b; b ^= a; a ^= b;` 交换 a、b 的前提条件是？",
+        "options": [
+          "a 和 b 必须指向不同对象（若同一对象则会被清零）",
+          "任意",
+          "a、b 必须为浮点",
+          "a、b 必须非 0"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "若 a、b 是同一个变量，`a^=a` 先把它清零，交换失败。这个技巧可读性差，实际不如用临时变量。"
+      },
+      {
+        "question": "可变参数函数末尾缺少 va_end() 会？",
+        "options": [
+          "未定义行为（某些平台会破坏栈），必须配对调用",
+          "被编译器忽略",
+          "自动调用",
+          "仅影响速度"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "va_start/va_end 必须配对。在部分 ABI（如 x86-64）上 va_start 会分配存储，缺 va_end 是未定义行为，可能引发问题。"
+      }
+    ]
+  },
+  {
+    "chapterId": "13",
+    "title": "数据结构与算法",
+    "questions": [
+      {
+        "question": "链表与数组相比，主要优势是？",
+        "options": [
+          "随机访问快",
+          "插入删除效率高",
+          "内存连续",
+          "易于排序"
+        ],
+        "correct": 1,
+        "explanation": "链表插入删除只需修改指针，不需要移动元素。",
+        "difficulty": 2
+      },
+      {
+        "question": "栈（Stack）的特点是？",
+        "options": [
+          "先进先出",
+          "先进后出",
+          "随机访问",
+          "双向操作"
+        ],
+        "correct": 1,
+        "explanation": "栈是后进先出（LIFO）。",
+        "difficulty": 1
+      },
+      {
+        "question": "队列（Queue）的特点是？",
+        "options": [
+          "先进先出",
+          "先进后出",
+          "随机访问",
+          "双端操作"
+        ],
+        "correct": 0,
+        "explanation": "队列是先进先出（FIFO）。",
+        "difficulty": 1
+      },
+      {
+        "question": "二叉树遍历中，前序遍历的顺序是？",
+        "options": [
+          "根-左-右",
+          "左-根-右",
+          "左-右-根",
+          "根-右-左"
+        ],
+        "correct": 0,
+        "explanation": "前序先访问根节点，然后左子树，最后右子树。",
+        "difficulty": 1
+      },
+      {
+        "question": "二分查找的前提条件是？",
+        "options": [
+          "数据有序",
+          "数据随机",
+          "数据量小",
+          "数据链式存储"
+        ],
+        "correct": 0,
+        "explanation": "二分查找要求数组有序。",
+        "difficulty": 1
+      },
+      {
+        "question": "冒泡排序的时间复杂度（平均）是？",
+        "options": [
+          "O(n)",
+          "O(n log n)",
+          "O(n^2)",
+          "O(1)"
+        ],
+        "correct": 2,
+        "explanation": "冒泡排序平均时间复杂度为O(n^2)。",
+        "difficulty": 1
+      },
+      {
+        "question": "快速排序的核心思想是？",
+        "options": [
+          "分治法",
+          "交换法",
+          "插入法",
+          "归并"
+        ],
+        "correct": 0,
+        "explanation": "快速排序是分治法的典型应用。",
+        "difficulty": 1
+      },
+      {
+        "question": "在链表中，访问第n个元素的时间复杂度是？",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(log n)",
+          "O(n^2)"
+        ],
+        "correct": 1,
+        "explanation": "链表需要遍历到第n个，O(n)。",
+        "difficulty": 1
+      },
+      {
+        "question": "二叉搜索树中，中序遍历得到什么顺序？",
+        "options": [
+          "升序",
+          "降序",
+          "随机",
+          "层序"
+        ],
+        "correct": 0,
+        "explanation": "中序遍历二叉搜索树得到有序序列（升序）。",
+        "difficulty": 1
+      },
+      {
+        "question": "哈希表查找的平均时间复杂度是？",
+        "options": [
+          "O(1)",
+          "O(n)",
+          "O(log n)",
+          "O(n^2)"
+        ],
+        "correct": 0,
+        "explanation": "哈希表在冲突较少时平均O(1)。",
+        "difficulty": 1
+      },
+      {
+        "question": "递归实现斐波那契数列的问题主要是？",
+        "options": [
+          "栈溢出",
+          "重复计算",
+          "效率低",
+          "以上都是"
+        ],
+        "correct": 3,
+        "explanation": "递归计算斐波那契有大量重复计算，效率低且可能栈溢出。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个排序算法是稳定的？",
+        "options": [
+          "快速排序",
+          "归并排序",
+          "堆排序",
+          "选择排序"
+        ],
+        "correct": 1,
+        "explanation": "归并排序是稳定的，快速排序通常不稳定。",
+        "difficulty": 1
+      },
+      {
+        "question": "循环队列的主要优点是？",
+        "options": [
+          "充分利用空间",
+          "操作简单",
+          "支持随机访问",
+          "易于实现"
+        ],
+        "correct": 0,
+        "explanation": "循环队列避免假溢出，更好地利用数组空间。",
+        "difficulty": 2
+      },
+      {
+        "question": "二叉树的最大深度（高度）是指？",
+        "options": [
+          "根到最远叶子的节点数",
+          "根到最近叶子的节点数",
+          "节点总数",
+          "叶节点数"
+        ],
+        "correct": 0,
+        "explanation": "深度从根开始，根深度为1。",
+        "difficulty": 1
+      },
+      {
+        "question": "在链表中，删除某个节点需要知道什么？",
+        "options": [
+          "该节点或前驱节点",
+          "仅该节点",
+          "头指针",
+          "尾指针"
+        ],
+        "correct": 0,
+        "explanation": "删除节点需要其前驱节点（或双链表直接）。",
+        "difficulty": 2
+      },
+      {
+        "question": "以下哪个不是树的遍历方式？",
+        "options": [
+          "前序",
+          "中序",
+          "后序",
+          "顺序"
+        ],
+        "correct": 3,
+        "explanation": "顺序遍历不是树的常见遍历，常见为前中后和层序。",
+        "difficulty": 1
+      },
+      {
+        "question": "堆（Heap）通常用于实现？",
+        "options": [
+          "优先队列",
+          "栈",
+          "队列",
+          "数组"
+        ],
+        "correct": 0,
+        "explanation": "堆是实现优先队列的常用数据结构。",
+        "difficulty": 1
+      },
+      {
+        "question": "冒泡排序中，如果在一趟排序中未发生交换，可以提前结束，这称为？",
+        "options": [
+          "优化冒泡",
+          "快速排序",
+          "插入排序",
+          "选择排序"
+        ],
+        "correct": 0,
+        "explanation": "如果某趟无交换，说明已有序，可提前终止。",
+        "difficulty": 1
+      },
+      {
+        "question": "图的深度优先搜索通常使用哪种数据结构？",
+        "options": [
+          "栈",
+          "队列",
+          "数组",
+          "链表"
+        ],
+        "correct": 0,
+        "explanation": "DFS通常用栈（递归或显式栈）。",
+        "difficulty": 1
+      },
+      {
+        "question": "字符串匹配中，KMP算法的时间复杂度是？",
+        "options": [
+          "O(n)",
+          "O(n*m)",
+          "O(n+m)",
+          "O(m)"
+        ],
+        "correct": 2,
+        "explanation": "KMP算法时间复杂度为O(n+m)。",
+        "difficulty": 1
+      },
+      {
+        "question": "插入排序平均时间复杂度是？",
+        "options": [
+          "O(n^2)",
+          "O(n)",
+          "O(log n)",
+          "O(n log n)"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "插入排序平均和最坏都是 O(n^2)；最好的情况（已有序）是 O(n)。适合小规模数据。"
+      },
+      {
+        "question": "对一个已排序数组查找元素，最快的方法是？",
+        "options": [
+          "二分查找 O(log n)",
+          "顺序查找 O(n)",
+          "哈希 O(log n)",
+          "冒泡查找"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "已排序数组用二分查找，每次折半，时间复杂度 O(log n)。顺序查找是 O(n)。"
+      },
+      {
+        "question": "链表相比数组的优势是？",
+        "options": [
+          "插入/删除不需要搬移元素，复杂度 O(1)（给定位置）",
+          "随机访问快",
+          "内存连续",
+          "缓存友好"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "链表插入/删除只需修改指针，数组则需要移动后续元素（O(n)）。但链表不支持 O(1) 随机访问，且缓存不友好。"
+      },
+      {
+        "question": "单链表删除节点（给定前驱节点 pre）需要？",
+        "options": [
+          "把 pre->next 指向被删节点的 next，再 free 被删节点",
+          "只需 free 被删节点",
+          "需要遍历全表",
+          "只需改被删节点的值"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "删除节点必须修改其前驱的 next 指针绕过它。如果只给了要删的节点而没有前驱，单链表还需从头遍历找前驱。"
+      },
+      {
+        "question": "递归计算斐波那契 fib(40) 非常慢，原因是？",
+        "options": [
+          "存在大量重复子问题计算，复杂度约 O(2^n)",
+          "整数溢出",
+          "栈不够用",
+          "编译器未优化"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "朴素的 fib 递归会重复计算同一个子问题（如 fib(38) 被算多次），指数级增长。用迭代或记忆化可降到 O(n)。"
+      },
+      {
+        "question": "栈（stack）适合用来实现？",
+        "options": [
+          "函数调用、表达式求值、括号匹配",
+          "公平排队",
+          "作业调度",
+          "广度优先遍历"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "栈的 LIFO 特性天然匹配函数调用栈、表达式求值、括号匹配、DFS 等。队列才是 FIFO。"
+      },
+      {
+        "question": "广度优先搜索（BFS）使用什么数据结构？",
+        "options": [
+          "队列",
+          "栈",
+          "数组",
+          "链表"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "BFS 按层扩展，需要 FIFO 队列存储待访问节点。DFS 用栈（或递归）。"
+      },
+      {
+        "question": "二叉搜索树中序遍历的结果是？",
+        "options": [
+          "升序排列",
+          "降序排列",
+          "随机顺序",
+          "先序遍历"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "BST 的左子树都小于根、右子树都大于根，中序（左-根-右）遍历得到升序序列。"
+      },
+      {
+        "question": "快速排序最坏情况下（如已排序输入 + 固定取首元素为基准）时间复杂度是？",
+        "options": [
+          "O(n^2)",
+          "O(n log n)",
+          "O(n)",
+          "O(log n)"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "快排平均 O(n log n)，但基准选取不好时（如有序数组取首元素）退化为 O(n^2)。随机化基准或三数取中可缓解。"
+      },
+      {
+        "question": "栈的后进先出（LIFO）对应哪种场景？",
+        "options": [
+          "浏览器后退、撤销操作",
+          "打印队列",
+          "银行排队",
+          "任务调度"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "浏览器后退、编辑器撤销都是『最近的操作最先处理』，正是 LIFO 语义，用栈实现。"
+      },
+      {
+        "question": "对链表进行顺序访问第 k 个元素，时间复杂度是？",
+        "options": [
+          "O(k)",
+          "O(1)",
+          "O(log k)",
+          "O(n^2)"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "链表无法按下标直接定位，必须从头遍历 k 步，因此 O(k)。这是链表相对数组的劣势。"
+      },
+      {
+        "question": "哈希表解决冲突的一种方法是？",
+        "options": [
+          "链地址法（链表/桶）和开放寻址法",
+          "二分法",
+          "排序法",
+          "暴力遍历"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "常见冲突解决：链地址法（同一槽位串链表）和开放寻址法（线性探测、二次探测等）。"
+      },
+      {
+        "question": "判断一个单链表是否有环，常用？",
+        "options": [
+          "快慢指针（Floyd 判圈）",
+          "二分查找",
+          "哈希排序",
+          "归并"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "快指针每次走两步、慢指针走一步，若有环两者终会相遇，空间 O(1)。"
+      },
+      {
+        "question": "归并排序的主要缺点是？",
+        "options": [
+          "需要额外 O(n) 的辅助空间",
+          "不稳定",
+          "无法处理大数据",
+          "复杂度是 O(n^2)"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "归并排序稳定、O(n log n)，但合并时需要与原数组等大的辅助数组，空间 O(n)。"
+      },
+      {
+        "question": "在 C 中用数组实现循环队列，判断队空与队满需要？",
+        "options": [
+          "牺牲一个存储单元，或用 size 字段/标志位区分",
+          "靠数组下标",
+          "无法区分",
+          "靠 malloc"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "队空时 front==rear，队满若也 front==rear 就无法区分。常用方法：留一个空位（front 指向空位）、记录元素个数、或用标志位。"
+      },
+      {
+        "question": "快速排序是不稳定排序，意味着？",
+        "options": [
+          "相等元素的相对顺序可能被打乱",
+          "结果一定错误",
+          "速度一定慢",
+          "占用空间一定大"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "稳定排序保持相等元素的原始相对次序，不稳定则可能改变。快排、堆排、选择排序不稳定；归并、冒泡、插入稳定。"
+      },
+      {
+        "question": "深度优先遍历（DFS）可以用递归实现，因为递归本质上依赖？",
+        "options": [
+          "栈",
+          "队列",
+          "堆",
+          "链表"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "递归调用会压入函数调用栈，DFS 的『回溯』正是栈的特性。显式实现 DFS 也常用栈。"
+      },
+      {
+        "question": "对一个几乎有序的数组排序，哪种算法最合适？",
+        "options": [
+          "插入排序（几乎有序时接近 O(n)）",
+          "快排最坏情况",
+          "堆排序",
+          "选择排序"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "插入排序对近有序数据性能极佳（每元素基本只需一次比较）。而快排固定基准在有序输入下反而退化。"
+      },
+      {
+        "question": "二分查找对数据结构的要求是？",
+        "options": [
+          "必须是有序的且支持 O(1) 随机访问（如数组）",
+          "链表即可",
+          "必须是树",
+          "无序即可"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "二分查找需要随机访问中间元素，数组满足 O(1) 下标访问；链表无法高效跳转，不适合二分。"
+      },
+      {
+        "question": "把递归改写成循环（尾递归优化），主要解决？",
+        "options": [
+          "栈空间开销和调用开销",
+          "代码可读性",
+          "编译速度",
+          "内存碎片"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "迭代改写避免了每层递归的栈帧开销，防止深递归栈溢出，也减少了函数调用开销。"
+      }
+    ]
+  },
+  {
+    "chapterId": "14",
+    "title": "工程化与调试",
+    "questions": [
+      {
+        "question": "Makefile中，目标（target）和依赖（prerequisites）的关系是？",
+        "options": [
+          "目标依赖于依赖，若依赖更新则重新生成目标",
+          "依赖依赖于目标",
+          "两者等价",
+          "无关系"
+        ],
+        "correct": 0,
+        "explanation": "Makefile规则表示目标需要依赖，若依赖变化则执行命令。",
+        "difficulty": 1
+      },
+      {
+        "question": "在Makefile中，.PHONY 目标的用途是？",
+        "options": [
+          "声明伪目标，不生成文件",
+          "生成临时文件",
+          "指定依赖",
+          "定义变量"
+        ],
+        "correct": 0,
+        "explanation": ".PHONY 告诉make目标不是文件，总是执行。",
+        "difficulty": 1
+      },
+      {
+        "question": "GDB调试中，break 命令的缩写是？",
+        "options": [
+          "b",
+          "br",
+          "break",
+          "bp"
+        ],
+        "correct": 0,
+        "explanation": "GDB常用缩写，break 可简写为 b。",
+        "difficulty": 1
+      },
+      {
+        "question": "GDB中，next 和 step 的区别是？",
+        "options": [
+          "next 不进入函数，step 进入",
+          "next 单步，step 单步",
+          "两者一样",
+          "next 用于汇编"
+        ],
+        "correct": 0,
+        "explanation": "next 跳过函数调用，step 会进入函数。",
+        "difficulty": 1
+      },
+      {
+        "question": "GDB中，print 命令用于？",
+        "options": [
+          "打印变量值",
+          "打印源代码",
+          "打印寄存器",
+          "打印内存"
+        ],
+        "correct": 0,
+        "explanation": "print 显示变量或表达式的值。",
+        "difficulty": 1
+      },
+      {
+        "question": "静态库（.a）和动态库（.so）的主要区别是？",
+        "options": [
+          "静态库编译时链接，动态库运行时加载",
+          "静态库体积小",
+          "动态库不能跨平台",
+          "静态库更新方便"
+        ],
+        "correct": 0,
+        "explanation": "静态库在编译时合并到可执行文件，动态库在运行时加载。",
+        "difficulty": 1
+      },
+      {
+        "question": "使用 gcc 编译时，-g 选项的作用是？",
+        "options": [
+          "生成调试信息",
+          "优化代码",
+          "指定输出文件名",
+          "添加警告"
+        ],
+        "correct": 0,
+        "explanation": "-g 添加调试符号，便于GDB调试。",
+        "difficulty": 1
+      },
+      {
+        "question": "防御式编程中，assert 宏的作用是？",
+        "options": [
+          "检查条件，若失败则终止程序",
+          "输出调试信息",
+          "忽略错误",
+          "记录日志"
+        ],
+        "correct": 0,
+        "explanation": "assert 在条件为假时调用 abort 终止程序。",
+        "difficulty": 2
+      },
+      {
+        "question": "NDEBUG 宏用于什么？",
+        "options": [
+          "禁用 assert",
+          "启用 assert",
+          "控制调试输出",
+          "定义调试级别"
+        ],
+        "correct": 0,
+        "explanation": "定义 NDEBUG 后，assert 被忽略。",
+        "difficulty": 2
+      },
+      {
+        "question": "Makefile中的变量赋值，= 和 := 的区别是？",
+        "options": [
+          "= 是递归展开，:= 是简单展开",
+          "= 是简单展开，:= 是递归展开",
+          "两者相同",
+          "= 用于字符串"
+        ],
+        "correct": 0,
+        "explanation": "= 变量在引用时展开（递归），:= 立即展开。",
+        "difficulty": 1
+      },
+      {
+        "question": "GDB中，info registers 命令显示？",
+        "options": [
+          "寄存器值",
+          "变量值",
+          "内存内容",
+          "断点信息"
+        ],
+        "correct": 0,
+        "explanation": "info registers 显示CPU寄存器状态。",
+        "difficulty": 1
+      },
+      {
+        "question": "动态库在Linux下的常见扩展名是？",
+        "options": [
+          ".so",
+          ".dll",
+          ".a",
+          ".out"
+        ],
+        "correct": 0,
+        "explanation": "Linux动态库扩展名为 .so，Windows为 .dll。",
+        "difficulty": 1
+      },
+      {
+        "question": "使用 gcc 创建静态库，通常需要先编译成目标文件，然后用 ar 工具归档，是否正确？",
+        "options": [
+          "正确",
+          "错误，直接使用 gcc",
+          "错误，使用 ld",
+          "部分正确"
+        ],
+        "correct": 0,
+        "explanation": "静态库制作步骤：gcc -c 生成 .o，ar rcs libxxx.a *.o。",
+        "difficulty": 1
+      },
+      {
+        "question": "防御式编程中，检查函数参数有效性的做法属于？",
+        "options": [
+          "输入验证",
+          "错误处理",
+          "断言",
+          "日志记录"
+        ],
+        "correct": 0,
+        "explanation": "检查参数合法性是输入验证的一部分。",
+        "difficulty": 1
+      },
+      {
+        "question": "GDB中，watch 命令用于？",
+        "options": [
+          "设置断点",
+          "设置观察点",
+          "监视变量变化",
+          "打印变量"
+        ],
+        "correct": 1,
+        "explanation": "watch 设置数据断点，当变量被修改时暂停。",
+        "difficulty": 1
+      },
+      {
+        "question": "Makefile中，$@ 和 $^ 分别表示？",
+        "options": [
+          "目标文件名和所有依赖",
+          "依赖和目标",
+          "目标名和第一个依赖",
+          "依赖名和目标"
+        ],
+        "correct": 0,
+        "explanation": "$@ 代表目标，$^ 代表所有依赖。",
+        "difficulty": 1
+      },
+      {
+        "question": "使用 valgrind 可以检测什么？",
+        "options": [
+          "内存泄漏",
+          "未初始化内存",
+          "内存越界",
+          "以上都是"
+        ],
+        "correct": 3,
+        "explanation": "Valgrind 是强大的内存检测工具。",
+        "difficulty": 2
+      },
+      {
+        "question": "调试时，core dump 文件包含什么？",
+        "options": [
+          "程序崩溃时的内存映像",
+          "源代码",
+          "可执行文件",
+          "日志信息"
+        ],
+        "correct": 0,
+        "explanation": "core dump 是进程内存转储，用于事后分析。",
+        "difficulty": 1
+      },
+      {
+        "question": "GCC 中，-O2 和 -O3 的区别？",
+        "options": [
+          "优化级别不同，-O3 更激进",
+          "-O2 不优化",
+          "-O3 不优化",
+          "两者相同"
+        ],
+        "correct": 0,
+        "explanation": "-O3 比 -O2 进行更多优化，可能增加编译时间和代码大小。",
+        "difficulty": 1
+      },
+      {
+        "question": "在Makefile中，可以包含其他Makefile文件吗？",
+        "options": [
+          "可以，使用 include",
+          "不可以",
+          "可以，使用 import",
+          "可以，使用 source"
+        ],
+        "correct": 0,
+        "explanation": "Makefile 支持 include 指令包含其他文件。",
+        "difficulty": 1
+      },
+      {
+        "question": "gcc 把源码编译成目标文件用 `-c`，链接多个目标文件生成可执行文件用？",
+        "options": [
+          "`gcc a.o b.o -o prog`",
+          "`gcc -c a.o b.o`",
+          "`gcc -E a.o b.o`",
+          "`ar a.o b.o`"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "-c 只编译不链接生成 .o；链接时直接给出一堆 .o 让 gcc 调用链接器，-o 指定输出名。"
+      },
+      {
+        "question": "Makefile 中，目标文件依赖的源文件更新后，make 会？",
+        "options": [
+          "只重新编译依赖发生变化的规则",
+          "重新编译所有文件",
+          "什么都不做",
+          "报错"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "make 依据文件时间戳判断：只有当依赖比目标新时才执行该规则的命令，实现增量编译。"
+      },
+      {
+        "question": "GDB 中 `next` 与 `step` 的区别是？",
+        "options": [
+          "next 不进入被调函数，step 会进入",
+          "next 更快",
+          "两者完全相同",
+          "step 跳过函数"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "next 单步执行且不进入函数调用；step 会跟进函数内部。调试到关键函数时常用 step。"
+      },
+      {
+        "question": "程序崩溃后生成 core dump，用 GDB 分析的方式是？",
+        "options": [
+          "`gdb ./prog core` 后使用 bt 查看调用栈",
+          "无法分析",
+          "重新运行即可",
+          "删除 core 文件"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "`gdb 可执行文件 core文件` 进入调试，`bt`（backtrace）打印崩溃时的调用栈，是定位崩溃的利器。"
+      },
+      {
+        "question": "链接时 `undefined reference` 与 `multiple definition` 的区别？",
+        "options": [
+          "前者是符号没有定义（缺文件/库），后者是符号被定义多次（重复）",
+          "没有区别",
+          "都是编译错误",
+          "都发生在编译期"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "undefined reference 表示找不到符号定义（漏了库/目标文件）；multiple definition 表示同名符号出现在多个编译单元（重复定义）。都发生在链接期。"
+      },
+      {
+        "question": "`static` 在文件作用域修饰函数/全局变量，效果是？",
+        "options": [
+          "限制其链接性为内部（仅本文件可见），避免冲突",
+          "使其只读",
+          "提高性能",
+          "使其自动内联"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "文件作用域的 static 使符号只在当前编译单元可见（内部链接），不同文件可用同名函数/变量而不冲突。"
+      },
+      {
+        "question": "断言 `assert(expr)` 在什么条件下生效？",
+        "options": [
+          "未定义 NDEBUG 时；expr 为假则终止程序并报告位置",
+          "总是生效",
+          "从不生效",
+          "仅在 release 生效"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "assert 在 <assert.h>。若定义了 NDEBUG，assert 被替换为空语句（失效）。expr 为假时打印文件、行号并调用 abort。"
+      },
+      {
+        "question": "volatile 关键字告诉编译器什么？",
+        "options": [
+          "该对象可能被程序外部修改，禁止优化其访问",
+          "变量只读",
+          "变量需要更快的访问",
+          "变量是全局的"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "volatile 防止编译器把对该变量的访问优化掉或缓存到寄存器，常用于硬件寄存器、信号处理共享变量。它不解决线程同步问题。"
+      },
+      {
+        "question": "内存在同一作用域内既能被静态数组用又可能被越界访问，检测这类错误的最佳工具是？",
+        "options": [
+          "Valgrind 或 ASan（AddressSanitizer）",
+          "gcc -c",
+          "gdb print",
+          "make"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "Valgrind 和 AddressSanitizer（编译时 -fsanitize=address）专门检测越界访问、释放后使用等内存错误。"
+      },
+      {
+        "question": "头文件包含 order 敏感（A 依赖 B 的 typedef 却先包含 A）会导致？",
+        "options": [
+          "编译错误，应在依赖方先包含被依赖的头文件",
+          "运行错误",
+          "链接错误",
+          "没有影响"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "头文件按顺序展开，若先展开的代码用到尚未声明的类型/函数就会编译失败。设计头文件应自包含（自己 include 依赖）。"
+      },
+      {
+        "question": "用 `gcc -DDEBUG` 的 `-D` 选项作用是？",
+        "options": [
+          "在编译命令行定义宏 DEBUG（等价于文件内 #define DEBUG）",
+          "开启调试模式",
+          "删除宏",
+          "指定调试信息"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "-Dname 在预处理前定义宏，相当于 #define name。常配合 #ifdef DEBUG 启用调试代码。"
+      },
+      {
+        "question": "将一个 .c 文件编译为可执行文件的完整命令是？",
+        "options": [
+          "`gcc -Wall main.c -o prog`",
+          "`gcc -c main.c`",
+          "`gcc -E main.c`",
+          "`gcc -S main.c`"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "不带 -c 时 gcc 一步完成编译+链接。加 -Wall 开启警告。`-o prog` 指定输出文件名。"
+      },
+      {
+        "question": "Makefile 中把目标声明为 `.PHONY`，表明？",
+        "options": [
+          "该目标不是文件，即使没有同名文件也总是执行其命令",
+          "该目标不能被执行",
+          "该目标是隐藏文件",
+          "该目标只编译一次"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "像 clean 这类目标不对应实际文件，若恰好存在名为 clean 的文件，make 会误判无需执行。`.PHONY: clean` 强制总是执行。"
+      },
+      {
+        "question": "编译链接共享库时通常需要？",
+        "options": [
+          "编译加 `-fPIC`、链接加 `-shared`",
+          "无需特殊处理",
+          "只用 ar",
+          "使用 -c"
+        ],
+        "correct": 0,
+        "difficulty": 3,
+        "explanation": "共享库需位置无关代码：`gcc -fPIC -c foo.c` 再 `gcc -shared -o libfoo.so foo.o`。静态库则用 ar。"
+      },
+      {
+        "question": "GDB 查看变量 x 的值用命令？",
+        "options": [
+          "`print x`（或简写 p x）",
+          "`list x`",
+          "`break x`",
+          "`run x`"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "print/p 显示变量或表达式当前值。break 是断点，list 看源码，run 运行程序。"
+      },
+      {
+        "question": "防御式编程中，对输入的长度做限制属于？",
+        "options": [
+          "输入验证（避免缓冲区溢出等）",
+          "日志记录",
+          "单元测试",
+          "代码注释"
+        ],
+        "correct": 0,
+        "difficulty": 1,
+        "explanation": "限制输入长度、校验范围是输入验证的一部分，是防止缓冲区溢出等漏洞的第一道防线。"
+      },
+      {
+        "question": "`#include` 引号（\"...\"）与尖括号（<...>）在查找顺序上的区别？",
+        "options": [
+          "引号先查当前源文件目录再查系统路径，尖括号只查系统路径",
+          "完全相同",
+          "尖括号先查当前目录",
+          "引号只查系统路径"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "\"\" 优先在当前源文件目录查找（通常用于项目内头文件），找不到再查 include 路径；<> 直接从系统/标准 include 路径查找。"
+      },
+      {
+        "question": "gdb 中查看某个函数在当前行的源码，使用？",
+        "options": [
+          "`list`（或 l）",
+          "`print`",
+          "`info break`",
+          "`next`"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "list/l 显示当前执行点附近的源码。print 看值，next 单步。"
+      },
+      {
+        "question": "优化导致 bug 难以定位时（如 `-O3` 下行为不同），建议？",
+        "options": [
+          "用 `-O0` 或 `-g` 编译以保留调试信息并关闭优化来定位",
+          "增加随机代码",
+          "换成 C++",
+          "降低机器配置"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "`-g` 产生调试符号，`-O0` 关闭优化。优化可能改变执行细节（如寄存器分配），先关优化定位逻辑问题，再排查优化相关 bug。"
+      },
+      {
+        "question": "代码中大量使用未检查的 malloc 返回值，最坏结果是？",
+        "options": [
+          "空指针解引用导致崩溃或被利用",
+          "自动重试",
+          "分配失败被忽略",
+          "编译错误"
+        ],
+        "correct": 0,
+        "difficulty": 2,
+        "explanation": "不检查 malloc 返回值，失败时 p=NULL，随后解引用即崩溃。检查返回值是防御式编程的基本要求。"
+      }
+    ]
+  }
+]

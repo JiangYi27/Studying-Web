@@ -1,0 +1,45 @@
+/* ==================== 表格响应式 ==================== */
+@media (max-width: 768px) {
+    .table-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .table-search {
+        max-width: 100%;
+    }
+    .learning-count-table {
+        min-width: 500px;
+        font-size: 0.78rem;
+    }
+    .learning-count-table th,
+    .learning-count-table td {
+        padding: 8px 10px;
+    }
+    .calendar-nav {
+        padding: 0 2px;
+    }
+    .calendar-nav .btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+    .calendar-month-year {
+        font-size: 0.8rem;
+    }
+    .calendar-day {
+        font-size: 0.5rem;
+    }
+    .calendar-day .day-num {
+        font-size: 0.55rem;
+    }
+    .calendar-day .day-name {
+        font-size: 0.45rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .learning-count-table {
+        min-width: 480px;
+        font-size: 0.72rem;
+    }
+}
