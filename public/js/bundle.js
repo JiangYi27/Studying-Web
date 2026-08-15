@@ -1,4 +1,4 @@
-/*! C语言知识库 - 合并脚本 | 生成时间: 2026-08-06T13:41:30.202Z */
+/*! C语言知识库 - 合并脚本 | 生成时间: 2026-08-15T17:04:57.571Z */
 (function(){
 "use strict";
 
@@ -1833,6 +1833,12 @@ function showSitePicker(sites) {
   const label = document.getElementById('loginSiteTitle');
   const overlay = getLoginOverlay();
   if (!picker || !list) return;
+  // 站点选择界面不能被 hideLogin() 的全屏过渡 loader 盖住：先移除它
+  const loaderEl = document.getElementById('loginLoader');
+  if (loaderEl) {
+    if (loginLoaderTimer) { clearTimeout(loginLoaderTimer); loginLoaderTimer = null; }
+    loaderEl.remove();
+  }
   if (label) label.textContent = '选择要进入的学习站点';
   list.innerHTML = '';
   sites.forEach(function (site) {
@@ -1868,9 +1874,11 @@ async function selectSite(siteKey) {
     });
     if (res.ok) {
       setLoading(true);
-      // 一次性标记：刷新完成后自动进入「实战闯关」播放开场过渡动画
-      try { sessionStorage.setItem('pendingEnterGame', '1'); } catch (e) {}
-      window.location.reload();
+      // 选择站点后：全屏方块堆叠 loading 过渡动画，加载完成后停留在主页（不再自动进入闯关游戏）
+      showLoginLoader();
+      setTimeout(function () {
+        window.location.reload();
+      }, 700); // 稍作停留让 loader 呈现，随后刷新进入应用
       return;
     }
     const data = await res.json().catch(() => ({}));
@@ -4660,13 +4668,7 @@ async function init() {
     }
     if (state.focusMode) document.body.classList.add('focus-mode');
     applyThemeColor(state.themeColor);
-    // 登录/选站后自动进入实战闯关（一次性，sessionStorage 标记）
-    try {
-      if (sessionStorage.getItem('pendingEnterGame') === '1'){
-        sessionStorage.removeItem('pendingEnterGame');
-        setTimeout(function(){ switchView('roadmap'); }, 0);
-      }
-    } catch (e) {}
+    // 登录/选站后停留在主页（不再自动跳入「实战闯关」，登录过渡动画由 auth.js 的 loader 承担）
     console.log('🚀 ' + (CURRENT_SITE_NAME || '知识库') + '已就绪');
     console.log('   LV' + state.level + ' | 已完成' + Object.keys(state.completedSections).length + '小节 | 连续' + state.streak + '天');
     console.log('   📚 题库: ' + Object.keys(QUIZZES).length + ' 章已加载');

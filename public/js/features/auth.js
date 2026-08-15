@@ -81,6 +81,12 @@ function showSitePicker(sites) {
   const label = document.getElementById('loginSiteTitle');
   const overlay = getLoginOverlay();
   if (!picker || !list) return;
+  // 站点选择界面不能被 hideLogin() 的全屏过渡 loader 盖住：先移除它
+  const loaderEl = document.getElementById('loginLoader');
+  if (loaderEl) {
+    if (loginLoaderTimer) { clearTimeout(loginLoaderTimer); loginLoaderTimer = null; }
+    loaderEl.remove();
+  }
   if (label) label.textContent = '选择要进入的学习站点';
   list.innerHTML = '';
   sites.forEach(function (site) {
@@ -116,9 +122,11 @@ async function selectSite(siteKey) {
     });
     if (res.ok) {
       setLoading(true);
-      // 一次性标记：刷新完成后自动进入「实战闯关」播放开场过渡动画
-      try { sessionStorage.setItem('pendingEnterGame', '1'); } catch (e) {}
-      window.location.reload();
+      // 选择站点后：全屏方块堆叠 loading 过渡动画，加载完成后停留在主页（不再自动进入闯关游戏）
+      showLoginLoader();
+      setTimeout(function () {
+        window.location.reload();
+      }, 700); // 稍作停留让 loader 呈现，随后刷新进入应用
       return;
     }
     const data = await res.json().catch(() => ({}));

@@ -664,6 +664,10 @@
 
         <!-- ========== 🏰 实战闯关（Quiz Game 王国冒险体验） ========== -->
         <div class="view" id="roadmapView">
+          <!-- 全阶段返回按钮：开场/加载/地图全程固定在左上角，点击退出闯关回主页 -->
+          <button class="game-back-btn" id="gameBackBtn" type="button" title="返回主页">
+            <i class="fas fa-arrow-left"></i> 返回
+          </button>
           <!-- 开场：标题页 -->
           <div class="qg-view active" id="startView">
             <div class="home-bg" id="startBg"></div>
@@ -707,7 +711,6 @@
           <!-- 闯关地图视图 -->
           <div class="qg-view" id="qgMapView">
             <div class="roadmap-content">
-              <button class="game-back-btn" id="gameBackBtn">← 返回</button>
 
               <!-- 顶栏 HUD -->
               <div class="game-hud" id="gameHud">

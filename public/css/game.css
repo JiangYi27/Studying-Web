@@ -47,25 +47,31 @@
 /* ===================== 地图视图 ===================== */
 #roadmapView .roadmap-content{ position:relative; height:100%; width:100%; overflow:hidden; }
 
-/* ---- 返回按钮 ---- */
+/* ---- 返回按钮（全阶段：开场/加载/地图固定在左上角） ---- */
 .game-back-btn{
-  position:absolute; top:86px; left:16px; z-index:30;
-  padding:8px 16px; border:1px solid var(--panel-line); border-radius:999px;
-  background:linear-gradient(180deg, var(--parchment), var(--parchment-mid));
-  color:#5a4630; font-size:14px; cursor:pointer;
-  box-shadow:var(--panel-shadow);
-  transition:transform .15s, filter .15s;
+  position:fixed; top:16px; left:16px; z-index:300;
+  padding:9px 18px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.45);
+  background:linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.34));
+  color:#3a2f25; font-size:14px; font-weight:600; cursor:pointer;
+  backdrop-filter:blur(6px) saturate(160%);
+  -webkit-backdrop-filter:blur(6px) saturate(160%);
+  box-shadow:0 8px 22px rgba(30,22,8,.18), inset 0 1px 0 rgba(255,255,255,.7);
+  display:inline-flex; align-items:center; gap:7px;
+  transition:transform .15s, box-shadow .15s, background .15s;
 }
-.game-back-btn:hover{ transform:translateY(-2px); filter:brightness(1.06); }
+.game-back-btn:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(30,22,8,.24), inset 0 1px 0 rgba(255,255,255,.8); background:linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.48)); }
 
-/* ---- 顶栏 HUD（唯一常驻状态条） ---- */
+/* ---- 顶栏 HUD（唯一常驻状态条 · 液态玻璃） ---- */
 .game-hud{
   position:absolute; top:12px; left:50%; transform:translateX(-50%);
   z-index:40; display:flex; align-items:center; gap:14px;
   padding:7px 18px; border-radius:999px;
-  background:linear-gradient(180deg, rgba(255,251,236,.92), rgba(240,228,196,.92));
-  border:1px solid var(--panel-line);
-  box-shadow:var(--panel-shadow);
+  background:linear-gradient(180deg, rgba(255,255,255,.58), rgba(255,255,255,.30));
+  border:1px solid rgba(255,255,255,.45);
+  backdrop-filter:blur(6px) saturate(160%);
+  -webkit-backdrop-filter:blur(6px) saturate(160%);
+  box-shadow:0 10px 26px rgba(30,22,8,.16), inset 0 1px 0 rgba(255,255,255,.65);
   font-size:14px;
 }
 .hud-level-text{ font-weight:800; color:#b5792a; font-size:18px; }
@@ -152,70 +158,80 @@
 .node:focus-visible{ outline:3px solid rgba(201,162,74,.95); outline-offset:4px; border-radius:12px; }
 .node:focus{ outline:none; }
 
-/* ---- 小地图 ---- */
+/* ---- 小地图（液态玻璃） ---- */
 .minimap-container{
   position:absolute; top:70px; right:14px; z-index:20;
-  width:220px; height:117px; border-radius:10px; overflow:hidden;
-  border:1px solid var(--panel-line);
-  box-shadow:var(--panel-shadow);
-  background:rgba(40,34,22,.88);
+  width:220px; height:117px; border-radius:12px; overflow:hidden;
+  border:1px solid rgba(255,255,255,.45);
+  backdrop-filter:blur(5px) saturate(150%);
+  -webkit-backdrop-filter:blur(5px) saturate(150%);
+  background:rgba(30,26,20,.4);
+  box-shadow:0 8px 22px rgba(30,22,8,.18), inset 0 1px 0 rgba(255,255,255,.4);
 }
 #minimapCanvas{ width:100%; height:100%; display:block; cursor:pointer; }
 .mm-viewport{ position:absolute; border:1.5px solid #fbbf24; background:rgba(251,191,36,0.12);
   pointer-events:none; z-index:1; /* 用 transform 平移做停留位移动画，避免布局属性动画 */
   transition:transform .08s linear; will-change:transform; }
 
-/* ---- 缩放控件 ---- */
+/* ---- 缩放控件（液态玻璃） ---- */
 .zoom-controls{
   position:absolute; right:16px; bottom:96px; z-index:20;
   display:flex; flex-direction:column; gap:5px;
 }
 .zoom-btn{
-  width:44px; height:44px; border:1px solid var(--panel-line); border-radius:10px;
-  background:linear-gradient(180deg, var(--parchment), var(--parchment-mid));
-  color:#5a4630; font-size:17px; cursor:pointer;
-  box-shadow:0 3px 10px rgba(30,22,8,.25);
-  transition:transform .15s, filter .15s;
+  width:44px; height:44px; border:1px solid rgba(255,255,255,.5); border-radius:12px;
+  background:rgba(255,255,255,.4);
+  backdrop-filter:blur(5px) saturate(150%);
+  -webkit-backdrop-filter:blur(5px) saturate(150%);
+  color:#3a2f25; font-size:17px; cursor:pointer;
+  box-shadow:0 6px 16px rgba(30,22,8,.16), inset 0 1px 0 rgba(255,255,255,.6);
+  transition:transform .15s, box-shadow .15s;
   display:flex; align-items:center; justify-content:center;
 }
-.zoom-btn:hover{ filter:brightness(1.08); transform:scale(1.06); }
+.zoom-btn:hover{ transform:scale(1.06); box-shadow:0 8px 20px rgba(30,22,8,.22), inset 0 1px 0 rgba(255,255,255,.75); }
 .zoom-btn.home svg{ width:16px; height:16px; vertical-align:middle; }
 
-/* ---- 拖拽提示（入场后淡出） ---- */
+/* ---- 拖拽提示（入场后淡出 · 液态玻璃） ---- */
 .drag-hint{
   position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
   z-index:20; padding:7px 18px; border-radius:999px;
-  background:linear-gradient(180deg, rgba(255,251,236,.92), rgba(240,228,196,.92));
-  border:1px solid var(--panel-line);
-  color:#5a4a3a; font-size:12px;
-  box-shadow:var(--panel-shadow);
+  background:rgba(255,255,255,.42);
+  border:1px solid rgba(255,255,255,.5);
+  backdrop-filter:blur(5px) saturate(150%);
+  -webkit-backdrop-filter:blur(5px) saturate(150%);
+  color:#4a3a26; font-size:12px;
+  box-shadow:0 6px 18px rgba(30,22,8,.14), inset 0 1px 0 rgba(255,255,255,.6);
   opacity:0; pointer-events:none;
   animation:hintFadeIn .4s ease .2s forwards;
 }
 .drag-hint.fade-out{ opacity:0 !important; animation:none !important; }
 @keyframes hintFadeIn{ from{ opacity:0; transform:translateX(-50%) translateY(6px);} to{ opacity:1; transform:translateX(-50%);} }
 
-/* ---- 章节轻提示（替代常驻任务面板，HUD 下方） ---- */
+/* ---- 章节轻提示（替代常驻任务面板，HUD 下方 · 液态玻璃） ---- */
 .map-hint{
   position:absolute; top:74px; left:50%; transform:translateX(-50%) translateY(-6px);
   z-index:45; padding:8px 18px; border-radius:999px;
-  background:linear-gradient(180deg, rgba(255,251,236,.96), rgba(240,228,196,.96));
-  border:1px solid var(--panel-line);
-  color:#4a3a26; font-size:14px; font-weight:700;
-  box-shadow:var(--panel-shadow);
+  background:rgba(255,255,255,.5);
+  border:1px solid rgba(255,255,255,.55);
+  backdrop-filter:blur(5px) saturate(150%);
+  -webkit-backdrop-filter:blur(5px) saturate(150%);
+  color:#3a2f25; font-size:14px; font-weight:700;
+  box-shadow:0 6px 18px rgba(30,22,8,.14), inset 0 1px 0 rgba(255,255,255,.6);
   opacity:0; pointer-events:none;
   transition:opacity .25s ease, transform .25s ease;
 }
 .map-hint.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
-/* ---- 波次战斗面板（图片化答题界面） ---- */
+/* ---- 波次战斗面板（图片化答题界面 · 液态玻璃） ---- */
 .battle-panel{
   position:fixed; inset:0; z-index:60;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:14px; padding:16px;
   background:
-    linear-gradient(rgba(8,5,16,.42), rgba(8,5,16,.42)),
+    linear-gradient(rgba(255,255,255,.20), rgba(255,255,255,.20)),
     url("/image/answer/background.webp") center / cover no-repeat;
+  backdrop-filter:blur(5px) saturate(150%);
+  -webkit-backdrop-filter:blur(5px) saturate(150%);
   animation:panelIn .3s ease;
 }
 @keyframes panelIn{ from{ opacity:0; transform:translateY(16px);} to{ opacity:1; transform:none;} }
@@ -223,11 +239,14 @@
 .battle-close{
   position:absolute; top:14px; right:16px; z-index:8;
   width:42px; height:42px; border-radius:50%;
-  border:1px solid rgba(255,255,255,.28); background:rgba(18,12,30,.6);
+  border:1px solid rgba(255,255,255,.45); background:rgba(255,255,255,.32);
   color:#fff; font-size:19px; line-height:1; cursor:pointer;
+  backdrop-filter:blur(5px) saturate(150%);
+  -webkit-backdrop-filter:blur(5px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
   transition:transform .15s, background .15s;
 }
-.battle-close:hover{ transform:scale(1.1); background:rgba(170,60,60,.8); }
+.battle-close:hover{ transform:scale(1.1); background:rgba(255,255,255,.5); color:#e0483e; }
 
 /* ---- 顶栏：左生命 / 中标题·波次·限时 / 右圆形进度 ---- */
 .battle-topbar{
@@ -235,47 +254,57 @@
 }
 .battle-lives{ display:flex; align-items:center; gap:6px; }
 .life-icon{ width:52px; height:auto; filter:drop-shadow(0 3px 8px rgba(0,0,0,.5)); }
-.life-count{ font-size:24px; font-weight:900; color:#ffe9e2; text-shadow:0 2px 6px rgba(0,0,0,.55); }
-.life-count #lifeCount{ color:#ff6b5e; }
+.life-count{ font-size:24px; font-weight:900; color:#3a2f25; text-shadow:0 1px 0 rgba(255,255,255,.5); }
+.life-count #lifeCount{ color:#e0483e; }
 .battle-head{ display:flex; align-items:center; gap:10px; }
 .battle-title{ font-weight:900; font-size:17px; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.55); }
-.battle-wave{ font-size:12px; color:#ffd9a0; background:rgba(0,0,0,.38); padding:4px 12px; border-radius:999px; }
-.battle-timer{ font-size:14px; font-weight:800; color:#fff; background:rgba(0,0,0,.38); padding:4px 12px; border-radius:999px; }
+.battle-wave{ font-size:12px; color:#3a2f25; background:rgba(255,255,255,.45); border:1px solid rgba(255,255,255,.5); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); padding:4px 12px; border-radius:999px; }
+.battle-timer{ font-size:14px; font-weight:800; color:#3a2f25; background:rgba(255,255,255,.45); border:1px solid rgba(255,255,255,.5); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); padding:4px 12px; border-radius:999px; }
 .battle-timer.low{ color:#ff6b5e; animation:timerPulse .6s ease-in-out infinite; }
 @keyframes timerPulse{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.12);} }
 .battle-progress{ position:relative; width:76px; height:76px; }
 .progress-icon{ width:100%; height:100%; }
 .progress-icon{ width:100%; height:100%; }
 
-/* ---- 中间 question&selection 矩形面板 ---- */
+/* ---- 中间 question&selection 矩形面板（液态玻璃卡片） ---- */
 .battle-qna{
   position:relative; width:min(820px, 94vw);
   aspect-ratio:915 / 565;
-  background:url("/image/answer/question_selection.webp") no-repeat center / 100% 100%;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.5), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.45), rgba(255,255,255,.20));
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:22px;
+  backdrop-filter:blur(6px) saturate(150%);
+  -webkit-backdrop-filter:blur(6px) saturate(150%);
+  box-shadow:0 18px 44px rgba(20,14,30,.28), inset 0 1px 0 rgba(255,255,255,.65);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   padding:5.5% 8% 3.5%;
-  color:#fdf3dc; text-align:center;
+  color:#2c1f3d; text-align:center;
 }
 .battle-streak{
-  font-size:12px; font-weight:800; color:#ffd24a; margin-top:2px;
-  background:rgba(0,0,0,.32); border:1px dashed rgba(255,210,74,.5);
+  font-size:12px; font-weight:800; color:#8a6a1a; margin-top:2px;
+  background:rgba(255,255,255,.35); border:1px dashed rgba(138,106,26,.5);
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
   border-radius:999px; padding:3px 12px;
 }
-.battle-streak.streak-max{ color:#ff8a7a; animation:streakPulse .5s ease-in-out infinite alternate; }
+.battle-streak.streak-max{ color:#e0483e; animation:streakPulse .5s ease-in-out infinite alternate; }
 @keyframes streakPulse{ from{ transform:scale(1);} to{ transform:scale(1.06);} }
 .battle-question{
   font-size:20px; font-weight:800; line-height:1.5; max-width:92%;
-  text-shadow:0 2px 8px rgba(0,0,0,.7);
+  color:#2c1f3d; text-shadow:0 1px 0 rgba(255,255,255,.4);
 }
-.battle-qtag{ font-size:12px; opacity:.85; margin-top:6px; color:#ffd9a0; }
-.battle-feedback{ font-size:16px; font-weight:900; min-height:22px; margin-top:4px; text-shadow:0 2px 6px rgba(0,0,0,.6); }
-.battle-feedback.good{ color:#7dffa8; }
-.battle-feedback.bad{ color:#ff8a7a; }
+.battle-qtag{ font-size:12px; opacity:.8; margin-top:6px; color:#6b5480; }
+.battle-feedback{ font-size:16px; font-weight:900; min-height:22px; margin-top:4px; text-shadow:0 1px 0 rgba(255,255,255,.35); }
+.battle-feedback.good{ color:#2e9e4f; }
+.battle-feedback.bad{ color:#e0483e; }
 .battle-explain{
   position:absolute; top:6%; left:7%; z-index:2; max-width:78%;
-  font-size:13px; color:#f3e4c8; line-height:1.5; text-align:left;
+  font-size:13px; color:#2c1f3d; line-height:1.5; text-align:left;
   padding:8px 14px; border-radius:10px;
-  background:rgba(10,6,18,.72); border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.6); border:1px solid rgba(255,255,255,.7);
+  backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
 }
 
 /* ---- 问题下方 ABCD 选项（字母按钮 + 选项文字） ---- */
@@ -299,7 +328,9 @@
 /* ---- 结算 ---- */
 .battle-summary{
   position:absolute; inset:0; z-index:9; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:12px; background:rgba(8,5,16,.45); color:#fff; text-align:center; padding:20px;
+  gap:12px; background:rgba(20,14,30,.35); color:#2c1f3d; text-align:center; padding:20px;
+  backdrop-filter:blur(5px) saturate(150%);
+  -webkit-backdrop-filter:blur(5px) saturate(150%);
 }
 .battle-result-video{
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;
@@ -589,14 +620,14 @@
   0%,100%{ box-shadow:0 8px 26px rgba(160,120,30,.4); }
   50%{ box-shadow:0 8px 34px rgba(255,180,50,.6); }
 }
-/* 底部英语语录（浅色毛玻璃） */
+/* 底部英语语录（液态玻璃，低模糊度） */
 .start-quote{
   position:absolute; z-index:2; left:50%; bottom:5vh; transform:translateX(-50%);
   max-width:min(720px, 90vw); padding:14px 28px; border-radius:16px; text-align:center;
-  background:rgba(255,255,255,.6);
-  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.85);
-  box-shadow:0 8px 26px rgba(120,95,40,.18);
+  background:rgba(255,255,255,.4);
+  -webkit-backdrop-filter:blur(6px) saturate(150%); backdrop-filter:blur(6px) saturate(150%);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 8px 26px rgba(120,95,40,.16), inset 0 1px 0 rgba(255,255,255,.55);
   animation:quoteIn 1.2s ease .4s backwards;
   transition:opacity 1s ease;
 }
@@ -721,17 +752,15 @@ body.game-mode #roadmapView {
 
 /* ===================== UI 精修（2026-08） ===================== */
 
-/* ---- 顶栏 HUD：玻璃拟态 + 金色饰边 ---- */
+/* ---- 顶栏 HUD：液态玻璃（低模糊度） ---- */
 .game-hud{
   top:14px;
   padding:8px 20px;
-  background:
-    linear-gradient(180deg, rgba(255,253,245,.94), rgba(244,232,200,.9)),
-    linear-gradient(180deg, rgba(255,255,255,.5), transparent);
-  border:1px solid rgba(201,162,74,.55);
-  box-shadow:0 10px 30px rgba(40,28,8,.22), inset 0 1px 0 rgba(255,255,255,.85);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  background:linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.34));
+  border:1px solid rgba(255,255,255,.5);
+  box-shadow:0 10px 26px rgba(40,28,8,.16), inset 0 1px 0 rgba(255,255,255,.75);
+  backdrop-filter:blur(5px) saturate(160%);
+  -webkit-backdrop-filter:blur(5px) saturate(160%);
 }
 .hud-level-text{
   font-size:20px;
@@ -763,42 +792,46 @@ body.game-mode #roadmapView {
 .hud-progress strong{ letter-spacing:.5px; }
 .hud-train strong{ letter-spacing:.5px; }
 
-/* ---- 地图轻提示：精致胶囊 ---- */
+/* ---- 地图轻提示：液态玻璃胶囊 ---- */
 .map-hint{
   padding:9px 22px;
-  background:linear-gradient(180deg, rgba(30,22,10,.82), rgba(20,14,6,.86));
-  border:1px solid rgba(255,214,120,.45);
+  background:rgba(255,255,255,.5);
+  border:1px solid rgba(255,255,255,.55);
   border-radius:999px;
-  color:#ffe9bd; font-weight:700; font-size:14px;
-  box-shadow:0 6px 18px rgba(20,12,2,.4);
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
+  color:#3a2f25; font-weight:700; font-size:14px;
+  box-shadow:0 6px 18px rgba(30,22,8,.14), inset 0 1px 0 rgba(255,255,255,.6);
+  backdrop-filter:blur(5px) saturate(150%);
+  -webkit-backdrop-filter:blur(5px) saturate(150%);
 }
 .drag-hint{
   padding:7px 18px;
-  background:rgba(30,22,10,.6);
-  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.38);
+  border:1px solid rgba(255,255,255,.5);
   border-radius:999px;
-  color:rgba(255,244,214,.92); font-size:12px;
-  backdrop-filter:blur(3px);
-  -webkit-backdrop-filter:blur(3px);
+  color:#4a3a26; font-size:12px;
+  backdrop-filter:blur(4px) saturate(150%);
+  -webkit-backdrop-filter:blur(4px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55);
 }
 
-/* ---- 关卡秘典过渡页：装饰化 ---- */
-.level-intro-overlay{ background:rgba(13,11,22,.62); }
+/* ---- 关卡秘典过渡页：液态玻璃 ---- */
+.level-intro-overlay{ background:rgba(15,12,28,.35); backdrop-filter:blur(5px) saturate(150%); -webkit-backdrop-filter:blur(5px) saturate(150%); }
 .level-intro-card{
   padding:38px 40px 34px;
-  border:2px solid #d9b56b;
-  outline:1px solid rgba(120,90,40,.35); outline-offset:5px;
+  border:1px solid rgba(255,255,255,.55);
+  outline:1px solid rgba(255,255,255,.2); outline-offset:5px;
   background:
-    radial-gradient(140% 100% at 15% 0%, rgba(255,255,255,.95), transparent 50%),
-    radial-gradient(120% 120% at 90% 100%, rgba(201,162,74,.28), transparent 60%),
-    linear-gradient(180deg, #fdf6e2, #f0e0b6);
-  box-shadow:0 28px 80px rgba(20,12,2,.55), inset 0 0 40px rgba(255,255,255,.35);
+    radial-gradient(140% 100% at 15% 0%, rgba(255,255,255,.65), transparent 55%),
+    radial-gradient(120% 120% at 90% 100%, rgba(255,255,255,.2), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,.26));
+  backdrop-filter:blur(6px) saturate(150%);
+  -webkit-backdrop-filter:blur(6px) saturate(150%);
+  border-radius:24px;
+  box-shadow:0 28px 80px rgba(15,10,26,.35), inset 0 1px 0 rgba(255,255,255,.7);
 }
 .level-intro-emoji{ font-size:70px; animation:levelEmojiFloat 2.6s ease-in-out infinite; }
 @keyframes levelEmojiFloat{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
-.level-intro-no{ letter-spacing:4px; color:#a0834f; }
+.level-intro-no{ letter-spacing:4px; color:#7a5f30; }
 .level-intro-name{
   font-size:36px;
   background:linear-gradient(180deg,#8a5a1a,#c9962e);
@@ -834,52 +867,60 @@ body.game-mode #roadmapView {
 }
 .level-intro-close:hover{ transform:scale(1.08); background:#fff; }
 
-/* ---- 战斗：标题 / 选项 / 反馈 / 结算 ---- */
+/* ---- 战斗：标题 / 选项 / 反馈 / 结算（液态玻璃） ---- */
 .battle-title{
   font-size:19px;
-  background:linear-gradient(180deg,#fff,#f2d9a0);
+  background:linear-gradient(180deg,#3a2f25,#6b4a1e);
   -webkit-background-clip:text; background-clip:text;
   -webkit-text-fill-color:transparent; color:transparent;
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.45));
 }
 .battle-wave,.battle-timer{
-  border:1px solid rgba(255,255,255,.22);
-  background:rgba(15,9,26,.55);
-  backdrop-filter:blur(3px);
-  -webkit-backdrop-filter:blur(3px);
+  border:1px solid rgba(255,255,255,.5);
+  background:rgba(255,255,255,.4);
+  backdrop-filter:blur(4px) saturate(150%);
+  -webkit-backdrop-filter:blur(4px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
 }
-.battle-qna{ filter:drop-shadow(0 12px 30px rgba(0,0,0,.45)); }
+.battle-qna{ filter:drop-shadow(0 12px 30px rgba(20,14,30,.3)); }
 .battle-question{ font-size:21px; letter-spacing:.3px; }
 .battle-qtag{
   display:inline-block; padding:3px 12px; border-radius:999px;
-  background:rgba(0,0,0,.3); border:1px solid rgba(255,217,160,.35);
+  background:rgba(255,255,255,.3); border:1px solid rgba(255,255,255,.45);
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
 }
 .battle-explain{
-  border:1px solid rgba(255,217,160,.35);
-  box-shadow:0 4px 14px rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 4px 14px rgba(30,20,40,.15), inset 0 1px 0 rgba(255,255,255,.6);
 }
 .battle-opt{ gap:6px; }
 .battle-opt img{ width:52px; height:54px; }
 .battle-opt-text{
   font-size:12.5px;
   padding:4px 10px; border-radius:10px;
-  background:rgba(10,6,18,.55);
-  border:1px solid rgba(255,255,255,.2);
-  backdrop-filter:blur(3px);
-  -webkit-backdrop-filter:blur(3px);
+  background:rgba(255,255,255,.45);
+  border:1px solid rgba(255,255,255,.6);
+  backdrop-filter:blur(4px) saturate(150%);
+  -webkit-backdrop-filter:blur(4px) saturate(150%);
+  color:#2c1f3d;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
   max-width:180px;
 }
 .battle-opt:hover{ transform:translateY(-5px) scale(1.06); }
-.battle-opt:hover .battle-opt-text{ border-color:rgba(255,210,74,.7); background:rgba(30,18,44,.7); }
+.battle-opt:hover .battle-opt-text{ border-color:rgba(255,255,255,.85); background:rgba(255,255,255,.6); }
 .battle-feedback{ font-size:17px; letter-spacing:.5px; }
 .battle-feedback.good{ animation:feedbackPop .3s ease; }
 .battle-feedback.bad{ animation:feedbackPop .3s ease; }
 @keyframes feedbackPop{ from{ transform:scale(.85); opacity:.4;} to{ transform:scale(1); opacity:1;} }
 
-/* 结算：金框 + 统计行 */
+/* 结算：液态玻璃 + 统计行 */
 .battle-summary-box{
-  border:1px solid rgba(255,214,120,.5);
-  box-shadow:0 18px 50px rgba(0,0,0,.5), inset 0 0 60px rgba(255,210,74,.08);
+  border:1px solid rgba(255,255,255,.5);
+  background:linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,.25));
+  backdrop-filter:blur(6px) saturate(150%);
+  -webkit-backdrop-filter:blur(6px) saturate(150%);
+  border-radius:22px;
+  box-shadow:0 18px 50px rgba(20,14,30,.3), inset 0 1px 0 rgba(255,255,255,.65);
   padding:28px 36px;
 }
 .battle-summary-kind{
@@ -887,21 +928,28 @@ body.game-mode #roadmapView {
   background:linear-gradient(180deg,#ffe9a8,#e8b64c);
   -webkit-background-clip:text; background-clip:text;
   -webkit-text-fill-color:transparent; color:transparent;
-  filter:drop-shadow(0 3px 10px rgba(0,0,0,.5));
+  filter:drop-shadow(0 3px 10px rgba(0,0,0,.4));
 }
 .battle-summary-stats{
   font-size:14px; line-height:2;
   padding:12px 18px; border-radius:12px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.4);
+  color:#2c1f3d;
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
 }
 .battle-again,.battle-back-map{
-  border:1px solid rgba(255,255,255,.22);
-  box-shadow:0 6px 16px rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.5);
+  background:rgba(255,255,255,.3);
+  backdrop-filter:blur(5px) saturate(150%);
+  -webkit-backdrop-filter:blur(5px) saturate(150%);
+  box-shadow:0 6px 16px rgba(20,14,30,.2), inset 0 1px 0 rgba(255,255,255,.5);
+  color:#2c1f3d;
+  transition:transform .15s, background .15s;
 }
-.battle-again:hover{ transform:translateY(-2px); filter:brightness(1.08); }
-.battle-back-map{ background:rgba(255,255,255,.14); color:#fff; }
-.battle-back-map:hover{ transform:translateY(-2px); background:rgba(255,255,255,.22); }
+.battle-again:hover{ transform:translateY(-2px); filter:brightness(1.05); }
+.battle-back-map{ background:rgba(255,255,255,.28); color:#2c1f3d; }
+.battle-back-map:hover{ transform:translateY(-2px); background:rgba(255,255,255,.45); }
 
 
 /* ===================== 移动端精修 ===================== */
@@ -949,20 +997,21 @@ body.game-mode #roadmapView {
   .battle-summary-kind{ font-size:24px; }
   .battle-summary-stats{ font-size:12.5px; }
   .map-hint{ font-size:12px; padding:7px 14px; }
-  .game-back-btn{ top:104px; left:10px; padding:7px 14px; font-size:12px; }
+  .game-back-btn{ top:12px; left:10px; padding:7px 14px; font-size:12px; gap:6px; }
 }
 @media (max-width:400px){
   .battle-options{ display:grid; grid-template-columns:1fr 1fr; gap:8px 12px; width:min(340px, 92vw); }
   .battle-opt{ width:auto; }
 }
 
-/* 跳过开场按钮 */
+/* 跳过开场按钮（液态玻璃） */
 .skip-intro-btn{
   position:absolute; left:50%; bottom:6vh; transform:translateX(-50%);
   z-index:12; padding:8px 22px; border-radius:999px;
-  border:1px solid rgba(255,255,255,.35);
-  background:rgba(10,6,18,.55); color:#ffe9bd; font-size:13px; font-weight:700;
-  cursor:pointer; backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+  border:1px solid rgba(255,255,255,.5);
+  background:rgba(255,255,255,.35); color:#3a2f25; font-size:13px; font-weight:700;
+  cursor:pointer; backdrop-filter:blur(5px) saturate(150%); -webkit-backdrop-filter:blur(5px) saturate(150%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
   transition:background .15s, transform .15s;
 }
-.skip-intro-btn:hover{ background:rgba(40,26,60,.75); transform:translateX(-50%) translateY(-2px); }
+.skip-intro-btn:hover{ background:rgba(255,255,255,.55); transform:translateX(-50%) translateY(-2px); }

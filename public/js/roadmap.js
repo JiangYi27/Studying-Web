@@ -813,13 +813,7 @@ async function init() {
     }
     if (state.focusMode) document.body.classList.add('focus-mode');
     applyThemeColor(state.themeColor);
-    // 登录/选站后自动进入实战闯关（一次性，sessionStorage 标记）
-    try {
-      if (sessionStorage.getItem('pendingEnterGame') === '1'){
-        sessionStorage.removeItem('pendingEnterGame');
-        setTimeout(function(){ switchView('roadmap'); }, 0);
-      }
-    } catch (e) {}
+    // 登录/选站后停留在主页（不再自动跳入「实战闯关」，登录过渡动画由 auth.js 的 loader 承担）
     console.log('🚀 ' + (CURRENT_SITE_NAME || '知识库') + '已就绪');
     console.log('   LV' + state.level + ' | 已完成' + Object.keys(state.completedSections).length + '小节 | 连续' + state.streak + '天');
     console.log('   📚 题库: ' + Object.keys(QUIZZES).length + ' 章已加载');
