@@ -13,22 +13,24 @@ module.exports = {
       key: 'c',
       name: 'C语言',
       subtitle: 'C语言 · 知识库',
-      contentRoot: 'content',           // 内容根目录（content/*.md）
+      contentRoot: 'knowledge/c',          // 内容根目录（knowledge/c/*.md）
       quizzes: 'quizzes',               // 前端 from /api/quizzes 加载（对应 data 下的文件前缀）
       chaptersKey: 'c',                 // 前端 chapters.js 的 SITES.c
       theme: { accent: '#3b82f6' },
       logoText: 'lab研习室',
+      logo: '/image/logo.png',
       targetDate: '2027-04-17',
     },
     {
       key: 'grammar',
       name: '英语语法',
       subtitle: 'Grammar · 知识库',
-      contentRoot: 'content-grammar',   // 英语语法章节内容目录
-      quizzes: 'grammar',               // data/quizzes-grammar.json
+      contentRoot: 'knowledge/grammar',   // 英语语法章节内容目录
+      quizzes: 'grammar',               // data/grammar.json
       chaptersKey: 'grammar',           // 前端 chapters.js 的 SITES.grammar
       theme: { accent: '#10b981' },
       logoText: 'lab研习室',
+      logo: '/image/Logo-English.png',
       targetDate: '2027-04-17',
     },
   ],

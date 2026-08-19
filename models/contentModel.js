@@ -3,14 +3,14 @@ const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
 
-const defaultContentRoot = path.join(__dirname, '../content');
+const defaultContentRoot = path.join(__dirname, '../knowledge/c');
 let cachedChapters = null;
 let cachedRoot = null;
 
-// 站点化：根据站点 key 解析内容根目录（content-xxx 与 content 平级）
+// 站点化：根据站点 key 解析内容根目录（统一在 knowledge/ 下按站点分目录）
 function getContentRoot(siteKey) {
-  const root = siteKey && siteKey !== 'c' ? path.join(__dirname, '../content-' + siteKey) : defaultContentRoot;
-  return root;
+  const key = siteKey && siteKey !== 'c' ? siteKey : 'c';
+  return path.join(__dirname, '../knowledge', key);
 }
 
 function getContentRootFor(site) {
@@ -20,7 +20,7 @@ function getContentRootFor(site) {
   return getContentRoot(site && site.key);
 }
 
-// 递归读取 content/ 目录，构建章节树
+// 递归读取 knowledge/<site>/ 目录，构建章节树
 async function buildStructure(site) {
   const contentRoot = getContentRootFor(site);
   if (cachedRoot === contentRoot && cachedChapters) return cachedChapters;
@@ -87,7 +87,7 @@ const searchIndexCache = new Map(); // contentRoot -> entries[]
 
 async function buildSearchIndex(site) {
   const entries = [];
-  // 复用真实 site 对象走 buildStructure，正确处理相对内容目录（content / content-grammar）
+  // 复用真实 site 对象走 buildStructure，正确处理相对内容目录（knowledge/c 等）
   const chapters = await buildStructure(site);
   for (const ch of chapters) {
     for (const sec of ch.sections) {

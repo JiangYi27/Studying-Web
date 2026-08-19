@@ -21,6 +21,7 @@ function publicSite(site) {
     chaptersKey: site.chaptersKey,
     theme: site.theme,
     logoText: site.logoText,
+    logo: site.logo,
     targetDate: site.targetDate,
   };
 }
@@ -38,7 +39,8 @@ router.get('/chapters', async (req, res) => {
     const chapters = await contentModel.buildStructure(req.site);
     res.json(chapters);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('[api/chapters]', err);
+    res.status(500).json({ error: '服务器内部错误，请稍后重试' });
   }
 });
 
@@ -62,7 +64,8 @@ router.get('/search', async (req, res) => {
     const results = await contentModel.searchContent(q, req.site);
     res.json(results);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('[api/search]', err);
+    res.status(500).json({ error: '服务器内部错误，请稍后重试' });
   }
 });
 
@@ -76,7 +79,8 @@ router.post('/progress', async (req, res) => {
     await userModel.toggleProgress(req.username, req.site, sectionId, completed);
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('[api/progress]', err);
+    res.status(500).json({ error: '服务器内部错误，请稍后重试' });
   }
 });
 
@@ -85,7 +89,8 @@ router.get('/progress', async (req, res) => {
     const completed = await userModel.getCompletedSet(req.username, req.site);
     res.json({ completed });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('[api/progress-get]', err);
+    res.status(500).json({ error: '服务器内部错误，请稍后重试' });
   }
 });
 
@@ -95,7 +100,8 @@ router.get('/user-data', async (req, res) => {
     const data = await userModel.readData(req.username, req.site);
     res.json(data);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('[api/user-data]', err);
+    res.status(500).json({ error: '服务器内部错误，请稍后重试' });
   }
 });
 
@@ -104,7 +110,8 @@ router.post('/user-data', async (req, res) => {
     await userModel.writeData(req.username, req.site, req.body);
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('[api/user-data-post]', err);
+    res.status(500).json({ error: '服务器内部错误，请稍后重试' });
   }
 });
 
@@ -116,7 +123,8 @@ router.get('/note', async (req, res) => {
         const note = await userModel.getNote(req.username, req.site, sectionId);
         res.json(note);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error('[api/note-get]', err);
+        res.status(500).json({ error: '服务器内部错误，请稍后重试' });
     }
 });
 
@@ -127,7 +135,8 @@ router.post('/note', async (req, res) => {
         await userModel.saveNote(req.username, req.site, sectionId, content);
         res.json({ success: true });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error('[api/note-post]', err);
+        res.status(500).json({ error: '服务器内部错误，请稍后重试' });
     }
 });
 
@@ -138,7 +147,8 @@ router.get('/quizzes', async (req, res) => {
         const quizzes = await quizModel.getQuizzes(req.site);
         res.json(quizzes);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error('[api/quizzes]', err);
+        res.status(500).json({ error: '服务器内部错误，请稍后重试' });
     }
 });
 
@@ -148,7 +158,8 @@ router.get('/quizzes/all', async (req, res) => {
         const questions = await quizModel.getAllQuestions(req.site);
         res.json(questions);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error('[api/quizzes-all]', err);
+        res.status(500).json({ error: '服务器内部错误，请稍后重试' });
     }
 });
 
@@ -159,7 +170,8 @@ router.get('/extension', async (req, res) => {
     const items = await extensionModel.list();
     res.json(items);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('[api/extension]', err);
+    res.status(500).json({ error: '服务器内部错误，请稍后重试' });
   }
 });
 

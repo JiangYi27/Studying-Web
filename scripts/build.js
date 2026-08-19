@@ -41,6 +41,8 @@ const cssFiles = [
     'css/views/responsive.css',
     // 游戏
     'css/game.css',
+    // 专注模式
+    'css/focus-mode.css',
 ];
 
 function bundleCSS() {
@@ -65,7 +67,7 @@ const jsFiles = [
     'js/utils/helpers.js',
     'js/data/chapters.js',
     // 核心
-    'js/main.js',
+    'js/core/main.js',
     'js/core/toast.js',
     // 功能特性
     'js/features/badges.js',
@@ -83,12 +85,14 @@ const jsFiles = [
     'js/views/dashboard.js',
     'js/views/extension.js',
     // 核心逻辑
-    'js/roadmap.js',
+    'js/views/roadmap.js',
     // 实战闯关（Quiz Game 体验）
-    'js/quizgame-data.js',
-    'js/quizgame-audio.js',
-    'js/quizgame-game.js',
-    'js/quizgame-main.js',
+    'js/game/quizgame-data.js',
+    'js/game/quizgame-audio.js',
+    'js/game/quizgame-game.js',
+    'js/game/quizgame-main.js',
+    // 专注模式
+    'js/focus-mode.js',
 ];
 
 function bundleJS() {
@@ -125,7 +129,7 @@ function generateProdHTML() {
 
     // 替换多个 JS <script> 为一个 bundle.js（保留 Chart.js CDN）
     html = html.replace(
-        /<!-- 工具函数[\s\S]*?<script src="\/js\/quizgame-main.js" defer><\/script>/m,
+        /<!-- 工具函数[\s\S]*?<script src="\/js\/game\/quizgame-main.js" defer><\/script>/m,
         '  <script src="/js/bundle.js" defer></script>'
     );
 

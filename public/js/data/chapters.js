@@ -92,6 +92,20 @@ function setSite(siteKey) {
     QUOTES = QUOTES_BY_SITE[key] || QUOTES_BY_SITE.c;
     const target = TARGET_DATE_BY_SITE[key] || TARGET_DATE_BY_SITE.c;
     TARGET_DATE = new Date(target + 'T00:00:00+08:00');
+    updateSidebarVisibility(key);
+}
+
+// 侧边栏站点隔离：根据当前站点显示/隐藏对应菜单项
+function updateSidebarVisibility(siteKey) {
+    document.querySelectorAll('.nav-item[data-site]').forEach(item => {
+        const requiredSite = item.dataset.site;
+        // 如果没有 data-site 或匹配当前站点则显示，否则隐藏
+        if (!requiredSite || requiredSite === siteKey) {
+            item.style.display = '';
+        } else {
+            item.style.display = 'none';
+        }
+    });
 }
 
 // 倒计时目标（按站点）
@@ -228,10 +242,6 @@ const COMMON_BADGES = [
     { id: 'quiz_scholar', name: '满分学霸', desc: '在一次测验中获得S级评价', icon: '🎓', category: 'quiz', rarity: 'uncommon', condition: () => state.quizStats && state.quizStats.sCount >= 1 },
     { id: 'quiz_whiz', name: '答题快手', desc: '单场测验连击30题', icon: '⚡', category: 'quiz', rarity: 'legendary', condition: () => state.quizStats && state.quizStats.bestStreak >= 30 },
     { id: 'quiz_ab', name: '稳如磐石', desc: '10次测验获得A级及以上评价', icon: '🛡️', category: 'quiz', rarity: 'epic', condition: () => state.quizStats && state.quizStats.aCount >= 10 },
-    // ========= 营地训练 =========
-    { id: 'camp_rookie', name: '营地新兵', desc: '完成1次营地训练', icon: '🏕️', category: 'quiz', rarity: 'common', condition: () => state.quest && state.quest.practiceStats && state.quest.practiceStats.count >= 1 },
-    { id: 'camp_veteran', name: '训练达人', desc: '完成20次营地训练', icon: '⛺', category: 'quiz', rarity: 'rare', condition: () => state.quest && state.quest.practiceStats && state.quest.practiceStats.count >= 20 },
-    { id: 'camp_streak', name: '连击训练家', desc: '营地训练最佳连击10题', icon: '🎯', category: 'quiz', rarity: 'epic', condition: () => state.quest && state.quest.practiceStats && state.quest.practiceStats.bestStreak >= 10 },
 
     // ========= 收藏笔记 =========
     { id: 'bookmark_collector', name: '收藏家', desc: '添加5个书签', icon: '🔖', category: 'collection', rarity: 'uncommon', condition: () => state.bookmarks.length >= 5 },

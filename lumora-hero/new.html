@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>研习室 — 登录</title>
+
+  <style>
+    :root {
+      --ink: #152238;
+      --ink-light: #1e2c40;
+      --muted: #667085;
+      --paper: #f7f8f4;
+      --white: #ffffff;
+      --line: #dce1e5;
+      --orange: #f26b4f;
+      --orange-dark: #dc573d;
+      --teal: #2b8c88;
+      --teal-light: rgba(43, 140, 136, 0.12);
+      --yellow: #f2c94c;
+      --green: #48a868;
+      --red: #ef4444;
+      --shadow: 0 24px 70px rgba(21, 34, 56, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { overflow: hidden; height: 100%; }
+
+    body {
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      height: 100%;
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    a { text-decoration: none; }
+
+    .page {
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 装饰性圆形 */
+    .page::before {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      top: -150px;
+      right: 11%;
+      border: 2px solid rgba(43, 140, 136, 0.18);
+      transform: rotate(24deg);
+      pointer-events: none;
+    }
+    .page::after {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      bottom: -80px;
+      left: 5%;
+      border: 2px solid rgba(242, 107, 79, 0.12);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* ──── 导航 ──── */
+    .nav {
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+      height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand {
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: var(--ink);
+      border-radius: 9px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(43, 140, 136, 0.08);
+      color: var(--teal);
+      border: 1.5px solid rgba(43, 140, 136, 0.2);
+    }
+
+    .nav-tag .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ──── 主区域 ──── */
+    .main {
+      width: min(1180px, calc(100% - 48px));
+      min-height: calc(100vh - 84px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
+      gap: clamp(52px, 8vw, 120px);
+      align-items: center;
+      padding: 34px 0 76px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ──── Hero 区域 ──── */
+    .hero { position: relative; padding: 20px 0; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 23px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 24px;
+      height: 2px;
+      background: var(--orange);
+    }
+
+    h1 {
+      max-width: 660px;
+      font-size: clamp(48px, 6vw, 82px);
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+    }
+    h1 em {
+      color: var(--orange);
+      font-family: Georgia, serif;
+      font-weight: 500;
+      letter-spacing: -0.06em;
+    }
+
+    .hero-copy {
+      max-width: 500px;
+      margin: 27px 0 36px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 44px;
+    }
+
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 13px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.55);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      backdrop-filter: blur(4px);
+      transition: all 200ms ease;
+    }
+    .meta-item:hover {
+      background: rgba(255,255,255,0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(21,34,56,0.08);
+    }
+
+    .meta-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .meta-dot.orange { background: var(--orange); }
+
+    /* 代码窗口 */
+    .code-window {
+      width: min(100%, 530px);
+      border: 1px solid #26354b;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--ink);
+      box-shadow: var(--shadow);
+      transform: rotate(-2deg);
+      transition: transform 300ms ease;
+    }
+    .code-window:hover { transform: rotate(0deg); }
+
+    .window-bar {
+      height: 39px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      background: #1e2c40;
+      color: #8794a7;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 11px;
+    }
+
+    .window-dots { display: flex; gap: 6px; }
+    .window-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #6d7b8d;
+    }
+    .window-dots span:first-child { background: var(--orange); }
+    .window-dots span:nth-child(2) { background: var(--yellow); }
+    .window-dots span:nth-child(3) { background: var(--green); }
+
+    .code {
+      margin: 0;
+      padding: 22px 22px 25px;
+      color: #dbe4ef;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.85;
+      white-space: pre-wrap;
+    }
+    .code .keyword { color: #ef9ca0; }
+    .code .function { color: #f2c94c; }
+    .code .string  { color: #86d0a0; }
+    .code .comment  { color: #75869a; }
+
+    /* ──── 认证面板 ──── */
+    .auth-panel {
+      width: 100%;
+      max-width: 430px;
+      justify-self: end;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--white);
+      box-shadow: 0 18px 55px rgba(21, 34, 56, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    /* 顶部色条 */
+    .auth-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--orange));
+    }
+
+    .auth-heading { margin-bottom: 22px; }
+    .auth-heading h2 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+    }
+    .auth-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* 标签切换 */
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      padding: 4px;
+      margin-bottom: 22px;
+      border-radius: 8px;
+      background: #f0f2f1;
+    }
+    .tab {
+      border: 0;
+      border-radius: 6px;
+      padding: 10px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 750;
+      transition: all 200ms ease;
+    }
+    .tab.active {
+      color: var(--ink);
+      background: var(--white);
+      box-shadow: 0 2px 7px rgba(21, 34, 56, 0.09);
+    }
+
+    .form { display: none; }
+    .form.active { display: block; }
+
+    /* ──── 表单字段 ──── */
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 750;
+    }
+    .input-wrap { position: relative; }
+    .field input {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      outline: none;
+      color: var(--ink);
+      background: var(--white);
+      font-size: 14px;
+      transition: border-color 200ms, box-shadow 200ms;
+    }
+    .field input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-light);
+    }
+    .field input::placeholder { color: #b0bac6; }
+
+    .password-input { padding-right: 50px !important; }
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      color: var(--muted);
+      background: transparent;
+      transform: translateY(-50%);
+      cursor: pointer;
+      transition: color 200ms;
+    }
+    .toggle-password:hover { color: var(--ink); }
+    .toggle-password svg { width: 17px; height: 17px; }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 3px 0 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .form-left { display: flex; align-items: center; gap: 6px; }
+    .check {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+    }
+    .check input { accent-color: var(--teal); width: 14px; height: 14px; }
+
+    .form-link {
+      border: 0;
+      padding: 0;
+      color: var(--teal);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .form-link:hover { text-decoration: underline; }
+
+    .site-select {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      outline: none;
+      color: var(--ink);
+      background: var(--white);
+      font-size: 14px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      transition: border-color 200ms, box-shadow 200ms;
+    }
+    .site-select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-light);
+    }
+
+    /* ──── 提交按钮 ──── */
+    .submit {
+      width: 100%;
+      height: 48px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 200ms ease;
+      box-shadow: 0 4px 14px rgba(242, 107, 79, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(242, 107, 79, 0.45);
+    }
+    .submit:active { transform: translateY(0); }
+    .submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* ──── 分隔线 ──── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0 16px;
+      color: #98a1ab;
+      font-size: 11px;
+    }
+    .divider::before, .divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: var(--line);
+    }
+
+    /* ──── 第三方登录 ──── */
+    .social {
+      width: 100%;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink);
+      background: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+    .social:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(21,34,56,0.1);
+    }
+    .social-mark {
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--white);
+      background: var(--ink);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    /* ──── 错误提示 ──── */
+    .notice {
+      min-height: 18px;
+      margin-top: 12px;
+      font-size: 12px;
+      text-align: center;
+      transition: color 200ms;
+    }
+    .notice.error { color: var(--red); }
+    .notice.success { color: var(--green); }
+
+    /* ──── 页脚 ──── */
+    .footer {
+      position: absolute;
+      right: 24px;
+      bottom: 20px;
+      color: #89929c;
+      font-size: 11px;
+    }
+
+    /* ──── 响应式 ──── */
+    @media (max-width: 850px) {
+      .main {
+        grid-template-columns: 1fr;
+        gap: 46px;
+        padding-top: 20px;
+      }
+      .auth-panel { max-width: none; justify-self: stretch; }
+      .code-window { transform: none; }
+      .footer { position: static; width: min(100% - 48px, 1180px); margin: 0 auto 25px; }
+    }
+    @media (max-width: 520px) {
+      .nav, .main, .footer { width: min(100% - 32px, 1180px); }
+      .nav { height: 70px; }
+      .nav-note { display: none; }
+      .main { min-height: auto; padding: 25px 0 45px; }
+      h1 { font-size: 50px; }
+      .hero-copy { font-size: 15px; }
+      .auth-panel { padding: 25px 20px; }
+      .code { padding: 18px 15px 21px; font-size: 11px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <nav class="nav">
+      <a class="brand" href="/">
+        <span class="brand-mark">&lt;/&gt;</span>
+        <span>研习室</span>
+      </a>
+      <div class="nav-right">
+        <span class="nav-tag">
+          <span class="dot"></span>
+          在线学习
+        </span>
+      </div>
+    </nav>
+
+    <main class="main">
+      <!-- Hero -->
+      <section class="hero">
+        <p class="eyebrow">Learn with purpose</p>
+        <h1>
+          Think in code.<br />
+          Speak with <em>clarity.</em>
+        </h1>
+        <p class="hero-copy">
+          在真实的编程任务中学习 C 语言，同时建立能够表达技术思维的英语能力。
+          从第一个变量开始，逐步写出更清晰的代码和更准确的句子。
+        </p>
+
+        <div class="hero-meta">
+          <span class="meta-item">
+            <span class="meta-dot"></span>
+            C language foundations
+          </span>
+          <span class="meta-item">
+            <span class="meta-dot orange"></span>
+            Technical English
+          </span>
+        </div>
+
+        <div class="code-window" aria-label="C语言代码示例">
+          <div class="window-bar">
+            <div class="window-dots"><span></span><span></span><span></span></div>
+            <span>first_step.c</span>
+            <span>01 / 12</span>
+          </div>
+          <pre class="code"><span class="keyword">#include</span> &lt;stdio.h&gt;
+
+<span class="keyword">int</span> <span class="function">main</span>(<span class="keyword">void</span>) {
+    <span class="keyword">char</span> message[] = <span class="string">"Keep learning."</span>;
+
+    printf(<span class="string">"%s\n"</span>, message);
+    <span class="keyword">return</span> <span class="function">0</span>;
+}
+
+<span class="comment">// Small steps. Clear thinking.</span></pre>
+        </div>
+      </section>
+
+      <!-- 认证面板 -->
+      <aside class="auth-panel">
+        <div class="auth-heading">
+          <h2 id="authTitle">欢迎回来</h2>
+          <p id="authSubtitle">继续你的学习进度。</p>
+        </div>
+
+        <!-- 登录/注册标签 -->
+        <div class="tabs" role="tablist">
+          <button class="tab active" type="button" data-form="login" role="tab">登录</button>
+          <button class="tab" type="button" data-form="register" role="tab">注册</button>
+        </div>
+
+        <!-- 登录表单 -->
+        <form class="form active" id="loginForm" novalidate>
+          <div class="field">
+            <label for="loginUsername">账号</label>
+            <input id="loginUsername" type="text" placeholder="输入账号" autocomplete="username" required />
+          </div>
+          <div class="field">
+            <label for="loginPassword">密码</label>
+            <div class="input-wrap">
+              <input id="loginPassword" class="password-input" type="password" placeholder="输入你的密码" autocomplete="current-password" required />
+              <button class="toggle-password" type="button" aria-label="显示密码">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/>
+                  <circle cx="12" cy="12" r="2.5"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-left">
+              <label class="check">
+                <input type="checkbox" />
+                <span>记住我</span>
+              </label>
+            </div>
+            <a href="#" class="form-link" id="forgotPwdLink">忘记密码？</a>
+          </div>
+          <div class="field">
+            <label for="loginSite">学习站点</label>
+            <select id="loginSite" class="site-select">
+              <option value="c">C语言</option>
+              <option value="grammar">英语语法</option>
+            </select>
+          </div>
+          <button class="submit" type="submit" id="loginBtn">
+            <i class="fas fa-arrow-right"></i>
+            进入学习空间
+          </button>
+          <div class="divider">或者使用</div>
+          <button class="social" type="button">
+            <span class="social-mark">G</span>
+            使用 Google 登录
+          </button>
+          <div class="notice" id="loginNotice" aria-live="polite"></div>
+        </form>
+
+        <!-- 注册表单 -->
+        <form class="form" id="registerForm" novalidate>
+          <div class="field">
+            <label for="regUsername">账号</label>
+            <input id="regUsername" type="text" placeholder="设置登录账号" autocomplete="username" required />
+          </div>
+          <div class="field">
+            <label for="regDisplayName">显示名称（可选）</label>
+            <input id="regDisplayName" type="text" placeholder="例如：Alex" autocomplete="nickname" />
+          </div>
+          <div class="field">
+            <label for="regPassword">密码</label>
+            <div class="input-wrap">
+              <input id="regPassword" class="password-input" type="password" placeholder="至少 6 个字符" autocomplete="new-password" required minlength="6" />
+              <button class="toggle-password" type="button" aria-label="显示密码">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/>
+                  <circle cx="12" cy="12" r="2.5"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="regConfirm">确认密码</label>
+            <input id="regConfirm" class="password-input" type="password" placeholder="再次输入密码" autocomplete="new-password" required />
+          </div>
+          <button class="submit" type="submit" id="registerBtn">
+            <i class="fas fa-user-plus"></i>
+            创建我的账号
+          </button>
+          <div class="divider">或者使用</div>
+          <button class="social" type="button">
+            <span class="social-mark">G</span>
+            使用 Google 注册
+          </button>
+          <div class="notice" id="registerNotice" aria-live="polite"></div>
+        </form>
+      </aside>
+    </main>
+
+    <div class="footer">© <span id="year"></span> 研习室 · SyntaxLab</div>
+  </div>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <script>
+    /* ─── 年份 ─── */
+    document.querySelector('#year').textContent = new Date().getFullYear();
+
+    /* ─── 标签切换 ─── */
+    const tabs = document.querySelectorAll('.tab');
+    const forms = document.querySelectorAll('.form');
+    const title = document.querySelector('#authTitle');
+    const subtitle = document.querySelector('#authSubtitle');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.form;
+        tabs.forEach((t) => t.classList.toggle('active', t === tab));
+        forms.forEach((f) => f.classList.toggle('active', f.id === `${target}Form`));
+        if (target === 'register') {
+          title.textContent = '开始学习';
+          subtitle.textContent = '创建账号，解锁全部学习站点。';
+        } else {
+          title.textContent = '欢迎回来';
+          subtitle.textContent = '继续你的学习进度。';
+        }
+      });
+    });
+
+    /* ─── 站点选择下拉 ─── */
+    const loginSiteSelect = document.getElementById('loginSite');
+
+    /* ─── 密码显示/隐藏 ─── */
+    document.querySelectorAll('.toggle-password').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const input = btn.parentElement.querySelector('input');
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        btn.setAttribute('aria-label', isPassword ? '隐藏密码' : '显示密码');
+      });
+    });
+
+    /* ─── 工具：获取当前选中站点 ─── */
+    function getSelectedSite() {
+      return loginSiteSelect ? loginSiteSelect.value : 'c';
+    }
+
+    /* ─── 登录提交 ─── */
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginNotice = document.getElementById('loginNotice');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const site = getSelectedSite();
+
+      if (!username || !password) {
+        loginNotice.textContent = '请输入账号和密码';
+        loginNotice.className = 'notice error';
+        return;
+      }
+
+      loginNotice.textContent = '';
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password, site }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.success) {
+          loginNotice.textContent = '登录成功，正在进入...';
+          loginNotice.className = 'notice success';
+          setTimeout(() => { window.location.assign('/app'); }, 400);
+        } else {
+          loginNotice.textContent = data.error || '账号或密码错误';
+          loginNotice.className = 'notice error';
+        }
+      } catch (_) {
+        loginNotice.textContent = '网络错误，请重试';
+        loginNotice.className = 'notice error';
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fas fa-arrow-right"></i> 进入学习空间';
+      }
+    });
+
+    /* ─── 注册提交 ─── */
+    const registerForm = document.getElementById('registerForm');
+    const registerBtn = document.getElementById('registerBtn');
+    const registerNotice = document.getElementById('registerNotice');
+
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('regUsername').value.trim();
+      const displayName = document.getElementById('regDisplayName').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirm = document.getElementById('regConfirm').value;
+
+      if (!username) {
+        registerNotice.textContent = '请输入账号';
+        registerNotice.className = 'notice error';
+        return;
+      }
+      if (password.length < 6) {
+        registerNotice.textContent = '密码至少 6 位';
+        registerNotice.className = 'notice error';
+        return;
+      }
+      if (password !== confirm) {
+        registerNotice.textContent = '两次密码不一致';
+        registerNotice.className = 'notice error';
+        return;
+      }
+
+      registerNotice.textContent = '';
+      registerBtn.disabled = true;
+      registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 注册中...';
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password, displayName: displayName || undefined }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.success) {
+          registerNotice.textContent = '注册成功，正在进入...';
+          registerNotice.className = 'notice success';
+          setTimeout(() => { window.location.assign('/app'); }, 400);
+        } else {
+          registerNotice.textContent = data.error || '注册失败，请重试';
+          registerNotice.className = 'notice error';
+        }
+      } catch (_) {
+        registerNotice.textContent = '网络错误，请重试';
+        registerNotice.className = 'notice error';
+      } finally {
+        registerBtn.disabled = false;
+        registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> 创建我的账号';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+/* ==================== 独立登录页专用样式 ==================== */
+/* 覆盖 SPA 浮层式布局为独立全屏页布局。
+   复用 login-hero.css 的 hero/卡片/EVE 机器人样式，这里只调整定位基准与页面级细节。 */
+
+/* 全屏页根：视频 Hero 铺满视口 */
+.login-page-body {
+  margin: 0;
+  min-height: 100vh;
+  background: #000;
+  overflow: hidden;
+}
+
+#loginBg.login-page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+/* 视频层/PNG/shade 沿用 login-hero.css 的 absolute 定位（基于 #loginBg） */
+#loginBg .login-hero-videos { position: absolute; inset: 0; z-index: 0; }
+#loginBg .login-hero-png { position: absolute; inset: 0; z-index: 1; }
+#loginBg .login-hero-shade { position: absolute; inset: 0; z-index: 2; }
+
+/* hero 页与登录界面层：基于 #loginBg 全屏层叠 */
+#loginBg .login-hero-page { position: absolute; inset: 0; z-index: 3; }
+#loginBg .login-auth-page {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  overflow-y: auto;
+  padding: 24px 0 24px 10vw;
+}
+
+/* 左侧文字区域 */
+#loginBg .login-auth-hero {
+  flex: 1;
+  max-width: 520px;
+  margin-left: -40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 右侧登录卡 */
+#loginBg .login-auth-card,
+#loginBg .auth-panel {
+  flex-shrink: 0;
+  width: 430px;
+  margin-left: 150px;
+}
+
+/* 返回按钮 */
+#loginBg .login-back-btn {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  z-index: 6;
+}
+
+/* 响应式：小屏隐藏左侧文字，登录卡居中 */
+@media (max-width: 900px) {
+  #loginBg .login-auth-page {
+    padding-left: 0;
+  }
+  #loginBg .login-auth-hero {
+    display: none;
+  }
+}
+@media (max-width: 480px) {
+  #loginBg .login-auth-card,
+  #loginBg .auth-panel {
+    width: 90vw;
+  }
+  #loginBg .login-back-btn { top: 16px; left: 16px; }
+}

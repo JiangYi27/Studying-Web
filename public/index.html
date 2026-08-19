@@ -7,6 +7,10 @@
   <title>知识库 · 研习室</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- 登录首页字体：Instrument Serif (logo 斜体) + Noto Serif SC (中文衬线) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@500;600;700;900&display=swap" rel="stylesheet">
   <!-- Prism 代码高亮样式（体积小，保留首屏加载避免闪烁） -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css"
@@ -38,6 +42,7 @@
   <link rel="stylesheet" href="/css/views/tasks.css">
   <link rel="stylesheet" href="/css/views/responsive.css">
   <link rel="stylesheet" href="/css/game.css">
+  <link rel="stylesheet" href="/css/focus-mode.css">
 
 
 </head>
@@ -47,13 +52,8 @@
     <!--  -->
     <header class="top-bar">
       <div class="top-left">
-        <img src="/img/logo.png" alt="Logo" class="logo-img" width="36" height="36" onerror="this.style.display='none'">
-        <span class="logo-text">lab研习室</span>
-      </div>
-      <div class="search-global">
-        <i class="fas fa-search search-icon"></i>
-        <input type="text" id="searchGlobal" class="search-input" placeholder="搜索章节... (Ctrl+K)">
-        <div id="searchDropdown" class="search-results"></div>
+        <img src="/image/logo.png" alt="Logo" class="logo-img" id="logoImg" width="36" height="36" onerror="this.style.display='none'">
+        <span class="logo-text" id="logoText">lab研习室</span>
       </div>
       <div class="top-right">
         <div class="exp-inline">
@@ -63,6 +63,10 @@
           </div>
           <span class="exp-num" id="expPoints">0</span>
         </div>
+        <!-- 专注模式按钮 -->
+        <button id="focusModeBtn" class="noise-music-btn" title="专注模式" style="margin-right:4px;">
+          <i class="fas fa-clock"></i>
+        </button>
         <div class="noise-container">
           <button id="noiseQuickBtn" class="noise-music-btn" title="白噪音 / 背景音乐">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
@@ -97,35 +101,46 @@
             <div id="noiseStatus" class="noise-status"></div>
           </div>
         </div>
-        <div class="dropdown">
-          <button class="btn btn-link text-dark p-0" data-bs-toggle="dropdown">
-            <img src="/img/admin-avatar.png" alt="管理员头像" class="admin-avatar" width="40" height="40"
-              onerror="this.style.display='none'; this.parentNode.querySelector('.avatar-fallback').style.display='inline-block'">
-            <i class="fas fa-user-circle fa-2x avatar-fallback" style="display:none"></i>
+        <!-- 用户下拉菜单 -->
+        <div class="user-dropdown" id="userDropdown">
+          <button class="user-dropdown-btn" id="userDropdownBtn" aria-expanded="false">
+            <img src="/image/admin-avatar.png" alt="头像" class="user-avatar" id="topAvatar"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <i class="fas fa-user user-avatar-fallback" style="display:none"></i>
           </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><div class="dropdown-user" id="dropdownUser">
-              <div class="dropdown-user-avatar" id="dropdownUserAvatar"><i class="fas fa-user-shield"></i></div>
-              <div class="dropdown-user-meta">
-                <span class="dropdown-user-name" id="dropdownUserName">管理员</span>
-                <span class="dropdown-user-role" id="dropdownUserRole"><i class="fas fa-crown"></i> 管理员</span>
+          <ul class="user-dropdown-menu" id="userDropdownMenu">
+            <!-- 用户信息区 -->
+            <li class="user-dropdown-header">
+              <div class="user-info">
+                <img src="/image/admin-avatar.png" alt="头像" class="user-info-avatar" id="dropdownAvatar"
+                  onerror="this.style.display='none'">
+                <i class="fas fa-user-circle user-info-avatar-fallback" id="dropdownAvatarFallback"></i>
+                <div class="user-info-meta">
+                  <span class="user-info-name" id="dropdownUserName">管理员</span>
+                  <span class="user-info-role" id="dropdownUserRole"><i class="fas fa-crown"></i> 管理员</span>
+                </div>
               </div>
-            </div></li>
-            <li>
-              <hr class="dropdown-divider">
             </li>
-            <li><span class="dropdown-item-text"><i class="fas fa-globe"></i> 切换站点</span></li>
+            <li><hr class="user-dropdown-divider"></li>
+            <!-- 切换站点 -->
+            <li class="user-dropdown-section-title"><i class="fas fa-globe"></i> 切换站点</li>
             <li id="siteSwitchDropdown"></li>
+            <li><hr class="user-dropdown-divider"></li>
+            <!-- 修改资料 -->
             <li>
-              <hr class="dropdown-divider">
+              <a class="user-dropdown-item" href="#" id="editProfileBtn">
+                <i class="fas fa-user-edit"></i>
+                <span>修改资料</span>
+                <i class="fas fa-chevron-right user-dropdown-arrow"></i>
+              </a>
             </li>
-            <li><a class="dropdown-item" href="#" id="darkModeToggle"><i class="fas fa-moon"></i> 深色模式</a></li>
-            <li><a class="dropdown-item" href="#" id="resetProgressBtn"><i class="fas fa-undo"></i> 重置进度</a></li>
-            <li><a class="dropdown-item" href="#" id="exportNotesBtn"><i class="fas fa-download"></i> 导出笔记</a></li>
+            <!-- 退出登录 -->
             <li>
-              <hr class="dropdown-divider">
+              <a class="user-dropdown-item user-dropdown-item-danger" href="#" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>退出登录</span>
+              </a>
             </li>
-            <li><a class="dropdown-item dropdown-item-danger" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> 退出登录</a></li>
           </ul>
         </div>
       </div>
@@ -141,7 +156,7 @@
             <a class="nav-item" data-view="course"><i class="fas fa-book-open"></i> <span>课程学习</span></a>
             <a class="nav-item" data-view="extension"><i class="fas fa-layer-group"></i> <span>拓展知识</span></a>
             <a class="nav-item" data-view="dashboard"><i class="fas fa-chart-pie"></i> <span>学习记录</span></a>
-            <a class="nav-item" data-view="roadmap"><i class="fas fa-map-signs"></i> <span>实战闯关</span></a>
+            <a class="nav-item" data-view="roadmap" data-site="c"><i class="fas fa-map-signs"></i> <span>实战闯关</span></a>
             <a class="nav-item ai-qa-toggle" id="aiQaToggle"><i class="fas fa-robot"></i> <span>AI答疑解惑</span><i
                 class="fas fa-chevron-right ai-chevron"></i></a>
             <div class="ai-dropdown" id="aiDropdown">
@@ -154,6 +169,11 @@
                 <i class="fas fa-bolt"></i> 豆包
               </a>
             </div>
+            <!--
+              ⚠️ 背单词功能仅限英语语法站点使用
+              C语言站点禁用的原因：背单词功能面向英语学习，与C语言学习内容无关
+            -->
+            <a class="nav-item" id="vocabNavItem" href="/vocabulary.html"><i class="fas fa-book-spelling"></i> <span>背单词</span></a>
             <a class="nav-item" data-view="badges"><i class="fas fa-medal"></i> <span>我的成就</span></a>
             <a class="nav-item" data-view="settings"><i class="fas fa-cog"></i> <span>设置</span></a>
           </nav>
@@ -161,6 +181,14 @@
         <div class="sidebar-panel hidden" id="coursePanel">
           <div class="panel-header">
             <button id="backToMenu" class="btn btn-sm btn-link"><i class="fas fa-arrow-left"></i> 返回菜单</button>
+          </div>
+          <!-- 课程目录搜索 -->
+          <div class="course-search-wrap" id="courseSearchWrap" style="padding: 8px 12px;">
+            <div class="course-search-box">
+              <i class="fas fa-search course-search-icon"></i>
+              <input type="text" id="courseSearchInput" class="course-search-input" placeholder="搜索章节..." autocomplete="off">
+            </div>
+            <div id="courseSearchResults" class="course-search-results"></div>
           </div>
           <div class="global-progress">
             <span>总进度</span>
@@ -668,21 +696,9 @@
           <button class="game-back-btn" id="gameBackBtn" type="button" title="返回主页">
             <i class="fas fa-arrow-left"></i> 返回
           </button>
-          <!-- 开场：标题页 -->
+          <!-- 开场：直接进入 loop 视频（无静态标题页） -->
           <div class="qg-view active" id="startView">
-            <div class="home-bg" id="startBg"></div>
-            <div class="start-card" id="startCard">
-              <div class="home-icon"><img src="/image/icon.webp" alt="游戏图标"></div>
-              <h1 class="home-name">知识秘境</h1>
-              <div class="home-sub">Realm of Knowledge</div>
-              <button class="start-btn" id="startBtn" type="button">开始闯关</button>
-              <div class="start-hint">点击开始 · 探索未知的王国</div>
-            </div>
-            <div class="start-quote">
-              <p class="quote-text">“Unlock the wonder — every question is a key to a hidden door.”</p>
-              <p class="quote-author">— Realm of Knowledge</p>
-            </div>
-            <div class="loop-hint" id="loopHint" hidden>点击中央进入</div>
+            <div class="loop-hint" id="loopHint">点击进入</div>
             <button class="skip-intro-btn" id="skipIntroBtn" hidden type="button">跳过 »</button>
             <video class="start-video" id="startLoopVideo" src="/video/loop.mp4" loop muted playsinline hidden></video>
             <audio id="startLoopAudio" src="/audio/loop.mp3" loop preload="none"></audio>
@@ -724,10 +740,6 @@
                 <div class="hud-progress" title="已闯关章节">
                   <span class="hud-progress-label">王国</span>
                   <strong id="hudProgress">0/14</strong>
-                </div>
-                <div class="hud-train" id="hudTrain" title="营地训练次数">
-                  <span>🎯 训练</span>
-                  <strong id="hudTrainNum">0</strong>
                 </div>
                 <button class="hud-sound-btn" id="hudSoundBtn" title="音效开关">🎵</button>
               </div>
@@ -779,35 +791,31 @@
                 <!-- 章节轻提示 -->
                 <div class="map-hint" id="mapHint" role="status" aria-live="polite"></div>
 
-                <!-- 波次战斗面板（图片化答题界面） -->
+                <!-- 章节答题面板（纯答题，无游戏战斗元素） -->
                 <div class="battle-panel" id="battlePanel" role="dialog" aria-modal="true" aria-labelledby="battleTitle" hidden>
                   <button class="battle-close" id="battleClose" title="退出">✕</button>
                   <div class="battle-topbar">
-                    <div class="battle-lives" id="battleLives">
-                      <img src="/image/answer/lives.png" alt="生命" class="life-icon">
-                      <span class="life-count">×<span id="lifeCount">3</span></span>
-                    </div>
                     <div class="battle-head">
                       <span class="battle-title" id="battleTitle" tabindex="-1">章节</span>
-                      <span class="battle-wave" id="battleWave">第 1 波</span>
-                      <span class="battle-timer" id="battleTimer" title="每题限时">⏱ <span id="battleTimerNum">15</span></span>
+                      <span class="battle-timer" id="battleTimer" title="每题限时">⏱ <span id="battleTimerNum">25</span>s</span>
                     </div>
-                    <div class="battle-progress" id="battleProgress">
-                      <img src="/image/answer/progress.png" alt="进度" class="progress-icon">
-                    </div>
+                    <div class="battle-timebar"><div class="battle-timebar-inner" id="battleTimeBar"></div></div>
                   </div>
                   <div class="battle-qna">
+                    <div class="battle-progress" id="battleProgress">
+                      <span class="battle-progress-text" id="battleQtag">第 0 / 8 题</span>
+                      <span class="battle-progress-segs" id="battleSegs"></span>
+                    </div>
                     <div class="battle-explain" id="battleExplain" hidden></div>
-                    <div class="battle-streak" id="battleStreak" hidden></div>
                     <div class="battle-question" id="battleQuestion"></div>
-                    <div class="battle-qtag" id="battleQtag"></div>
                     <div class="battle-options" id="battleOptions"></div>
                     <div class="battle-feedback" id="battleFeedback"></div>
                   </div>
                   <div class="battle-summary" id="battleSummary" hidden>
                     <video class="battle-result-video" id="battleResultVideo" playsinline preload="none"></video>
-                    <div class="battle-summary-box">
-                      <div class="battle-summary-kind" id="battleSummaryKind">胜利</div>
+                    <div class="battle-summary-wait" id="battleSummaryWait">🎬 结算中…</div>
+                    <div class="battle-summary-box" id="battleSummaryBox" hidden>
+                      <div class="battle-summary-kind" id="battleSummaryKind">结果</div>
                       <div class="battle-summary-stats" id="battleSummaryStats"></div>
                       <button class="battle-again" id="battleAgainBtn">再来一次</button>
                       <button class="battle-back-map" id="battleBackMapBtn">返回地图</button>
@@ -827,7 +835,7 @@
                   <div class="level-intro-motto" id="levelIntroMotto"></div>
                   <div class="level-intro-progress" id="levelIntroProgress"></div>
                   <div class="level-intro-lock" id="levelIntroLock" hidden>🔒 需先通关上一章</div>
-                  <button class="level-intro-btn" id="levelIntroStart">⚔️ 开始闯关</button>
+                  <button class="level-intro-btn" id="levelIntroStart">📝 开始答题</button>
                 </div>
               </div>
 
@@ -880,6 +888,26 @@
             <div class="settings-header">
               <h2><i class="fas fa-cog"></i> 设置</h2>
               <p class="settings-subtitle">个性化你的学习体验</p>
+            </div>
+
+            <!-- 个人信息 -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <i class="fas fa-user-circle"></i>
+                <span>个人信息</span>
+              </div>
+              <div class="settings-card-body">
+                <div class="setting-row">
+                  <div class="setting-label">
+                    <i class="fas fa-user-edit"></i> 修改资料
+                  </div>
+                  <div class="setting-control">
+                    <button class="btn btn-sm btn-outline-primary" id="editProfileBtn2">
+                      <i class="fas fa-edit"></i> 修改
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- 外观设置 -->
@@ -1112,6 +1140,26 @@
               </div>
             </div>
 
+            <!-- 密码管理 -->
+            <div class="settings-card">
+              <div class="settings-card-header">
+                <i class="fas fa-lock"></i>
+                <span>密码管理</span>
+              </div>
+              <div class="settings-card-body">
+                <div class="setting-row">
+                  <div class="setting-label">
+                    <i class="fas fa-key"></i> 修改密码
+                  </div>
+                  <div class="setting-control">
+                    <button class="btn btn-sm btn-outline-primary" id="changePasswordBtn">
+                      <i class="fas fa-edit"></i> 修改
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- 关于 -->
             <div class="settings-card">
               <div class="settings-card-header">
@@ -1143,35 +1191,33 @@
     </div>
   </div>
 
-  <!-- 登录遮罩：未登录时全屏锁定应用 -->
-  <div id="loginOverlay" class="login-overlay">
-    <div id="loginBg"></div>
-    <div class="login-card">
-      <img src="/img/logo.png" alt="Logo" class="login-logo" width="68" height="68" onerror="this.style.display='none'">
-      <h1 class="login-title">lab研习室</h1>
-      <p class="login-subtitle" id="loginSubtitle">知识库</p>
-      <form id="loginForm" novalidate>
-        <div class="login-field">
-          <i class="fas fa-user"></i>
-          <input id="loginUsername" type="text" placeholder="账号" autocomplete="username" autofocus>
+  <!-- 修改密码弹窗 -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-key"></i> 修改密码</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
         </div>
-        <div class="login-field">
-          <i class="fas fa-lock"></i>
-          <input id="loginPassword" type="password" placeholder="密码" autocomplete="current-password">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">当前密码</label>
+            <input type="password" class="form-control" id="currentPassword" placeholder="请输入当前密码">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">新密码</label>
+            <input type="password" class="form-control" id="newPassword" placeholder="请输入新密码（至少6位）">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">确认新密码</label>
+            <input type="password" class="form-control" id="confirmNewPassword" placeholder="请再次输入新密码">
+          </div>
+          <div id="changePasswordError" class="text-danger small mb-2"></div>
         </div>
-        <div id="loginError" class="login-error" role="alert"></div>
-        <button id="loginSubmitBtn" type="submit" class="login-btn split-btn">
-          <span id="loginSubmitLabel">登 录</span>
-          <span id="loginSpinner" class="spinner-border spinner-border-sm d-none" role="status"
-            aria-hidden="true"></span>
-        </button>
-      </form>
-      <!-- 站点选择：登录成功后账号可访问多个站点时展示 -->
-      <div id="loginSitePicker" style="display:none">
-        <div class="login-sites-title" id="loginSiteTitle">选择要进入的学习站点</div>
-        <div id="loginSiteList" class="login-sites-list"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="savePasswordBtn">保存</button>
+        </div>
       </div>
-      <!-- 无注册 / 忘记密码功能 -->
     </div>
   </div>
 
@@ -1251,6 +1297,47 @@
     </div>
   </div>
 
+  <!-- 修改资料弹窗 -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-user-edit"></i> 修改资料</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3 text-center">
+            <img id="editAvatarPreview" src="/image/admin-avatar.png" alt="头像预览" class="rounded" style="width:80px;height:80px;object-fit:cover;border:2px solid var(--border-color)">
+          </div>
+          <!-- 图片上传区域 -->
+          <div class="mb-3">
+            <label class="form-label">上传头像</label>
+            <div class="avatar-upload-wrap">
+              <input type="file" id="editAvatarFile" accept="image/*" class="avatar-file-input">
+              <label for="editAvatarFile" class="avatar-upload-btn">
+                <i class="fas fa-upload"></i> 选择图片
+              </label>
+              <span id="editAvatarFileName" class="avatar-file-name"></span>
+            </div>
+          </div>
+          <div class="text-center mb-2" style="color:var(--text-muted);font-size:12px;">或</div>
+          <div class="mb-3">
+            <label class="form-label">头像 URL</label>
+            <input type="url" class="form-control" id="editAvatarUrl" placeholder="https://example.com/avatar.jpg">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">显示名称</label>
+            <input type="text" class="form-control" id="editDisplayName" placeholder="你的显示名称">
+          </div>
+          <div id="editProfileError" class="text-danger small mb-2"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="editProfileSaveBtn">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <audio id="noiseAudio" loop preload="none" playsinline></audio>
 
   <!-- 音乐播放可视化特效（右下角，播放时显示） -->
@@ -1285,7 +1372,7 @@
   <script src="/js/utils/helpers.js" defer></script>
   <script src="/js/data/chapters.js" defer></script>
   <!-- 核心状态管理 -->
-  <script src="/js/main.js" defer></script>
+  <script src="/js/core/main.js" defer></script>
   <!-- 核心功能模块 -->
   <script src="/js/core/toast.js" defer></script>
   <!-- 功能特性 -->
@@ -1293,6 +1380,7 @@
   <script src="/js/features/study-timer.js" defer></script>
   <script src="/js/features/bookmark.js" defer></script>
   <script src="/js/features/search.js" defer></script>
+  <script src="/js/features/course-search.js" defer></script>
   <script src="/js/features/notes.js" defer></script>
   <script src="/js/features/noise.js" defer></script>
   <script src="/js/features/keyboard.js" defer></script>
@@ -1304,12 +1392,13 @@
   <script src="/js/views/dashboard.js" defer></script>
   <script src="/js/views/extension.js" defer></script>
   <!-- 核心应用逻辑 -->
-  <script src="/js/roadmap.js" defer></script>
+  <script src="/js/views/roadmap.js" defer></script>
   <!-- 实战闯关（Quiz Game 体验） -->
-  <script src="/js/quizgame-data.js" defer></script>
-  <script src="/js/quizgame-audio.js" defer></script>
-  <script src="/js/quizgame-game.js" defer></script>
-  <script src="/js/quizgame-main.js" defer></script>
+  <script src="/js/game/quizgame-data.js" defer></script>
+  <script src="/js/game/quizgame-audio.js" defer></script>
+  <script src="/js/game/quizgame-game.js" defer></script>
+  <script src="/js/game/quizgame-main.js" defer></script>
+  <script src="/js/focus-mode.js" defer></script>
 </body>
 
 </html>

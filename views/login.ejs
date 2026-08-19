@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>研习室 · 登录</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- 登录页样式 -->
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/components/login-hero.css">
+  <link rel="stylesheet" href="/css/components/login-page.css">
+
+  <style>
+    /* ── new.html 风格登录卡样式 ── */
+    :root {
+      --ink: #152238;
+      --muted: #667085;
+      --white: #ffffff;
+      --line: #dce1e5;
+      --orange: #f26b4f;
+      --orange-dark: #dc573d;
+      --teal: #2b8c88;
+      --teal-light: rgba(43, 140, 136, 0.12);
+      --green: #48a868;
+      --red: #ef4444;
+      --yellow: #f2c94c;
+    }
+
+    /* 登录卡：new.html 风格（纯白实心 + 顶部渐变色条） */
+    .auth-panel {
+      width: 100%; max-width: 430px;
+      padding: 34px;
+      border: 1px solid var(--line); border-radius: 16px;
+      background: var(--white);
+      box-shadow: 0 18px 55px rgba(21, 34, 56, 0.08);
+      position: relative; overflow: hidden;
+    }
+    .auth-panel::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--orange));
+    }
+
+    .auth-heading { margin-bottom: 22px; }
+    .auth-heading h2 { margin: 0 0 6px; font-size: 26px; letter-spacing: -0.04em; }
+    .auth-heading p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    /* Tabs */
+    .tabs {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+      padding: 4px; margin-bottom: 22px;
+      border-radius: 8px; background: #f0f2f1;
+    }
+    .tab {
+      border: 0; border-radius: 6px; padding: 10px;
+      color: var(--muted); background: transparent;
+      font-size: 13px; font-weight: 750;
+      transition: all 200ms ease; cursor: pointer;
+    }
+    .tab.active { color: var(--ink); background: var(--white); box-shadow: 0 2px 7px rgba(21,34,56,0.09); }
+    .tab:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+    .form { display: none; justify-content: space-between; }
+    .form.active { display: flex; flex-direction: column; min-height: 420px; }
+    .form > * { flex-shrink: 0; }
+    .form .field { margin-bottom: 14px; }
+    .form .form-row { margin: 3px 0 14px; }
+    .form .divider { margin: auto 0 16px; }
+    .form .social { margin-bottom: 0; }
+    .form .notice { margin-top: 12px; min-height: 18px; }
+
+    /* Fields */
+    .field { margin-bottom: 14px; }
+    .field label { display: block; margin-bottom: 6px; color: var(--ink); font-size: 12px; font-weight: 750; }
+    .field input, .input-wrap input {
+      width: 100%; height: 46px; padding: 0 14px;
+      border: 1.5px solid var(--line); border-radius: 8px;
+      outline: none; color: var(--ink); background: var(--white);
+      font-size: 14px; transition: border-color 200ms, box-shadow 200ms;
+      box-sizing: border-box;
+    }
+    .input-wrap { position: relative; width: 100%; }
+    .field input:focus, .input-wrap input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-light); }
+    .field input:focus-visible, .input-wrap input:focus-visible { outline: none; }
+    .field input::placeholder, .input-wrap input::placeholder { color: #b0bac6; }
+
+    .password-input { padding-right: 50px !important; }
+    .toggle-password {
+      position: absolute; top: 50%; right: 12px; width: 28px; height: 28px;
+      display: grid; place-items: center; border: 0; color: var(--muted);
+      background: transparent; transform: translateY(-50%); cursor: pointer;
+      transition: color 200ms;
+    }
+    .toggle-password:hover { color: var(--ink); }
+    .toggle-password svg { width: 17px; height: 17px; }
+    .toggle-password:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 4px; }
+
+    .form-row {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin: 3px 0 14px; color: var(--muted); font-size: 12px;
+    }
+    .form-left { display: flex; align-items: center; gap: 6px; }
+    .check { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+    .check input { accent-color: var(--teal); width: 14px; height: 14px; }
+
+    .form-link {
+      border: 0; padding: 0; color: var(--teal); background: transparent;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+    .form-link:hover { text-decoration: underline; }
+    .form-link:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; border-radius: 2px; }
+
+    .site-select {
+      width: 100%; height: 46px; padding: 0 14px;
+      border: 1.5px solid var(--line); border-radius: 8px;
+      outline: none; color: var(--ink); background: var(--white);
+      font-size: 14px; cursor: pointer; appearance: none;
+      box-sizing: border-box;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center;
+      transition: border-color 200ms, box-shadow 200ms;
+    }
+    .site-select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-light); }
+
+    /* Submit */
+    .submit {
+      width: 100%; height: 48px; border: 0; border-radius: 8px;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      font-size: 14px; font-weight: 800; letter-spacing: 0.04em;
+      cursor: pointer; transition: all 200ms ease;
+      box-shadow: 0 4px 14px rgba(242,107,79,0.35);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(242,107,79,0.45); }
+    .submit:active { transform: translateY(0); }
+    .submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .submit:focus-visible { outline: 2px solid var(--orange-dark); outline-offset: 2px; }
+
+    /* Divider */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0 16px; color: #98a1ab; font-size: 11px;
+    }
+    .divider::before, .divider::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+
+    /* Social */
+    .social {
+      width: 100%; height: 44px;
+      display: flex; align-items: center; justify-content: center; gap: 9px;
+      border: 1.5px solid var(--line); border-radius: 8px;
+      color: var(--ink); background: var(--white);
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      transition: all 200ms ease;
+    }
+    .social:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(21,34,56,0.1); }
+    .social:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+    .social-mark {
+      width: 18px; height: 18px; display: grid; place-items: center;
+      border-radius: 50%; color: var(--white); background: var(--ink);
+      font-size: 10px; font-weight: 800;
+    }
+
+    /* Notice */
+    .notice { min-height: 18px; margin-top: 12px; font-size: 12px; text-align: center; transition: color 200ms; }
+    .notice.error { color: var(--red); }
+    .notice.success { color: var(--green); }
+
+    /* 左侧文字区域：参考 new.html */
+    .login-auth-hero {
+      flex: 1;
+      max-width: 560px;
+      padding: 20px 40px 20px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .login-auth-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 5px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .login-auth-eyebrow::before {
+      content: "";
+      width: 24px;
+      height: 2px;
+      background: var(--orange);
+    }
+    .login-auth-h1 {
+      max-width: 700px;
+      font-size: clamp(36px, 4.5vw, 60px);
+      line-height: 1.2;
+      letter-spacing: -0.05em;
+      color: white;
+      margin: 0 0 24px;
+    }
+    .login-auth-h1 em {
+      color: var(--orange);
+      font-family: Georgia, serif;
+      font-weight: 500;
+      letter-spacing: -0.05em;
+    }
+    .login-auth-copy {
+      max-width: 480px;
+      margin: 0 0 28px;
+      color: #f0f2f1;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    .login-auth-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+    .login-auth-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 700;
+      backdrop-filter: blur(4px);
+    }
+    .login-auth-meta-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .login-auth-meta-dot.orange { background: var(--orange); }
+    /* 代码窗口 */
+    .login-auth-code-window {
+      width: min(100%, 480px);
+      border: 1px solid #26354b;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--ink);
+      box-shadow: 0 24px 70px rgba(21, 34, 56, 0.12);
+      transform: rotate(-1.5deg);
+    }
+    .login-auth-window-bar {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      background: #1e2c40;
+      color: #8794a7;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 11px;
+    }
+    .login-auth-window-dots { display: flex; gap: 6px; }
+    .login-auth-window-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #6d7b8d;
+    }
+    .login-auth-window-dots span:first-child { background: var(--orange); }
+    .login-auth-window-dots span:nth-child(2) { background: var(--yellow); }
+    .login-auth-window-dots span:nth-child(3) { background: var(--green); }
+    .login-auth-code {
+      margin: 0;
+      padding: 18px 20px 22px;
+      color: #dbe4ef;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.85;
+      white-space: pre-wrap;
+    }
+    .login-auth-code .keyword { color: #ef9ca0; }
+    .login-auth-code .function { color: #f2c94c; }
+    .login-auth-code .string  { color: #86d0a0; }
+    .login-auth-code .comment  { color: #75869a; }
+
+    /* 响应式：小屏隐藏左侧文字 */
+    @media (max-width: 900px) {
+      .login-auth-hero { display: none; }
+    }
+    @media (max-width: 520px) {
+      .auth-panel { padding: 25px 20px; }
+    }
+  </style>
+</head>
+
+<body class="login-page-body">
+
+  <!-- 全屏视频 Hero 背景 -->
+  <div id="loginBg" class="login-page-bg">
+    <div class="login-hero-videos">
+      <video class="login-hero-video active" src="/video/first.mp4" autoplay muted loop playsinline></video>
+      <video class="login-hero-video" src="/video/second.mp4" autoplay muted loop playsinline preload="auto"></video>
+      <video class="login-hero-video" src="/video/third.mp4" autoplay muted loop playsinline preload="auto"></video>
+      <video class="login-hero-video" src="/video/fourth.mp4" autoplay muted loop playsinline preload="auto"></video>
+    </div>
+    <img class="login-hero-png" src="/image/login-overlay.png" alt="">
+    <div class="login-hero-shade"></div>
+
+    <!-- 完整英雄首页 -->
+    <div id="loginHeroPage" class="login-hero-page">
+      <nav class="login-nav">
+        <a href="/" class="login-nav-logo serif-accent">研习室</a>
+
+        <div class="login-nav-desktop">
+          <div class="login-nav-pill">
+            <a href="#" class="login-nav-link">课程地图</a>
+            <a href="#" class="login-nav-link">闯关答题</a>
+            <a href="#" class="login-nav-link">语法手册</a>
+            <a href="#" class="login-nav-link">关于</a>
+            <a href="#" class="login-nav-cta" data-open-login>开始学习</a>
+          </div>
+        </div>
+
+        <button id="loginMenuBtn" aria-label="Menu" class="login-menu-btn">
+          <span class="login-menu-icons">
+            <svg class="login-menu-icon login-menu-icon--open" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            <svg class="login-menu-icon login-menu-icon--close" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </span>
+        </button>
+      </nav>
+
+      <div id="loginMenuOverlay" class="login-menu-overlay">
+        <div id="loginMenuPanel" class="login-menu-panel">
+          <a href="#" class="login-menu-link">课程地图</a>
+          <a href="#" class="login-menu-link">闯关答题</a>
+          <a href="#" class="login-menu-link">语法手册</a>
+          <a href="#" class="login-menu-link">关于</a>
+          <a href="#" class="login-menu-cta" data-open-login>开始学习</a>
+        </div>
+      </div>
+
+      <div id="loginHeroBody" class="login-hero-body">
+        <div class="login-hero-badge" style="text-shadow:0 1px 4px rgba(0,0,0,0.6)">
+          C 语言 · 英语语法 · 一站学到底
+        </div>
+
+        <h1 class="login-hero-heading">
+          <span class="heading-line-1">研习一路风景</span><br>
+          <span class="login-hero-heading-sub">代码一程征途</span>
+        </h1>
+
+        <p class="login-hero-sub">
+          窗外是世界的语言，屏前是逻辑的远方。
+        </p>
+
+        <form class="login-hero-form" novalidate>
+          <input class="login-hero-email" type="email" placeholder="你的学习邮箱">
+          <button type="button" class="login-hero-cta" data-open-login>开始旅程</button>
+        </form>
+
+        <div class="login-hero-vtabs">
+          <button class="login-hero-vtab active" data-index="0">晨曦</button>
+          <button class="login-hero-vtab" data-index="1">静水</button>
+          <button class="login-hero-vtab" data-index="2">深林</button>
+          <button class="login-hero-vtab" data-index="3">幽谷</button>
+        </div>
+      </div>
+
+      <div class="login-hero-slogan">
+        <span>英语筑基</span>
+        <span class="login-slogan-dot">·</span>
+        <span>编程赋能</span>
+        <span class="login-slogan-dot">·</span>
+        <span>互动精进</span>
+        <span class="login-slogan-dot">·</span>
+        <span>知行合一</span>
+      </div>
+    </div>
+
+    <!-- 登录界面层：左侧文字 + 右侧登录卡 -->
+    <div id="loginAuthPage" class="login-auth-page auth-hidden">
+      <a href="/" class="login-auth-brand serif-accent">研习室</a>
+
+      <button id="loginBackBtn" type="button" class="login-back-btn">
+        <i class="fas fa-arrow-left"></i> 返回
+      </button>
+
+      <!-- 左侧文字区域：参考 new.html -->
+      <div class="login-auth-hero">
+        <p class="login-auth-eyebrow">Learn with purpose</p>
+        <h1 class="login-auth-h1">
+          Think in code.<br />
+          Speak with <em>clarity.</em>
+        </h1>
+        <p class="login-auth-copy">
+          在真实的编程任务中学习 C 语言，同时建立能够表达技术思维的英语能力。
+          从第一个变量开始，逐步写出更清晰的代码和更准确的句子。
+        </p>
+        <div class="login-auth-meta">
+          <span class="login-auth-meta-item">
+            <span class="login-auth-meta-dot"></span>
+            C language foundations
+          </span>
+          <span class="login-auth-meta-item">
+            <span class="login-auth-meta-dot orange"></span>
+            Technical English
+          </span>
+        </div>
+        <div class="login-auth-code-window" aria-label="C语言代码示例">
+          <div class="login-auth-window-bar">
+            <div class="login-auth-window-dots"><span></span><span></span><span></span></div>
+            <span>first_step.c</span>
+            <span>01 / 12</span>
+          </div>
+          <pre class="login-auth-code"><span class="keyword">#include</span> &lt;stdio.h&gt;
+
+<span class="keyword">int</span> <span class="function">main</span>(<span class="keyword">void</span>) {
+    <span class="keyword">char</span> message[] = <span class="string">"Keep learning."</span>;
+
+    printf(<span class="string">"%s\n"</span>, message);
+    <span class="keyword">return</span> <span class="function">0</span>;
+}
+
+<span class="comment">// Small steps. Clear thinking.</span></pre>
+        </div>
+      </div>
+
+      <!-- 右侧登录卡 -->
+      <div class="auth-panel">
+        <div class="auth-heading">
+          <h2 id="authTitle">欢迎回来</h2>
+          <p id="authSubtitle">继续你的学习进度。</p>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="登录或注册">
+          <button class="tab active" type="button" data-form="login" role="tab" aria-selected="true" id="tabLogin">登录</button>
+          <button class="tab" type="button" data-form="register" role="tab" aria-selected="false" id="tabRegister">注册</button>
+        </div>
+
+        <form class="form active" id="loginForm" novalidate>
+          <div class="field">
+            <label for="loginUsername">账号或邮箱</label>
+            <input id="loginUsername" type="text" placeholder="输入账号或邮箱" autocomplete="username" required />
+          </div>
+          <div class="field">
+            <label for="loginPassword">密码</label>
+            <div class="input-wrap">
+              <input id="loginPassword" class="password-input" type="password" placeholder="输入你的密码" autocomplete="current-password" required />
+              <button class="toggle-password" type="button" aria-label="显示密码">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/>
+                  <circle cx="12" cy="12" r="2.5"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-left">
+              <label class="check"><input type="checkbox" /><span>记住我</span></label>
+            </div>
+            <button type="button" class="form-link" id="forgotPwdLink">忘记密码？</button>
+          </div>
+          <div class="field">
+            <label for="loginSite">学习站点</label>
+            <select id="loginSite" class="site-select">
+              <option value="c">C语言</option>
+              <option value="grammar">英语语法</option>
+            </select>
+          </div>
+          <button class="submit" type="submit" id="loginBtn">
+            <i class="fas fa-arrow-right"></i>
+            进入学习空间
+          </button>
+          <div class="divider">或者使用</div>
+          <button class="social" type="button" data-form="register">
+            <span class="social-mark"><i class="fas fa-envelope"></i></span>
+            邮箱注册
+          </button>
+          <div class="notice" id="loginNotice" aria-live="polite"></div>
+        </form>
+
+        <form class="form" id="registerForm" novalidate>
+          <div class="field">
+            <label for="regUsername">账号</label>
+            <input id="regUsername" type="text" placeholder="设置登录账号" autocomplete="username" required />
+          </div>
+          <div class="field">
+            <label for="regDisplayName">显示名称</label>
+            <input id="regDisplayName" type="text" placeholder="你的称呼（可选）" autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="regEmail">邮箱 <span style="color:var(--red)">*</span></label>
+            <input id="regEmail" type="email" placeholder="your@email.com" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="regPassword">密码</label>
+            <div class="input-wrap">
+              <input id="regPassword" class="password-input" type="password" placeholder="至少 6 个字符" autocomplete="new-password" required minlength="6" />
+              <button class="toggle-password" type="button" aria-label="显示密码">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/>
+                  <circle cx="12" cy="12" r="2.5"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="regConfirm">确认密码</label>
+            <input id="regConfirm" class="password-input" type="password" placeholder="再次输入密码" autocomplete="new-password" required />
+          </div>
+          <button class="submit" type="submit" id="registerBtn">
+            <i class="fas fa-user-plus"></i>
+            创建我的账号
+          </button>
+          <div class="divider">或者使用</div>
+          <button class="social" type="button" data-form="login">
+            <span class="social-mark"><i class="fas fa-envelope"></i></span>
+            邮箱登录
+          </button>
+          <div class="notice" id="registerNotice" aria-live="polite"></div>
+        </form>
+
+        <form class="form" id="forgotForm" novalidate>
+          <div class="field">
+            <label for="forgotEmail">注册邮箱</label>
+            <input id="forgotEmail" type="email" placeholder="输入注册时使用的邮箱" autocomplete="email" required />
+          </div>
+          <button class="submit" type="submit" id="forgotBtn">
+            <i class="fas fa-paper-plane"></i>
+            发送重置链接
+          </button>
+          <button type="button" class="form-link" id="backToLogin" style="display:block; text-align:center; margin-top:12px; width:100%;">
+            返回登录
+          </button>
+          <div class="notice" id="forgotNotice" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 方块堆叠 loader -->
+  <div id="loginLoaderOverlay" class="login-loader-overlay">
+    <div class="loader">
+      <div class="ground"><div></div></div>
+      <div class="box box0"><div></div></div>
+      <div class="box box1"><div></div></div>
+      <div class="box box2"><div></div></div>
+      <div class="box box3"><div></div></div>
+      <div class="box box4"><div></div></div>
+      <div class="box box5"><div></div></div>
+      <div class="box box6"><div></div></div>
+      <div class="box box7"><div></div></div>
+    </div>
+  </div>
+
+  <script src="/js/login-page.js" defer></script>
+</body>
+</html>

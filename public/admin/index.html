@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>研习室 · 管理后台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="main-layout">
+    <!-- 侧边栏 -->
+    <aside class="app-sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo"><i class="fas fa-shield-alt"></i></div>
+        <div>
+          <div class="sidebar-brand">研习室</div>
+          <div class="sidebar-subtitle">管理后台</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-tab="dashboard"><i class="fas fa-chart-line"></i><span>数据概览</span></a>
+        <a class="nav-item" data-tab="users"><i class="fas fa-users"></i><span>用户管理</span><span class="nav-badge" id="userCountBadge">0</span></a>
+        <a class="nav-item" data-tab="content"><i class="fas fa-book-open"></i><span>内容管理</span><span class="nav-badge" id="contentCountBadge">0</span></a>
+        <a class="nav-item" data-tab="knowledge"><i class="fas fa-pen-fancy"></i><span>知识编辑</span></a>
+        <a class="nav-item" data-tab="extension"><i class="fas fa-file-word"></i><span>拓展管理</span></a>
+        <a class="nav-item" data-tab="quizzes"><i class="fas fa-question-circle"></i><span>题库管理</span></a>
+        <a class="nav-item" data-tab="sites"><i class="fas fa-globe"></i><span>站点配置</span></a>
+        <a class="nav-item" data-tab="settings"><i class="fas fa-cog"></i><span>系统设置</span></a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="admin-user">
+          <div class="admin-avatar"><i class="fas fa-user-shield"></i></div>
+          <div class="admin-info">
+            <div class="admin-name" id="adminName">管理员</div>
+            <div class="admin-role">系统管理员</div>
+          </div>
+        </div>
+        <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>退出登录</span></button>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-chevron-left"></i></button>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="content-area" id="contentArea">
+      <!-- ====== 数据概览 ====== -->
+      <div class="tab-content active" id="tab-dashboard">
+        <div class="page-header">
+          <h1 class="page-title">数据概览</h1>
+          <p class="page-subtitle">查看平台整体运营数据</p>
+        </div>
+        <div class="date-filter" id="dateFilter">
+          <button class="filter-btn active" data-days="7">7天</button>
+          <button class="filter-btn" data-days="14">14天</button>
+          <button class="filter-btn" data-days="30">30天</button>
+          <button class="filter-btn" data-days="0">全部</button>
+        </div>
+        <div class="stats-grid" id="statsGrid">
+          <div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>
+        </div>
+        <div class="quick-actions">
+          <button class="quick-action" onclick="AdminUI.switchTab('users')"><i class="fas fa-plus"></i> 添加用户</button>
+          <button class="quick-action" id="quickExport"><i class="fas fa-download"></i> 导出数据</button>
+          <button class="quick-action" onclick="AdminUI.switchTab('content')"><i class="fas fa-book-open"></i> 查看内容</button>
+          <button class="quick-action" id="quickBackup"><i class="fas fa-database"></i> 创建备份</button>
+        </div>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3><i class="fas fa-chart-line"></i> 学习趋势</h3>
+            <canvas id="trendChart"></canvas>
+          </div>
+          <div class="chart-card">
+            <h3><i class="fas fa-chart-pie"></i> 站点学习分布</h3>
+            <canvas id="siteChart"></canvas>
+          </div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-header"><h2><i class="fas fa-history"></i> 最近学习记录</h2></div>
+          <div class="panel-body">
+            <table class="data-table">
+              <thead><tr><th>用户</th><th>学习章节</th><th>时长(分钟)</th><th>最近学习</th></tr></thead>
+              <tbody id="recentRecords"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 用户管理 ====== -->
+      <div class="tab-content" id="tab-users">
+        <div class="page-header"><h1 class="page-title">用户管理</h1><p class="page-subtitle">管理系统用户账号</p></div>
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2><i class="fas fa-list"></i> 用户列表</h2>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <div class="search-box"><i class="fas fa-search"></i><input type="text" id="userSearchInput" placeholder="搜索用户名或邮箱..." oninput="AdminUI.filterUsers(this.value)"></div>
+              <button class="btn btn-primary btn-sm" id="addUserBtn"><i class="fas fa-plus"></i> 添加用户</button>
+            </div>
+          </div>
+          <div class="batch-bar" id="batchBar">
+            <input type="checkbox" id="selectAll" onchange="AdminUI.toggleSelectAll(this.checked)">
+            <span id="batchCount">已选 0 项</span>
+            <button class="btn btn-sm btn-danger" onclick="AdminUI.batchDelete()"><i class="fas fa-trash"></i> 批量删除</button>
+            <button class="btn btn-sm btn-secondary" onclick="AdminUI.batchResetPassword()"><i class="fas fa-key"></i> 批量重置密码</button>
+          </div>
+          <div class="panel-body">
+            <table class="data-table">
+              <thead><tr><th style="width:40px;"></th><th>用户</th><th>角色</th><th>注册时间</th><th>可用站点</th><th>操作</th></tr></thead>
+              <tbody id="usersTableBody"></tbody>
+            </table>
+            <div class="pagination" id="userPagination"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 内容管理 ====== -->
+      <div class="tab-content" id="tab-content">
+        <div class="page-header"><h1 class="page-title">内容管理</h1><p class="page-subtitle">管理学习站点和章节内容</p></div>
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2><i class="fas fa-folder-open"></i> 站点与章节</h2>
+            <div style="display:flex;gap:8px;">
+              <div class="search-box"><i class="fas fa-search"></i><input type="text" id="contentSearchInput" placeholder="搜索章节..." oninput="AdminUI.filterContent(this.value)"></div>
+              <button class="btn btn-secondary btn-sm" id="refreshContentBtn"><i class="fas fa-sync-alt"></i> 刷新</button>
+            </div>
+          </div>
+          <div class="panel-body" id="contentTreeBody"></div>
+        </div>
+      </div>
+
+      <!-- ====== 知识编辑 ====== -->
+      <div class="tab-content" id="tab-knowledge">
+        <div class="page-header"><h1 class="page-title">知识编辑</h1><p class="page-subtitle">编辑 Markdown 知识内容，实时预览效果</p></div>
+        <div class="split-layout">
+          <div class="split-sidebar">
+            <div class="panel-card">
+              <div class="panel-header"><h2><i class="fas fa-folder-tree"></i> 章节列表</h2></div>
+              <div class="split-toolbar">
+                <select id="knowledgeSite" onchange="AdminUI.loadKnowledgeChapters()"><option value="c">C语言</option><option value="grammar">英语语法</option></select>
+                <button class="btn btn-sm btn-primary" style="width:100%;" onclick="AdminUI.showAddChapterModal()"><i class="fas fa-plus"></i> 新建章节</button>
+              </div>
+              <div class="panel-body" id="knowledgeChapterList"></div>
+            </div>
+          </div>
+          <div class="split-main">
+            <div class="panel-card">
+              <div class="panel-header">
+                <h2><i class="fas fa-edit"></i> <span id="knowledgeEditTitle">选择章节</span></h2>
+                <div class="editor-actions">
+                  <button class="btn btn-sm btn-secondary" id="knowledgePreviewBtn" onclick="AdminUI.toggleKnowledgePreview()"><i class="fas fa-eye"></i> 预览</button>
+                  <button class="btn btn-sm btn-primary" id="knowledgeSaveBtn" onclick="AdminUI.saveKnowledgeFile()" disabled><i class="fas fa-save"></i> 保存</button>
+                </div>
+              </div>
+              <div class="editor-container">
+                <div class="editor-panel"><textarea id="knowledgeEditor" placeholder="请在左侧选择一个章节文件进行编辑"></textarea></div>
+                <div class="editor-preview" id="knowledgePreviewPanel"><div id="knowledgePreviewContent" class="markdown-preview"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 拓展管理 ====== -->
+      <div class="tab-content" id="tab-extension">
+        <div class="page-header"><h1 class="page-title">拓展管理</h1><p class="page-subtitle">上传和管理 Word 拓展文档</p></div>
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2><i class="fas fa-file-word"></i> 文档列表</h2>
+            <div style="display:flex;gap:8px;">
+              <input type="file" id="extensionFileInput" accept=".docx,.doc" style="display:none;" onchange="AdminUI.uploadExtension()">
+              <button class="btn btn-primary btn-sm" onclick="document.getElementById('extensionFileInput').click()"><i class="fas fa-upload"></i> 上传文档</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <table class="data-table">
+              <thead><tr><th>文件名</th><th>类型</th><th>操作</th></tr></thead>
+              <tbody id="extensionTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 题库管理 ====== -->
+      <div class="tab-content" id="tab-quizzes">
+        <div class="page-header"><h1 class="page-title">题库管理</h1><p class="page-subtitle">按章节管理题目，添加/编辑/删除</p></div>
+        <div class="split-layout">
+          <div class="split-sidebar">
+            <div class="panel-card">
+              <div class="panel-header"><h2><i class="fas fa-list"></i> 章节</h2></div>
+              <div class="split-toolbar">
+                <select id="quizSite" onchange="AdminUI.loadQuizChapters()"><option value="c">C语言</option><option value="grammar">英语语法</option></select>
+                <button class="btn btn-sm btn-primary" style="width:100%;" onclick="AdminUI.showAddQuizChapterModal()"><i class="fas fa-plus"></i> 新建章节</button>
+              </div>
+              <div class="panel-body" id="quizChapterList"></div>
+            </div>
+          </div>
+          <div class="split-main">
+            <div class="panel-card">
+              <div class="panel-header">
+                <h2><i class="fas fa-question-circle"></i> <span id="quizChapterTitle">选择章节</span></h2>
+                <button class="btn btn-sm btn-primary" id="addQuestionBtn" onclick="AdminUI.showQuestionModal()" disabled><i class="fas fa-plus"></i> 添加题目</button>
+              </div>
+              <div class="panel-body" id="quizQuestionList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 站点配置 ====== -->
+      <div class="tab-content" id="tab-sites">
+        <div class="page-header"><h1 class="page-title">站点配置</h1><p class="page-subtitle">管理学习站点设置</p></div>
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2><i class="fas fa-globe"></i> 站点列表</h2>
+            <button class="btn btn-primary btn-sm" id="addSiteBtn"><i class="fas fa-plus"></i> 添加站点</button>
+          </div>
+          <div class="panel-body">
+            <table class="data-table">
+              <thead><tr><th>站点名称</th><th>Key</th><th>主题色</th><th>副标题</th><th>目标日期</th><th>操作</th></tr></thead>
+              <tbody id="sitesTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 系统设置 ====== -->
+      <div class="tab-content" id="tab-settings">
+        <div class="page-header"><h1 class="page-title">系统设置</h1><p class="page-subtitle">配置平台系统参数</p></div>
+        <div class="settings-grid">
+          <div class="settings-card">
+            <div class="settings-card-header"><i class="fas fa-server"></i> 系统状态</div>
+            <div class="settings-card-body"><div class="status-grid" id="systemStatus"></div></div>
+          </div>
+          <div class="settings-card">
+            <div class="settings-card-header"><i class="fas fa-sliders-h"></i> 基础设置</div>
+            <div class="settings-card-body">
+              <div class="setting-row"><label><i class="fas fa-moon"></i> 深色模式</label><label class="toggle-switch"><input type="checkbox" id="darkModeToggle"><span class="toggle-slider"></span></label></div>
+            </div>
+          </div>
+          <div class="settings-card">
+            <div class="settings-card-header"><i class="fas fa-database"></i> 数据操作</div>
+            <div class="settings-card-body">
+              <button class="btn btn-secondary" id="exportAllBtn"><i class="fas fa-download"></i> 导出全部数据</button>
+              <button class="btn btn-secondary" id="importDataBtn"><i class="fas fa-upload"></i> 导入数据</button>
+              <button class="btn btn-danger" id="clearDataBtn"><i class="fas fa-trash"></i> 清除所有数据</button>
+              <input type="file" id="importFile" accept=".json" style="display:none;">
+            </div>
+          </div>
+          <div class="settings-card">
+            <div class="settings-card-header"><i class="fas fa-history"></i> 操作日志</div>
+            <div class="settings-card-body" style="padding:0;">
+              <table class="data-table"><thead><tr><th>时间</th><th>操作者</th><th>操作</th><th>详情</th></tr></thead><tbody id="auditLogBody"></tbody></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 用户详情模态框 -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal modal-xl">
+      <div class="modal-header">
+        <h3><i class="fas fa-user"></i> 用户详情</h3>
+        <button class="modal-close" onclick="AdminUI.closeDetail()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body" id="detailBody"></div>
+    </div>
+  </div>
+
+  <!-- 用户模态框 -->
+  <div class="modal-overlay" id="userModal">
+    <div class="modal">
+      <div class="modal-header"><h3 id="userModalTitle"><i class="fas fa-user-plus"></i> 添加用户</h3><button class="modal-close" onclick="AdminUI.closeUserModal()"><i class="fas fa-times"></i></button></div>
+      <div class="modal-body">
+        <input type="hidden" id="editUserId">
+        <div class="form-group"><label>用户名</label><input type="text" id="userUsername" placeholder="请输入用户名"></div>
+        <div class="form-group"><label>显示名称</label><input type="text" id="userDisplayName" placeholder="请输入显示名称"></div>
+        <div class="form-group"><label>邮箱</label><input type="email" id="userEmail" placeholder="请输入邮箱"></div>
+        <div class="form-group"><label>密码</label><input type="password" id="userPassword" placeholder="请输入密码（至少6位）"></div>
+        <div class="form-group"><label>角色</label><select id="userRole"><option value="学习者">学习者</option><option value="管理员">管理员</option></select></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="AdminUI.closeUserModal()">取消</button>
+        <button class="btn btn-primary" id="saveUserBtn">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 站点模态框 -->
+  <div class="modal-overlay" id="siteModal">
+    <div class="modal">
+      <div class="modal-header"><h3 id="siteModalTitle"><i class="fas fa-globe"></i> 添加站点</h3><button class="modal-close" onclick="AdminUI.closeSiteModal()"><i class="fas fa-times"></i></button></div>
+      <div class="modal-body">
+        <input type="hidden" id="editSiteKey">
+        <div class="form-group"><label>站点名称</label><input type="text" id="siteName" placeholder="如：C语言学习"></div>
+        <div class="form-group"><label>站点Key</label><input type="text" id="siteKey" placeholder="如：c (英文字母)"></div>
+        <div class="form-group"><label>副标题</label><input type="text" id="siteSubtitle" placeholder="如：从入门到精通"></div>
+        <div class="form-group"><label>主题色</label><input type="color" id="siteTheme" value="#6366f1" style="width:60px;height:36px;border-radius:6px;border:1px solid var(--line);"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="AdminUI.closeSiteModal()">取消</button>
+        <button class="btn btn-primary" id="saveSiteBtn">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 确认模态框 -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal" style="max-width:400px;">
+      <div class="modal-header"><h3 id="confirmTitle"><i class="fas fa-exclamation-triangle"></i> 确认操作</h3><button class="modal-close" onclick="AdminUI.closeConfirmModal()"><i class="fas fa-times"></i></button></div>
+      <div class="modal-body">
+        <p id="confirmMessage" style="line-height:1.6;"></p>
+        <div class="confirm-btns">
+          <button class="btn btn-secondary" id="confirmCancelBtn">取消</button>
+          <button class="btn" id="confirmActionBtn">确认</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- 题目编辑模态框 -->
+  <div class="modal-overlay" id="questionModal">
+    <div class="modal" style="max-width:600px;">
+      <div class="modal-header"><h3 id="questionModalTitle"><i class="fas fa-question-circle"></i> 添加题目</h3><button class="modal-close" onclick="AdminUI.closeQuestionModal()"><i class="fas fa-times"></i></button></div>
+      <div class="modal-body">
+        <input type="hidden" id="editQuestionIndex">
+        <div class="form-group"><label>题目内容</label><textarea id="questionText" rows="3" placeholder="输入题目内容"></textarea></div>
+        <div class="form-group"><label>选项 A</label><input type="text" id="optA" placeholder="选项 A"></div>
+        <div class="form-group"><label>选项 B</label><input type="text" id="optB" placeholder="选项 B"></div>
+        <div class="form-group"><label>选项 C</label><input type="text" id="optC" placeholder="选项 C"></div>
+        <div class="form-group"><label>选项 D</label><input type="text" id="optD" placeholder="选项 D"></div>
+        <div style="display:flex;gap:16px;">
+          <div class="form-group" style="flex:1;"><label>正确答案</label><select id="questionCorrect"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div>
+          <div class="form-group" style="flex:1;"><label>难度</label><select id="questionDifficulty"><option value="1">简单</option><option value="2">中等</option><option value="3">困难</option></select></div>
+        </div>
+        <div class="form-group"><label>解析</label><textarea id="questionExplanation" rows="2" placeholder="解释为什么是这个答案"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="AdminUI.closeQuestionModal()">取消</button>
+        <button class="btn btn-primary" id="saveQuestionBtn">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新建章节/文件模态框 -->
+  <div class="modal-overlay" id="chapterModal">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header"><h3 id="chapterModalTitle"><i class="fas fa-folder-plus"></i> 新建</h3><button class="modal-close" onclick="AdminUI.closeChapterModal()"><i class="fas fa-times"></i></button></div>
+      <div class="modal-body">
+        <div class="form-group"><label>名称</label><input type="text" id="chapterNameInput" placeholder="如：15_新章节"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="AdminUI.closeChapterModal()">取消</button>
+        <button class="btn btn-primary" id="saveChapterBtn">创建</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

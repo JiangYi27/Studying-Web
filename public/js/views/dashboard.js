@@ -862,9 +862,6 @@ function getBadgeProgress(def) {
         case 'combo_king': return { current: (s.quizStats && s.quizStats.bestStreak) || 0, target: 10 };
         case 'quiz_whiz': return { current: (s.quizStats && s.quizStats.bestStreak) || 0, target: 30 };
         case 'quiz_ab': return { current: (s.quizStats && s.quizStats.aCount) || 0, target: 10 };
-        case 'camp_rookie': { const ps = s.quest && s.quest.practiceStats; return { current: (ps && ps.count) || 0, target: 1 }; }
-        case 'camp_veteran': { const ps = s.quest && s.quest.practiceStats; return { current: (ps && ps.count) || 0, target: 20 }; }
-        case 'camp_streak': { const ps = s.quest && s.quest.practiceStats; return { current: (ps && ps.bestStreak) || 0, target: 10 }; }
         case 'bookmark_collector': return { current: (s.bookmarks || []).length, target: 5 };
         case 'bookmark_master': return { current: (s.bookmarks || []).length, target: 20 };
         case 'note_taker': return { current: Object.values(s.notes || {}).filter(function (n) { return n && n.trim(); }).length, target: 10 };

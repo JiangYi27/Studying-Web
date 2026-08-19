@@ -8,6 +8,11 @@ node_modules/
 data/user_data.json
 data/users/
 
+# SQLite 数据库文件（含用户密码哈希等敏感信息）
+data/study.db
+data/study.db-wal
+data/study.db-shm
+
 # 本地状态 / 缓存
 .impeccable/
 *.log

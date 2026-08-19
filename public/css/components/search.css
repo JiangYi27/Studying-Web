@@ -86,3 +86,95 @@
     color: var(--text-muted);
 }
 
+/* ==================== 课程目录搜索 ==================== */
+.course-search-wrap {
+    position: relative;
+    padding: 8px 12px;
+}
+
+.course-search-box {
+    position: relative;
+}
+
+.course-search-icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.course-search-input {
+    width: 100%;
+    padding: 8px 10px 8px 30px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 13px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.course-search-input:focus {
+    border-color: var(--primary-color);
+    background: var(--bg-primary);
+}
+
+.course-search-input::placeholder {
+    color: var(--text-muted);
+}
+
+.course-search-results {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 8px;
+    right: 8px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    max-height: 280px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+}
+
+.course-search-results.active {
+    display: block;
+}
+
+.course-search-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.course-search-item:last-child {
+    border-bottom: none;
+}
+
+.course-search-item:hover {
+    background: var(--bg-secondary);
+}
+
+.course-search-item .item-title {
+    flex: 1;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.course-search-item .item-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: 8px;
+}
+

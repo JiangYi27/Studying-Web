@@ -329,7 +329,7 @@ body.dark .login-field input::placeholder { color: #6b7488; }
   position: fixed;
   inset: 0;
   z-index: 20000;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   background: var(--bg-primary, #f4f5fb);
@@ -337,6 +337,9 @@ body.dark .login-field input::placeholder { color: #6b7488; }
 }
 body.dark .login-loader-overlay {
   background: #0b1120;
+}
+.login-loader-overlay.visible {
+  display: flex;
 }
 .login-loader-overlay.fading {
   opacity: 0;

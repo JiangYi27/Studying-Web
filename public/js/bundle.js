@@ -1,4 +1,4 @@
-/*! C语言知识库 - 合并脚本 | 生成时间: 2026-08-15T17:04:57.571Z */
+/*! C语言知识库 - 合并脚本 | 生成时间: 2026-08-18T00:24:38.020Z */
 (function(){
 "use strict";
 
@@ -302,10 +302,6 @@ const COMMON_BADGES = [
     { id: 'quiz_scholar', name: '满分学霸', desc: '在一次测验中获得S级评价', icon: '🎓', category: 'quiz', rarity: 'uncommon', condition: () => state.quizStats && state.quizStats.sCount >= 1 },
     { id: 'quiz_whiz', name: '答题快手', desc: '单场测验连击30题', icon: '⚡', category: 'quiz', rarity: 'legendary', condition: () => state.quizStats && state.quizStats.bestStreak >= 30 },
     { id: 'quiz_ab', name: '稳如磐石', desc: '10次测验获得A级及以上评价', icon: '🛡️', category: 'quiz', rarity: 'epic', condition: () => state.quizStats && state.quizStats.aCount >= 10 },
-    // ========= 营地训练 =========
-    { id: 'camp_rookie', name: '营地新兵', desc: '完成1次营地训练', icon: '🏕️', category: 'quiz', rarity: 'common', condition: () => state.quest && state.quest.practiceStats && state.quest.practiceStats.count >= 1 },
-    { id: 'camp_veteran', name: '训练达人', desc: '完成20次营地训练', icon: '⛺', category: 'quiz', rarity: 'rare', condition: () => state.quest && state.quest.practiceStats && state.quest.practiceStats.count >= 20 },
-    { id: 'camp_streak', name: '连击训练家', desc: '营地训练最佳连击10题', icon: '🎯', category: 'quiz', rarity: 'epic', condition: () => state.quest && state.quest.practiceStats && state.quest.practiceStats.bestStreak >= 10 },
 
     // ========= 收藏笔记 =========
     { id: 'bookmark_collector', name: '收藏家', desc: '添加5个书签', icon: '🔖', category: 'collection', rarity: 'uncommon', condition: () => state.bookmarks.length >= 5 },
@@ -397,7 +393,7 @@ const NOISE_STORAGE_KEY = 'c_noise_settings';
 // 登录后 auth.js 会再次调用 setSite(当前站点) 切换到实际站点。
 setSite('c');
 
-// --- js/main.js ---
+// --- js/core/main.js ---
 /* ==================== 主入口：状态管理 + 初始化 ==================== */
 // ==================== DOM 引用缓存 ====================
 const $ = (sel) => document.querySelector(sel);
@@ -1751,232 +1747,26 @@ function initKeyboardShortcuts() {
 })();
 
 // --- js/features/auth.js ---
-/* ==================== 登录系统：鉴权门控 + 全局 401 拦截 + 站点选择 ==================== */
-/* auth.js 独占应用引导权：roadmap.js 不再自行注册 DOMContentLoaded，
-   init() 只有登录并选定站点通过后才会被调用一次。 */
-// ==================== 登录背景（Three.js 水面着色器，按需加载） ====================
-
-let loginBgModule = null;
-let lBgMounted = false;
-function enableLoginBackground(enabled) {
-  const bg = document.getElementById('loginBg');
-  if (!bg) return;
-  if (!enabled) {
-    lBgMounted = false;
-    if (loginBgModule && typeof loginBgModule.destroy === 'function') loginBgModule.destroy();
-    return;
-  }
-  bg.hidden = false;
-  if (lBgMounted) return;
-  lBgMounted = true;
-  // 防重复加载：动态 import 同路径只执行一次
-  import('/js/features/login-bg.mjs')
-    .then(function (mod) {
-      loginBgModule = mod;
-      if (lBgMounted && typeof mod.mount === 'function') mod.mount(bg);
-    })
-    .catch(function (err) { console.error('[登录背景] 加载失败', err); });
-}// ==================== DOM 引用 ====================
-function getLoginOverlay() { return document.getElementById('loginOverlay'); }
-function getLoginForm() { return document.getElementById('loginForm'); }
-function getSitePicker() { return document.getElementById('loginSitePicker'); }
-
-function showLogin() {
-  enableLoginBackground(true);
-  document.body.classList.add('login-locked');
-  const overlay = getLoginOverlay();
-  if (overlay) overlay.classList.remove('hidden');
-}
-
-function hideLogin() {
-  enableLoginBackground(false);
-  document.body.classList.remove('login-locked');
-  const overlay = getLoginOverlay();
-  if (overlay) overlay.classList.add('hidden');
-  showLoginLoader();
-}
-
-// 登录成功进入应用前的加载过渡（方块堆叠 loader），动画播完一圈后淡出移除。
-let loginLoaderTimer = null;
-function showLoginLoader() {
-  if (loginLoaderTimer) { clearTimeout(loginLoaderTimer); loginLoaderTimer = null; }
-  const existing = document.getElementById('loginLoader');
-  if (existing) existing.remove();
-  const overlay = document.createElement('div');
-  overlay.id = 'loginLoader';
-  overlay.className = 'login-loader-overlay';
-  overlay.innerHTML =
-    '<div class="loader">' +
-    '  <div class="box box0"><div></div></div>' +
-    '  <div class="box box1"><div></div></div>' +
-    '  <div class="box box2"><div></div></div>' +
-    '  <div class="box box3"><div></div></div>' +
-    '  <div class="box box4"><div></div></div>' +
-    '  <div class="box box5"><div></div></div>' +
-    '  <div class="box box6"><div></div></div>' +
-    '  <div class="box box7"><div></div></div>' +
-    '  <div class="ground"><div></div></div>' +
-    '</div>';
-  document.body.appendChild(overlay);
-  const visibleMs = 3600; // 播完约一圈后淡出
-  loginLoaderTimer = setTimeout(function () {
-    overlay.classList.add('fading');
-    setTimeout(function () { overlay.remove(); }, 650);
-  }, visibleMs);
-}
-
-// ==================== 站点选择遮罩 ====================
-// 登录成功且账号可访问多个站点时，展示站点列表供选择。
-function showSitePicker(sites) {
-  const picker = getSitePicker();
-  const list = document.getElementById('loginSiteList');
-  const label = document.getElementById('loginSiteTitle');
-  const overlay = getLoginOverlay();
-  if (!picker || !list) return;
-  // 站点选择界面不能被 hideLogin() 的全屏过渡 loader 盖住：先移除它
-  const loaderEl = document.getElementById('loginLoader');
-  if (loaderEl) {
-    if (loginLoaderTimer) { clearTimeout(loginLoaderTimer); loginLoaderTimer = null; }
-    loaderEl.remove();
-  }
-  if (label) label.textContent = '选择要进入的学习站点';
-  list.innerHTML = '';
-  sites.forEach(function (site) {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'login-site-btn split-btn';
-    btn.dataset.site = site.key;
-    btn.textContent = site.name || site.key;
-    btn.addEventListener('click', function () {
-      selectSite(site.key);
-    });
-    list.appendChild(btn);
-  });
-  // 确保遮罩可见（遮罩内含账号密码区与站点选择区）
-  if (overlay) overlay.classList.remove('hidden');
-  document.body.classList.add('login-locked');
-  picker.style.display = '';
-  // 隐藏账号密码区，展示选站区
-  const form = getLoginForm();
-  if (form) form.style.display = 'none';
-  const title = document.querySelector('.login-title');
-  if (title) title.textContent = 'lab研习室';
-}
-
-// 选择站点：通知后端记录 session.site，然后整体刷新进入对应站点
-async function selectSite(siteKey) {
-  const picker = getSitePicker();
-  try {
-    const res = await fetch('/api/auth/select', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ site: siteKey }),
-    });
-    if (res.ok) {
-      setLoading(true);
-      // 选择站点后：全屏方块堆叠 loading 过渡动画，加载完成后停留在主页（不再自动进入闯关游戏）
-      showLoginLoader();
-      setTimeout(function () {
-        window.location.reload();
-      }, 700); // 稍作停留让 loader 呈现，随后刷新进入应用
-      return;
-    }
-    const data = await res.json().catch(() => ({}));
-    if (picker && data.site) {
-      return; // 无权限等
-    }
-    setLoginError(data.error || '切换站点失败');
-  } catch (err) {
-    setLoginError('网络错误，请重试');
-  }
-}
-
+/* ==================== 应用侧鉴权：/app 引导 + 站点切换 + 401 拦截 + 登出 ==================== */
+/* 登录前页面是独立 EJS（views/login.ejs + login-page.js），不在此文件。
+   本文件只负责 /app 应用壳的引导：已登录则初始化应用；未登录/会话过期跳回登录页。
+   登录/注册/选站表单逻辑在 public/js/login-page.js。 */
 // ==================== 全局 401 拦截 ====================
-// 任何 /api 请求返回 401（且非登录接口自身）时，重新弹出登录遮罩（会话过期场景）。
+// 任何 /api 请求返回 401（且非登录接口自身）时，会话过期 → 整页跳回登录页。
 (function intercept401() {
   const originalFetch = window.fetch;
   window.fetch = async function (...args) {
     const res = await originalFetch.apply(this, args);
     const url = String(args[0] || '');
     if (res.status === 401 && url.indexOf('/api/auth/') === -1) {
-      showLogin();
+      // 已登录的 API 返回 401 = 会话失效，跳登录页（登录接口自身的 401 不触发）
+      if (window.location.pathname !== '/') {
+        window.location.replace('/');
+      }
     }
     return res;
   };
 })();
-
-// ==================== 登录 ====================
-function setLoading(loading) {
-  const btn = document.getElementById('loginSubmitBtn');
-  const spinner = document.getElementById('loginSpinner');
-  const label = document.getElementById('loginSubmitLabel');
-  if (btn) { btn.disabled = loading; }
-  if (spinner) spinner.classList.toggle('d-none', !loading);
-  if (label) label.textContent = loading ? '登录中...' : '登 录';
-}
-
-function setLoginError(msg) {
-  const err = document.getElementById('loginError');
-  if (err) err.textContent = msg || '';
-}
-
-async function handleLogin(e) {
-  if (e) e.preventDefault();
-  const username = document.getElementById('loginUsername').value.trim();
-  const password = document.getElementById('loginPassword').value;
-
-  if (!username || !password) {
-    setLoginError('请输入账号和密码');
-    return;
-  }
-
-  setLoading(true);
-  setLoginError('');
-  try {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-    const data = await res.json().catch(() => ({}));
-    if (res.ok && data.success) {
-      // 多个可访问站点 → 展示站点选择；否则（单站点）直接进入
-      if (data.sites && data.sites.length > 1) {
-        setLoading(false);
-        showSitePicker(data.sites);
-        return;
-      }
-      // 单站点：服务端已自动选定默认站，直接刷新进入
-      window.location.reload();
-      return;
-    }
-    setLoginError(data.error || '登录失败，请重试');
-  } catch (err) {
-    setLoginError('网络错误，请重试');
-  } finally {
-    setLoading(false);
-  }
-}
-
-// ==================== 退出登录 ====================
-async function handleLogout(e) {
-  if (e) e.preventDefault();
-  const dropdownEl = document.querySelector('.dropdown');
-  try {
-    const inst = bootstrap.Dropdown.getInstance(dropdownEl);
-    if (inst) inst.hide();
-  } catch (_) {}
-  try {
-    await fetch('/api/auth/logout', { method: 'POST' });
-  } catch (_) {}
-  // 清除本地状态（所有站点的状态 key，含旧版单一 key）
-  Object.keys(localStorage)
-    .filter(function (k) { return k.indexOf('c_knowledge_base_state') === 0; })
-    .forEach(function (k) { localStorage.removeItem(k); });
-  localStorage.removeItem('c_study_records');
-  localStorage.removeItem('CHECKIN_STORAGE_KEY');
-  window.location.reload();
-}
 
 // ==================== 渲染下拉用户信息块 ====================
 function renderDropdownUser() {
@@ -1988,6 +1778,36 @@ function renderDropdownUser() {
   if (roleEl) {
     const role = user.role || '管理员';
     roleEl.innerHTML = '<i class="fas fa-crown"></i> ' + role;
+  }
+
+  // 默认头像
+  const defaultAvatar = '/image/admin-avatar.png';
+  const hasCustomAvatar = user.avatar && user.avatar.trim() !== '';
+  const avatarSrc = hasCustomAvatar ? user.avatar : defaultAvatar;
+
+  // 更新顶栏按钮头像
+  const topAvatar = document.getElementById('topAvatar');
+  if (topAvatar) {
+    topAvatar.src = avatarSrc;
+    // 始终显示头像（默认或自定义），fallback 仅在图片加载失败时显示
+    const fallback = topAvatar.parentNode.querySelector('.user-avatar-fallback');
+    if (fallback) {
+      fallback.style.display = 'none'; // 默认隐藏fallback
+    }
+  }
+
+  // 更新下拉菜单内头像
+  const dropdownAvatar = document.getElementById('dropdownAvatar');
+  const dropdownAvatarFallback = document.getElementById('dropdownAvatarFallback');
+  if (dropdownAvatar) {
+    if (hasCustomAvatar) {
+      dropdownAvatar.src = avatarSrc;
+      dropdownAvatar.style.display = '';
+      if (dropdownAvatarFallback) dropdownAvatarFallback.style.display = 'none';
+    } else {
+      dropdownAvatar.style.display = 'none';
+      if (dropdownAvatarFallback) dropdownAvatarFallback.style.display = 'flex';
+    }
   }
 }
 
@@ -2030,10 +1850,13 @@ async function applySiteConfig(me) {
     } catch (_) {}
   }
   if (!cfg) return;
-  const subtitle = document.getElementById('loginSubtitle');
-  if (subtitle) subtitle.textContent = cfg.subtitle || '';
   const logoText = document.getElementById('logoText');
   if (logoText && cfg.logoText) logoText.textContent = cfg.logoText;
+  // 按站点切换 logo 图片（顶栏）
+  if (cfg.logo) {
+    const topLogo = document.getElementById('logoImg');
+    if (topLogo) topLogo.src = cfg.logo;
+  }
   const welcomeSub = document.getElementById('welcomeName');
   if (welcomeSub && cfg.name) welcomeSub.textContent = cfg.name + '学习者';
   // 页面标题与任务面板标题（随站点切换）
@@ -2047,9 +1870,58 @@ async function applySiteConfig(me) {
   }
 }
 
-// ==================== 引导 ====================
+// ==================== 选择站点（顶栏下拉原地切换，不刷新页面） ====================
+// POST /api/auth/select → 重新取 /me → setSite + applySiteConfig + init 原地重建。
+async function selectSite(siteKey) {
+  try {
+    const res = await fetch('/api/auth/select', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ site: siteKey }),
+    });
+    if (res.ok) {
+      const me = await fetch('/api/auth/me').then((r) => (r.ok ? r.json() : null));
+      if (me && me.site === siteKey) {
+        window.__currentUser = me;
+        applySiteConfig(me);
+        if (typeof setSite === 'function') setSite(siteKey);
+        // 强制标记脏数据，确保切换站点后章节树和仪表盘立即重建
+        if (typeof chapterTreeDirty !== 'undefined') chapterTreeDirty = true;
+        if (typeof dashboardDirty !== 'undefined') dashboardDirty = true;
+        // 重新初始化当前站点内容
+        if (typeof init === 'function') init();
+        // 更新顶栏用户信息（头像/名字/站点下拉）
+        renderDropdownUser();
+        bindSiteSwitcher();
+        if (typeof renderBadgeButton === 'function') renderBadgeButton();
+      } else {
+        window.location.replace('/'); // 异常：回登录页
+      }
+    }
+  } catch (_err) {
+    // 网络错误静默
+  }
+}
+
+// ==================== 退出登录 ====================
+async function handleLogout(e) {
+  if (e) e.preventDefault();
+  try {
+    await fetch('/api/auth/logout', { method: 'POST' });
+  } catch (_) {}
+  // 清除本地状态（所有站点的状态 key，含旧版单一 key）
+  Object.keys(localStorage)
+    .filter(function (k) { return k.indexOf('c_knowledge_base_state') === 0; })
+    .forEach(function (k) { localStorage.removeItem(k); });
+  localStorage.removeItem('c_study_records');
+  localStorage.removeItem('CHECKIN_STORAGE_KEY');
+  // 登出 → 回登录页
+  window.location.replace('/');
+}
+
+// ==================== /app 引导 ====================
 function initAuth() {
-  // 登录前即应用深色偏好（扫描任意站点的状态 key，兼容旧版单一 key）
+  // 应用前先应用深色偏好（扫描任意站点的状态 key，兼容旧版单一 key）
   try {
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
@@ -2060,15 +1932,6 @@ function initAuth() {
     }
   } catch (_) {}
 
-  const form = getLoginForm();
-  if (form) form.addEventListener('submit', handleLogin);
-
-
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
-
-  bindSiteSwitcher();
-
   fetch('/api/auth/me')
     .then(function (res) {
       if (res.ok) {
@@ -2078,18 +1941,17 @@ function initAuth() {
     })
     .then(function (me) {
       window.__currentUser = me;
-      hideLogin();
       // 下拉用户信息块
       renderDropdownUser();
       // 站点切换下拉绑定
       bindSiteSwitcher();
-      // 已登录但尚未选定站点（多站点账号）：展示站点选择卡，不进入应用
+      // 已登录但尚未选定站点（多站点账号）：服务端 /app 已允许进入（不强制选站），回登录页选站
       if (me.hasSite === false || !me.site) {
         if (me.sites && me.sites.length > 1) {
-          showSitePicker(me.sites);
+          window.location.replace('/');
           return;
         }
-        // 单站点账号理论上服务端已自动选定，若仍未选则尝试进入
+        // 单站点理论上服务端已自动选定，若仍未选则尝试进入
         if (me.sites && me.sites.length === 1) {
           selectSite(me.sites[0].key);
           return;
@@ -2099,16 +1961,288 @@ function initAuth() {
       if (typeof setSite === 'function') setSite(me.site || 'c');
       // 应用站点标题/副标题/主题
       applySiteConfig(me);
-      // 站点已选定：启动应用
+      // 启动应用
       if (typeof init === 'function') init();
     })
     .catch(function () {
-      showLogin();
-      if (typeof setSite === 'function') setSite('c');
+      // 未登录 / 会话过期 → 回登录页
+      if (window.location.pathname !== '/') {
+        window.location.replace('/');
+      }
     });
 }
 
+// ==================== 修改密码弹窗 ====================
+function initChangePassword() {
+  const btn = document.getElementById('changePasswordBtn');
+  const modal = document.getElementById('changePasswordModal');
+  const saveBtn = document.getElementById('savePasswordBtn');
+  const currentPw = document.getElementById('currentPassword');
+  const newPw = document.getElementById('newPassword');
+  const confirmPw = document.getElementById('confirmNewPassword');
+  const errorEl = document.getElementById('changePasswordError');
+  if (!modal || !btn) return;
+
+  function openModal(e) {
+    if (e) e.preventDefault();
+    const menu = document.getElementById('userDropdownMenu');
+    if (menu) menu.classList.remove('show');
+    currentPw.value = '';
+    newPw.value = '';
+    confirmPw.value = '';
+    errorEl.textContent = '';
+    if (modal && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+      const instance = bootstrap.Modal.getInstance(modal);
+      if (instance) instance.show();
+      else new bootstrap.Modal(modal).show();
+    } else if (modal) {
+      modal.style.display = 'block';
+      modal.classList.add('show');
+    }
+  }
+
+  if (btn) btn.addEventListener('click', openModal);
+
+  saveBtn.addEventListener('click', async function () {
+    const cur = currentPw.value;
+    const ne = newPw.value;
+    const conf = confirmPw.value;
+    if (!cur || !ne || !conf) {
+      errorEl.textContent = '请填写完整信息';
+      return;
+    }
+    if (ne.length < 6) {
+      errorEl.textContent = '新密码至少6位';
+      return;
+    }
+    if (ne !== conf) {
+      errorEl.textContent = '两次新密码不一致';
+      return;
+    }
+    errorEl.textContent = '';
+    saveBtn.disabled = true;
+    try {
+      const res = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword: cur, newPassword: ne }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
+        // 关闭弹窗
+        const instance = bootstrap && bootstrap.Modal && modal && bootstrap.Modal.getInstance(modal);
+        if (instance) instance.hide();
+        else if (modal) { modal.classList.remove('show'); modal.style.display = 'none'; }
+        // 提示成功
+        if (typeof showToast === 'function') showToast('密码修改成功');
+      } else {
+        errorEl.textContent = data.error || '修改失败';
+      }
+    } catch (_) {
+      errorEl.textContent = '网络错误，请重试';
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+}
+
+// ==================== 修改资料弹窗 ====================
+function initProfileEditor() {
+  const btn = document.getElementById('editProfileBtn');
+  const btn2 = document.getElementById('editProfileBtn2');
+  const modal = document.getElementById('editProfileModal');
+  const saveBtn = document.getElementById('editProfileSaveBtn');
+  const nameInput = document.getElementById('editDisplayName');
+  const avatarInput = document.getElementById('editAvatarUrl');
+  const avatarFile = document.getElementById('editAvatarFile');
+  const avatarFileName = document.getElementById('editAvatarFileName');
+  const avatarPreview = document.getElementById('editAvatarPreview');
+  const errorEl = document.getElementById('editProfileError');
+  if (!modal) return;
+
+  let uploadedAvatarUrl = ''; // 存储上传后的头像URL
+
+  // 通用打开模态框函数
+  function openProfileModal(e) {
+    if (e) {
+      e.preventDefault();
+      if (e.stopPropagation) e.stopPropagation();
+    }
+    // 关闭下拉菜单
+    const menu = document.getElementById('userDropdownMenu');
+    if (menu) menu.classList.remove('show');
+    const me = window.__currentUser;
+    const user = (me && me.user) || {};
+    nameInput.value = user.displayName || '';
+    avatarInput.value = user.avatar || '';
+    uploadedAvatarUrl = ''; // 重置上传头像
+    if (avatarFileName) avatarFileName.textContent = '';
+    if (avatarFile) avatarFile.value = '';
+    if (user.avatar && user.avatar.trim()) {
+      avatarPreview.src = user.avatar;
+    } else {
+      avatarPreview.src = '/image/admin-avatar.png';
+    }
+    errorEl.textContent = '';
+    // 显示模态框
+    if (modal && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+      const modalInstance = bootstrap.Modal.getInstance(modal);
+      if (modalInstance) {
+        modalInstance.show();
+      } else {
+        const modalEl = new bootstrap.Modal(modal);
+        modalEl.show();
+      }
+    } else if (modal) {
+      modal.style.display = 'block';
+      modal.classList.add('show');
+    }
+  }
+
+  // 绑定下拉菜单的按钮
+  if (btn) {
+    btn.addEventListener('click', openProfileModal);
+  }
+  // 绑定设置页面的按钮
+  if (btn2) {
+    btn2.addEventListener('click', openProfileModal);
+  }
+
+  // 如果没有任何按钮，直接返回
+  if (!btn && !btn2) return;
+
+  // 头像文件选择时预览
+  if (avatarFile) {
+    avatarFile.addEventListener('change', function (e) {
+      const file = e.target.files && e.target.files[0];
+      if (file) {
+        // 显示文件名
+        if (avatarFileName) avatarFileName.textContent = file.name;
+        // 预览图片
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          avatarPreview.src = ev.target.result;
+          uploadedAvatarUrl = ev.target.result; // 存储base64
+        };
+        reader.readAsDataURL(file);
+        // 清空URL输入
+        if (avatarInput) avatarInput.value = '';
+      }
+    });
+  }
+
+  // 头像 URL 输入时实时预览
+  if (avatarInput) {
+    avatarInput.addEventListener('input', function () {
+      const url = avatarInput.value.trim();
+      if (url) {
+        avatarPreview.src = url;
+        uploadedAvatarUrl = ''; // URL模式下清空上传的base64
+        if (avatarFileName) avatarFileName.textContent = '';
+      } else {
+        avatarPreview.src = '/image/admin-avatar.png';
+      }
+    });
+  }
+
+  saveBtn.addEventListener('click', async function () {
+    const displayName = nameInput.value.trim();
+    const avatarUrl = avatarInput.value.trim();
+    if (!displayName) {
+      errorEl.textContent = '显示名称不能为空';
+      return;
+    }
+    errorEl.textContent = '';
+    saveBtn.disabled = true;
+    try {
+      // 如果有上传的图片，使用base64；否则使用URL
+      const avatar = uploadedAvatarUrl || avatarUrl;
+      const res = await fetch('/api/auth/me', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ displayName, avatar }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
+        if (window.__currentUser && window.__currentUser.user) {
+          window.__currentUser.user.displayName = data.user.displayName;
+          window.__currentUser.user.avatar = data.user.avatar;
+        }
+        renderDropdownUser();
+        // 关闭弹窗
+        const modalInstance = bootstrap && bootstrap.Modal && modal && bootstrap.Modal.getInstance(modal);
+        if (modalInstance) {
+          modalInstance.hide();
+        } else if (modal) {
+          modal.classList.remove('show');
+          modal.style.display = 'none';
+        }
+      } else {
+        errorEl.textContent = data.error || '保存失败';
+      }
+    } catch (_) {
+      errorEl.textContent = '网络错误，请重试';
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+}
+
+// ==================== 用户下拉菜单手动控制 ====================
+function initUserDropdown() {
+  const dropdown = document.getElementById('userDropdown');
+  const btn = document.getElementById('userDropdownBtn');
+  const menu = document.getElementById('userDropdownMenu');
+
+  if (!dropdown || !btn || !menu) return;
+
+  // 点击按钮切换下拉
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    const isOpen = menu.classList.contains('show');
+    // 关闭所有 Bootstrap 下拉
+    document.querySelectorAll('.dropdown-menu.show').forEach(function (d) {
+      d.classList.remove('show');
+    });
+    if (!isOpen) {
+      menu.classList.add('show');
+      btn.setAttribute('aria-expanded', 'true');
+    } else {
+      menu.classList.remove('show');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // 点击其他地方关闭
+  document.addEventListener('click', function (e) {
+    if (!dropdown.contains(e.target)) {
+      menu.classList.remove('show');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // 站点切换项使用 Bootstrap 下拉的，需要阻止冒泡
+  const siteItems = menu.querySelectorAll('#siteSwitchDropdown .dropdown-item');
+  siteItems.forEach(function (item) {
+    item.addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+  });
+
+  // 退出登录
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      handleLogout();
+    });
+  }
+}
+
 document.addEventListener('DOMContentLoaded', initAuth);
+document.addEventListener('DOMContentLoaded', initProfileEditor);
+document.addEventListener('DOMContentLoaded', initUserDropdown);
+document.addEventListener('DOMContentLoaded', initChangePassword);
 
 // --- js/views/home.js ---
 /* ==================== 主页视图模块（v2） ==================== */
@@ -3673,9 +3807,6 @@ function getBadgeProgress(def) {
         case 'combo_king': return { current: (s.quizStats && s.quizStats.bestStreak) || 0, target: 10 };
         case 'quiz_whiz': return { current: (s.quizStats && s.quizStats.bestStreak) || 0, target: 30 };
         case 'quiz_ab': return { current: (s.quizStats && s.quizStats.aCount) || 0, target: 10 };
-        case 'camp_rookie': { const ps = s.quest && s.quest.practiceStats; return { current: (ps && ps.count) || 0, target: 1 }; }
-        case 'camp_veteran': { const ps = s.quest && s.quest.practiceStats; return { current: (ps && ps.count) || 0, target: 20 }; }
-        case 'camp_streak': { const ps = s.quest && s.quest.practiceStats; return { current: (ps && ps.bestStreak) || 0, target: 10 }; }
         case 'bookmark_collector': return { current: (s.bookmarks || []).length, target: 5 };
         case 'bookmark_master': return { current: (s.bookmarks || []).length, target: 20 };
         case 'note_taker': return { current: Object.values(s.notes || {}).filter(function (n) { return n && n.trim(); }).length, target: 10 };
@@ -3854,7 +3985,7 @@ async function initExtension() {
     loadExtensionContent(currentExtensionId);
 }
 
-// --- js/roadmap.js ---
+// --- js/views/roadmap.js ---
 /* ==================== 核心应用逻辑 ==================== */
 /* 负责：视图切换、课程树、内容加载、标记完成、设置、事件绑定、应用初始化 */
 /* 依赖：main.js（state, $, $$, getSectionKey, getLocalDateKey, saveState 等）*/
@@ -4676,7 +4807,7 @@ async function init() {
 
 // 启动：由 auth.js 登录通过后调用 init()（auth.js 独占引导权，避免重复初始化）
 
-// --- js/quizgame-data.js ---
+// --- js/game/quizgame-data.js ---
 /* =============================================================
  * quizgame-data.js —— 实战闯关游戏配置（接入主站后适配版）
  *
@@ -4689,8 +4820,9 @@ async function init() {
 
   const CONFIG = {
     EXP_PER_LEVEL: 100,        // 每级所需经验 = 等级 × 100
-    BATTLE_SECONDS: 15,        // 每题限时
-    BATTLE_LIVES: 3,           // 战斗生命
+    BATTLE_SECONDS: 25,        // 每题限时
+    QUIZ_COUNT: 8,             // 每章随机抽取题目数
+    PASS_RATE: 0.6,            // 通关及格线（答对比例 ≥ 0.6 → 60%）
     XP_PER_CORRECT: 10,        // 每题基础经验分
     SCROLL_SENSITIVITY: 0.0014,
     MIN_SCALE: 0.6,            // 兜底下限（实际使用 Game.minScale() 动态下限）
@@ -4715,14 +4847,14 @@ async function init() {
     { name: '黄金沙塔', emoji: '🏜️', motto: '需要耐心与时间破解的古老遗迹。' },
     { name: '赤焰熔炉', emoji: '🔥', motto: '炽热的考验，需要知识、专注与冷静。' },
     { name: '深邃之眼', emoji: '🌪️', motto: '打破思维惯性，跨越维度的创新挑战。' },
-    { name: '终焉古颅', emoji: '💀', motto: '知识远征的最终 BOSS，大决战！' },
+    { name: '终焉古颅', emoji: '💀', motto: '知识远征的终点，跨越高度的综合挑战！' },
   ];
 
   window.CONFIG = CONFIG;
   window.LEVEL_META = LEVEL_META;
 })();
 
-// --- js/quizgame-audio.js ---
+// --- js/game/quizgame-audio.js ---
 /* =============================================================
  * audio.js —— Web Audio 合成音效（无音频文件依赖）
  * 用 OscillatorNode + GainNode 实时合成各类游戏音效。
@@ -4830,14 +4962,15 @@ async function init() {
 
 })();
 
-// --- js/quizgame-game.js ---
+// --- js/game/quizgame-game.js ---
 /* =============================================================
- * game.js —— 闯关游戏核心（地图渲染 / 相机 / 波次战斗 / 测验 / 特效）
+ * game.js —— 闯关地图核心（地图渲染 / 相机 / 章节答题测验）
  *
  * 本模块不直接绑定 UI 事件（见 main.js），仅暴露操作接口：
  *   Game.init()          初始化
- *   Game.openBattle(i)   对第 i 章（0-based）发起波次战斗
+ *   Game.openQuiz(i)     对第 i 章（0-based）发起随机 N 题测验
  *   Game.addExp(n)       加经验（自动升级）
+ *   Game.openKnowledge(i) 跳转主站章节正文（营地节点）
  *   Game.state           当前状态
  * ============================================================= */
 (function(){
@@ -4868,7 +5001,6 @@ async function init() {
     totalExp: 0,
     level: 1,
     quizStats: { attempts: 0, bestStreak: 0, bestRank: "", sCount: 0, aCount: 0 },
-    practiceStats: { count: 0, bestStreak: 0, bestScore: 0, lastPracticeDate: '' },
   };
 
   // ===== progress bridge (integrated into main site) =====
@@ -4885,7 +5017,6 @@ async function init() {
         totalExp: 0,
         level: 1,
         quizStats: { attempts: 0, bestStreak: 0, bestRank: "", sCount: 0, aCount: 0 },
-        practiceStats: { count: 0, bestStreak: 0, bestScore: 0, lastPracticeDate: '' },
       };
     }
     return host;
@@ -4903,7 +5034,6 @@ async function init() {
         totalExp: state.totalExp,
         level: state.level,
         quizStats: state.quizStats,
-        practiceStats: state.practiceStats,
       };
       if (host.quizStats) host.quizStats = state.quizStats;
     }
@@ -4912,6 +5042,10 @@ async function init() {
 
   function getSectionKey(ch, sec){ return `${ch.folder}/${sec}.md`; }
   function chapterCleared(ch){
+    // 语法站：每章固定 2 关，解锁条件只看前 2 个小节
+    if (CURRENT_SITE_KEY === 'grammar' && ch.sections.length >= 2) {
+      return ch.sections.slice(0, 2).every(s => !!state.completedSections[getSectionKey(ch, s)]);
+    }
     return ch.sections.every(s => !!state.completedSections[getSectionKey(ch, s)]);
   }
   function isChapterUnlocked(idx){
@@ -4940,7 +5074,40 @@ async function init() {
   }
 
   /* ===================== 节点与位置 ===================== */
+  // 语法站：每章固定 2 关（主干城堡 + 1 个营地）
+  const GRAMMAR_LAND_NAMES = ['词性与词类', '时态与语态', '句法结构', '从句', '非谓语动词'];
+  const GRAMMAR_ICONS = ['🔤', '⏱️', '🏗️', '🔗', '✍️'];
+
+  // 语法站城堡固定位置（沿道路分布，5 个点）
+  const GRAMMAR_ROAD_POSITIONS = [
+    { x: 220,  y: 2050 },
+    { x: 860,  y: 1780 },
+    { x: 1660, y: 1680 },
+    { x: 2600, y: 1480 },
+    { x: 3850, y: 1180 },
+  ];
+
   function generateNodes(){
+    // 语法站：每章 2 关（1 主城堡 + 1 营地）
+    if (CURRENT_SITE_KEY === 'grammar') {
+      return CHAPTERS.map((ch, chIdx) => {
+        const main = {
+          id: `${ch.id}.1`, chapter: chIdx + 1, section: 1,
+          name: ch.title, icon: GRAMMAR_ICONS[chIdx] || ch.icon,
+          isMain: true, isStart: chIdx === 0, isEnd: chIdx === CHAPTERS.length - 1, chIdx,
+        };
+        // 营地：用章节前两个小节标题
+        const campSecIdx = 1;
+        const camp = ch.sections[1] != null ? {
+          id: `${ch.id}.2`, chapter: chIdx + 1, section: 2,
+          name: ch.sectionTitles[1] || ch.sections[1], icon: GRAMMAR_ICONS[chIdx] || ch.icon,
+          isMain: false, chIdx,
+        } : null;
+        return camp ? [main, camp] : [main];
+      }).flat();
+    }
+
+    // C 语言站：原始逻辑，每章多关
     const nodes = [];
     CHAPTERS.forEach((ch, chIdx) => {
       nodes.push({
@@ -5015,6 +5182,34 @@ async function init() {
     const mainByCh = {};
     const N = CHAPTERS.length;
 
+    // 语法站：使用固定位置
+    if (CURRENT_SITE_KEY === 'grammar') {
+      CHAPTERS.forEach((ch, c) => {
+        const pos = GRAMMAR_ROAD_POSITIONS[c] || { x: 1000, y: 1500 };
+        const node = nodes.find(n => n.id === `${ch.id}.1`);
+        if (node) {
+          nodeMap[node.id] = { x: pos.x, y: pos.y, ang: 0 };
+          mainByCh[c] = { x: pos.x, y: pos.y };
+        }
+      });
+      // 语法站营地：围绕城堡分布，每章只有 1 个营地
+      const camps = nodes.filter(n => !n.isMain);
+      camps.forEach((camp) => {
+        const c = camp.chIdx;
+        const main = mainByCh[c];
+        if (!main) return;
+        const baseAngle = -Math.PI / 3 + c * 0.3;
+        const radius = 160;
+        nodeMap[camp.id] = {
+          x: clamp(main.x + Math.cos(baseAngle) * radius, 110, 4090),
+          y: clamp(main.y + Math.sin(baseAngle) * radius, 120, 2260),
+          ang: 0,
+        };
+      });
+      return nodeMap;
+    }
+
+    // C 语言站：原始逻辑，每章多关
     // 主干城堡沿路分布
     for (let c = 0; c < N; c++){
       let pos;
@@ -5087,6 +5282,9 @@ async function init() {
   }
   const LAND_NAMES = ['新手村','语法平原','流程河谷','字符串镇','数组林地','函数城堡','指针迷宫','结构要塞','内存矿井','文件图书馆','预处理工坊','算法圣地','工程王城','龙之领域'];
   function getLand(chIdx){
+    if (CURRENT_SITE_KEY === 'grammar') {
+      return GRAMMAR_LAND_NAMES[chIdx] || ('章节 ' + (chIdx + 1));
+    }
     return LAND_NAMES[chIdx] || ('地域 ' + (chIdx + 1));
   }
   function getDesc(chIdx){
@@ -5101,12 +5299,18 @@ async function init() {
     return window.LEVEL_META[chIdx] || null;
   }
   function levelNameFor(chIdx){
+    const ch = CHAPTERS[chIdx];
+    if (!ch) return '第' + (chIdx + 1) + '章';
+    // 语法站用固定名称
+    if (CURRENT_SITE_KEY === 'grammar') {
+      return (GRAMMAR_ICONS[chIdx] || ch.icon || '') + ' ' + ch.title;
+    }
     const m = levelMeta(chIdx);
     if (m) return (m.emoji ? m.emoji + ' ' : '') + m.name;
-    const ch = CHAPTERS[chIdx];
-    return ch ? ch.title : ('第' + (chIdx + 1) + '章');
+    return ch.title;
   }
   function levelMotto(chIdx){
+    if (CURRENT_SITE_KEY === 'grammar') return '';
     const m = levelMeta(chIdx);
     return (m && m.motto) ? m.motto : '';
   }
@@ -5156,6 +5360,8 @@ async function init() {
     });
   }
   function levelImgByChapter(chIdx){
+    // 章节数与手绘地图不匹配时（如语法站 5 章 vs C站 14 关），不使用 level 图片
+    if (!hasHandLayout()) return null;
     const c = LEVEL_IMG_CFG.LEVELS[chIdx];
     if (!c) return null;
     return { sprite: c.sprite, x: c.x, y: c.y, w: c.w, h: c.h,
@@ -5206,11 +5412,6 @@ async function init() {
       return;
     }
     const SVGNS = 'http://www.w3.org/2000/svg';
-    function addEl(tag, attrs){
-      const el = document.createElementNS(SVGNS, tag);
-      for (const k in attrs) el.setAttribute(k, attrs[k]);
-      g.appendChild(el);
-    }
 
     // 收集所有精灵，统一按 z 升序（z 越大越靠上）
     const items = [];
@@ -5225,30 +5426,27 @@ async function init() {
     });
     items.sort(function(a, b){ return (a.z||0) - (b.z||0); });
 
+    // 一次性拼接全部精灵为字符串，避免逐个 insertAdjacentHTML 的 DOM 开销
+    let html = '';
     items.forEach(function(it){
       const d = it.d;
       const halfW = d.w/2, halfH = d.h/2;
       if (it.kind === 'decor'){
         // 纯装饰：不可点击
-        addEl('image', {
-          href: DECOR_IMG_CFG.DECOR_SRC + d.sprite + '.png',
-          x: d.x - halfW, y: d.y - halfH, width: d.w, height: d.h,
-          class: 'decor-img', pointerEvents: 'none'
-        });
+        html += '<image href="' + DECOR_IMG_CFG.DECOR_SRC + d.sprite + '.png" x="' + (d.x - halfW) + '" y="' + (d.y - halfH) + '" width="' + d.w + '" height="' + d.h + '" class="decor-img" pointer-events="none"/>';
       } else if (it.kind === 'level'){
         // 城堡：保留可点击状态（完成旗/锁）——用节点分组包裹
         const node = mainNodeOf(d.sprite - 1);   // O(1)
         if (!node) return;   // 城堡节点缺失则跳过
         const accent = getAccent(d.sprite - 1);
-        const html = castleSVG(node, d.x, d.y, accent, mainStatus(d.sprite - 1));
-        // 直接插入 SVG 字符串
-        g.insertAdjacentHTML('beforeend', html);
+        html += castleSVG(node, d.x, d.y, accent, mainStatus(d.sprite - 1));
       } else {
-        // 营地：可点击（暂不战斗）
+        // 营地：可点击（跳转知识区域）
         const c = { ...d, src: CAMP_IMG_CFG.CAMP_SRC + String(d.sprite).padStart(2, '0') + '.png' };
-        g.insertAdjacentHTML('beforeend', campSprSVG(c, getAccent(c.ch)));
+        html += campSprSVG(c, getAccent(c.ch));
       }
     });
+    g.innerHTML = html;
   }
 
   /* 通关后增量补丁：不重建 578 节点，只重建对应城堡节点（完成旗/锁定态变化） */
@@ -5368,8 +5566,8 @@ async function init() {
     return `
       <g class="node camp-node camp-spr" data-camp="1"
          data-ch="${camp.ch}" data-locked="open" data-completed="false"
-         role="button" tabindex="0" aria-label="营地"
-         title="${esc(CHAPTERS[camp.ch] ? CHAPTERS[camp.ch].title + ' 训练营地 · 5 题练习' : '训练营地')}"
+         role="button" tabindex="0" aria-label="知识区域"
+         title="${esc(CHAPTERS[camp.ch] ? CHAPTERS[camp.ch].title + ' 知识区域 · 点击查看本章内容' : '知识区域')}"
          transform="translate(${camp.x}, ${camp.y})">
         <image href="${camp.src}" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" class="camp-img" pointer-events="none"/>
         <rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" rx="6" fill="transparent" class="camp-hit"/>
@@ -5382,80 +5580,29 @@ async function init() {
   }
 
 
-  /* ===================== 怪物定义 ===================== */
-  const MONSTER = {
-    slime: {
-      name: '史莱姆', hp: 1, c: '#5CB85C',
-      svg: '<ellipse cx="50" cy="62" rx="30" ry="22" fill="rgba(0,0,0,0.15)"/>'
-        + '<path d="M18 60 Q18 28 50 28 Q82 28 82 60 Q82 74 50 74 Q18 74 18 60 Z" fill="#5CB85C"/>'
-        + '<circle cx="40" cy="52" r="5" fill="#fff"/> <circle cx="60" cy="52" r="5" fill="#fff"/>'
-        + '<circle cx="41" cy="53" r="2" fill="#222"/> <circle cx="61" cy="53" r="2" fill="#222"/>'
-        + '<path d="M42 62 Q50 66 58 62" stroke="#2c5c2c" stroke-width="2.5" fill="none" stroke-linecap="round"/>',
-    },
-    goblin: {
-      name: '哥布林', hp: 1, c: '#8FBE4E',
-      svg: '<path d="M30 90 L30 70 Q22 55 26 40 Q30 22 50 22 Q70 22 74 40 Q78 55 70 70 L70 90 Z" fill="#8FBE4E"/>'
-        + '<path d="M26 40 L14 22 L28 32 Z" fill="#8FBE4E"/> <path d="M74 40 L86 22 L72 32 Z" fill="#8FBE4E"/>'
-        + '<circle cx="42" cy="46" r="4" fill="#fff"/> <circle cx="58" cy="46" r="4" fill="#fff"/>'
-        + '<circle cx="43" cy="47" r="1.8" fill="#222"/> <circle cx="59" cy="47" r="1.8" fill="#222"/>'
-        + '<path d="M34 80 L66 80 M40 70 L60 70" stroke="#5c7a2a" stroke-width="2"/>',
-    },
-    orc: {
-      name: '兽人', hp: 2, c: '#C05A43',
-      svg: '<path d="M25 90 L25 60 Q18 42 24 30 Q30 16 50 16 Q70 16 76 30 Q82 42 75 60 L75 90 Z" fill="#C05A43" stroke="#7a3424" stroke-width="2"/>'
-        + '<path d="M24 30 L10 16 L30 22 Z" fill="#C05A43" stroke="#7a3424" stroke-width="2"/>'
-        + '<path d="M76 30 L90 16 L70 22 Z" fill="#C05A43" stroke="#7a3424" stroke-width="2"/>'
-        + '<circle cx="40" cy="46" r="4.5" fill="#fff"/> <circle cx="60" cy="46" r="4.5" fill="#fff"/>'
-        + '<circle cx="41" cy="47" r="2" fill="#222"/> <circle cx="61" cy="47" r="2" fill="#222"/>'
-        + '<path d="M35 76 L65 76 M42 60 L58 60" stroke="#5c2216" stroke-width="2.5"/>'
-        + '<path d="M40 90 L45 78 L50 90" fill="#5c2216"/>',
-    },
-    dragon: {
-      name: '魔龙', hp: 3, c: '#8A5BD6',
-      svg: '<path d="M22 90 Q10 60 20 40 Q30 18 50 30 Q70 18 80 40 Q90 60 78 90 Z" fill="#8A5BD6" stroke="#4a2a7a" stroke-width="2"/>'
-        + '<path d="M28 44 L10 30 L30 34 Z" fill="#8A5BD6" stroke="#4a2a7a" stroke-width="2"/>'
-        + '<path d="M72 44 L90 30 L70 34 Z" fill="#8A5BD6" stroke="#4a2a7a" stroke-width="2"/>'
-        + '<circle cx="42" cy="48" r="4" fill="#ffe600"/> <circle cx="58" cy="48" r="4" fill="#ffe600"/>'
-        + '<circle cx="43" cy="49" r="1.6" fill="#222"/> <circle cx="59" cy="49" r="1.6" fill="#222"/>'
-        + '<path d="M36 74 L64 74 M40 84 L60 84 M50 90 L50 96" stroke="#4a2a7a" stroke-width="2.5" fill="none"/>'
-        + '<path d="M20 90 L10 100 L34 92" fill="#8A5BD6"/>',
-    },
-  };
-
-  /* ===================== 波次构建 ===================== */
-  // 从某章拉题目，按难度抽取；题源为空时用全库兜底
-  function questionPoolFor(chapterId, difficulty){
-    let pool = QUIZZES[chapterId] || [];
-    if (!pool.length){
-      // 全库合并
-      pool = Object.values(QUIZZES).flat();
-    }
-    return pool.filter && difficulty != null
-      ? pool.filter(q => (q.difficulty || 1) === difficulty)
-      : pool;
+  /* ===================== 题目抽取 =====================
+   * 从某章随机抽固定题数（章节内部随机，混合难度）。
+   * 该章题库为空时用全库兜底。
+   */
+  function quizPoolFor(chapterId){
+    return (QUIZZES[chapterId] && QUIZZES[chapterId].length)
+      ? QUIZZES[chapterId]
+      : Object.values(QUIZZES).flat();
   }
   function pickQuestions(pool, n){
     if (!pool.length) return [];
     return shuffle(pool).slice(0, n);
   }
-  function buildBattleWaves(chapterId){
-    const easy = questionPoolFor(chapterId, 1);
-    const mid  = questionPoolFor(chapterId, 2);
-    const hard = questionPoolFor(chapterId, 3);
-    // 任一难度空则退回全库
-    const fallback = Object.values(QUIZZES).flat();
-    const e = easy.length ? pickQuestions(easy, 3) : pickQuestions(fallback, 3);
-    const m = mid.length ? pickQuestions(mid, 4) : pickQuestions(fallback, 4);
-    const h = hard.length ? pickQuestions(hard, 3) : pickQuestions(fallback, 3);
-    const b = pickQuestions(fallback, 1);
-    return [e, m, [...h, ...b]].filter(w => w.length);
-  }
 
   /* ===================== 粒子特效 ===================== */
+  // 触屏/窄屏下粒子减半，减轻低端设备连续答题时的 DOM 抖动
+  let isSmallScreen = (typeof matchMedia === 'function' && matchMedia('(max-width:768px)').matches);
   function burstParticles(x, y, colors, count){
     const host = $('#particleHost') || $('#fxLayer');
     if (!host) return;
-    for (let i = 0; i < (count || 20); i++){
+    let n = count || 20;
+    if (isSmallScreen) n = Math.max(4, n >> 1);
+    for (let i = 0; i < n; i++){
       const p = document.createElement('div');
       p.className = 'particle';
       p.style.left = x + 'px';
@@ -5509,8 +5656,6 @@ async function init() {
     $('#hudExpBar').style.width = '100%';
     $('#hudExpNums').textContent = state.exp + ' / ' + need;
     $('#hudProgress').textContent = clearedChapterCount() + '/' + CHAPTERS.length;
-    const hudTrain = $('#hudTrainNum');
-    if (hudTrain) hudTrain.textContent = (state.practiceStats && state.practiceStats.count) || 0;
     $('#hudSoundBtn').textContent = Sound.isEnabled() ? '🔊' : '🔇';
   }
   function titleForLevel(level){
@@ -5529,7 +5674,7 @@ async function init() {
     const el = $('#mapHint');
     if (!el) return;
     if (chIdx == null){
-      flashHint('点击地图上的城堡，开始你的征程', 2500);
+      flashHint('点击地图上的城堡，开始答题闯关', 2500);
       return;
     }
     const ch = CHAPTERS[chIdx];
@@ -5543,7 +5688,7 @@ async function init() {
     } else if (st.isCompleted){
       msg = `🏆 ${lname}（${ch.title}）· 已通关，可再战`;
     } else {
-      msg = `⚔️ ${lname}（${ch.title}）· 小节 ${cleard}/${total}`;
+      msg = `📝 ${lname}（${ch.title}）· 小节 ${cleard}/${total}`;
     }
     flashHint(msg, 2000);
     const nodeEl = document.querySelector('.castle-node[data-ch="' + chIdx + '"]');
@@ -5556,6 +5701,7 @@ async function init() {
     currentX: 0, currentY: 0, scale: 1, fit: 1,
     dragging: false, moved: false, lastX: 0, lastY: 0,
     anim: null, targetX: 0, targetY: 0, targetScale: 1,
+    rect: { left: 0, top: 0, w: 0, h: 0 },   // 缓存的视口矩形（resize 时刷新）
   };
   Object.assign(S, { reset: _resetCamera, easeTo: easeCameraTo, getView: _getView });
 
@@ -5573,11 +5719,12 @@ async function init() {
       // 容器隐藏（display:none）时尺寸为 0：保留上一次 fit，避免 0/0=NaN
       if (r.width > 0 && r.height > 0){
         S.fit = Math.min(r.width / 4508, r.height / 2400);
+        S.rect.left = r.left; S.rect.top = r.top; S.rect.w = r.width; S.rect.h = r.height;
         fitDirty = false;
       }
-      return r;
+      return { left: S.rect.left, top: S.rect.top, width: S.rect.w, height: S.rect.h };
     }
-    return { width: S.world.clientWidth, height: S.world.clientHeight };
+    return { left: S.rect.left, top: S.rect.top, width: S.rect.w, height: S.rect.h };
   }
   function markFitDirty(){ fitDirty = true; }
   window.addEventListener('resize', markFitDirty);
@@ -5591,8 +5738,8 @@ async function init() {
   //    让玩家看到全图（竖向本就应全图纵览）
   function minScale(){
     computeFit();
-    const r = S.world.getBoundingClientRect();
-    const fitX = r.width / 4508, fitY = r.height / 2400;
+    const r = S.rect;
+    const fitX = r.w / 4508, fitY = r.h / 2400;
     const fit = S.fit;   // = min(fitX, fitY)
     if (fitX >= fitY){
       // 横向视口：横向铺满 → 下限 = fitX/fit（略大于 1）
@@ -5623,19 +5770,20 @@ async function init() {
   }
   // 屏幕点 -> viewBox
   function screenToVB(sx, sy){
+    computeFit();
     const lb = letterbox();
     return {
-      x: ((sx - S.world.getBoundingClientRect().left - lb.x) / S.fit - S.currentX) / S.scale,
-      y: ((sy - S.world.getBoundingClientRect().top  - lb.y) / S.fit - S.currentY) / S.scale,
+      x: ((sx - S.rect.left - lb.x) / S.fit - S.currentX) / S.scale,
+      y: ((sy - S.rect.top  - lb.y) / S.fit - S.currentY) / S.scale,
     };
   }
   // viewBox -> 屏幕
   function vbToScreen(vx, vy){
-    const r = S.world.getBoundingClientRect();
+    computeFit();
     const lb = letterbox();
     return {
-      x: r.left + lb.x + (S.currentX + vx * S.scale) * S.fit,
-      y: r.top  + lb.y + (S.currentY + vy * S.scale) * S.fit,
+      x: S.rect.left + lb.x + (S.currentX + vx * S.scale) * S.fit,
+      y: S.rect.top  + lb.y + (S.currentY + vy * S.scale) * S.fit,
     };
   }
   // 边界约束：确保屏幕上不露出地图之外的空白（草地背景）。
@@ -5772,10 +5920,11 @@ async function init() {
   // 更新视口框（DOM 移动，零重绘）
   function updateMinimapViewport(){
     if (!MM.viewport || !S.svg || !MM.container) return;
+    computeFit();
     const cw = MM.container.clientWidth, ch = MM.container.clientHeight;
     const scale = S.scale;
-    const rw = S.world.getBoundingClientRect().width  / (scale * S.fit);
-    const rh = S.world.getBoundingClientRect().height / (scale * S.fit);
+    const rw = S.rect.w / (scale * S.fit);
+    const rh = S.rect.h / (scale * S.fit);
     const rx = -S.currentX / scale;
     const ry = -S.currentY / scale;
     const bx = clamp(rx, 0, 4508 - rw);
@@ -5829,18 +5978,16 @@ async function init() {
     return mapMusicOn;
   }
 
-  /* ===================== 波次战斗 ===================== */
+  /* ===================== 章节答题测验 ===================== */
   const battle = {
     active: false, practice: false, chapterIdx: -1, chapterId: '',
-    waves: [], waveIdx: 0, enemies: [], eIdx: 0,
-    enemy: null, q: null,
-    lives: CONFIG.BATTLE_LIVES, maxLives: CONFIG.BATTLE_LIVES,
-     streak: 0, score: 0, correct: 0, total: 0,
-     locked: false, pendingTimeout: null,
-     timer: null, timeLeft: 0,
-   };
+    questions: [], qIdx: 0, q: null,
+    correct: 0, total: 0,
+    locked: false, pendingTimeout: null,
+    timer: null, timeLeft: 0, returnFocusEl: null,
+  };
 
-  function openBattle(chIdx){
+  function openQuiz(chIdx){
     const ch = CHAPTERS[chIdx];
     // 未完全通关上一章则锁定
     if (!isChapterUnlocked(chIdx)){
@@ -5850,35 +5997,41 @@ async function init() {
     }
     // 累计测验次数（驱动主站成就统计）
     state.quizStats.attempts = (state.quizStats.attempts || 0) + 1;
-    // 重置战斗
+    // 从本章随机抽固定题数（章节内随机、混合难度）
+    const pool = quizPoolFor(ch.id);
+    const questions = pickQuestions(pool, CONFIG.QUIZ_COUNT || 8);
     Object.assign(battle, {
       active: true, practice: false, chapterIdx: chIdx, chapterId: ch.id,
-      waves: buildBattleWaves(ch.id),
-      waveIdx: 0, enemies: [], eIdx: 0,
-      enemy: null, q: null,
-      lives: CONFIG.BATTLE_LIVES, maxLives: CONFIG.BATTLE_LIVES,
-       streak: 0, score: 0, correct: 0, total: 0,
-       locked: false, pendingTimeout: null,
-       timer: null, timeLeft: 0,
-   });
-    if (!battle.waves.length){
+      questions: questions, qIdx: 0, q: null,
+      correct: 0, total: 0, locked: false, pendingTimeout: null,
+      timer: null, timeLeft: 0,
+    });
+    if (!battle.questions.length){
       $('#battleFeedback').textContent = '题库为空，请先在 data.js 填充题目';
       return;
     }
-    // 显示战斗面板（不再有常驻任务面板需要隐藏）
+    // 显示答题面板
     const panel = $('#battlePanel');
     panel.hidden = false;
     $('#battleSummary').hidden = true;
+    const box = $('#battleSummaryBox');
+    if (box) box.hidden = true;
+    const wait = $('#battleSummaryWait');
+    if (wait) wait.hidden = false;
     $('#battleFeedback').textContent = '';
-    $('#battleTitle').textContent = '⚔️ ' + levelNameFor(chIdx) + ' · 保卫战';
+    $('#battleTitle').textContent = '📝 ' + levelNameFor(chIdx) + ' · 随机' + battle.questions.length + '题';
     $('#battleClose').style.opacity = 1;
+    // 重置进度条与时限条
+    renderProgressSegs();
+    const bar = $('#battleTimeBar');
+    if (bar){ bar.style.transform = 'scaleX(1)'; bar.classList.remove('low'); }
     // 记录触发来源，关闭后把焦点还给触发者（键盘可达）
     battle.returnFocusEl = (document.activeElement && document.activeElement.closest('.node')) || null;
     // 焦点移入对话框：面板标题（HTML 已带 tabindex=-1）
     $('#battleTitle').focus({ preventScroll: true });
-    // 绑定答题键盘快捷键（1-4 / A-D），战斗期间生效
+    // 绑定答题键盘快捷键（1-4 / A-D），答题期间生效
     bindBattleKeys();
-    loadBattleWave();
+    showQuizQuestion();
     Sound.play('wave');
   }
 
@@ -5888,7 +6041,7 @@ async function init() {
     const ch = CHAPTERS[chIdx];
     if (!ch) return;
     const overlay = $('#levelIntro');
-    if (!overlay){ openBattle(chIdx); return; }
+    if (!overlay){ openQuiz(chIdx); return; }
     const st = mainStatus(chIdx);
     const total = ch.sections.length;
     const cleard = ch.sections.filter(s => state.completedSections[getSectionKey(ch, s)]).length;
@@ -5904,7 +6057,7 @@ async function init() {
     const btn = $('#levelIntroStart');
     if (btn){
       btn.disabled = st.isLocked;
-      btn.textContent = st.isLocked ? '🔒 需先通关上一章' : '⚔️ 开始闯关';
+      btn.textContent = st.isLocked ? '🔒 需先通关上一章' : '📝 开始答题';
       btn.focus({ preventScroll: true });
     }
     overlay.hidden = false;
@@ -5915,56 +6068,20 @@ async function init() {
     if (overlay) overlay.hidden = true;
   }
 
-  // 营地训练模式：该章节 5 题练习，不加通关进度，经验减半
-  // 每日首次训练奖励：当天第一场营地训练（胜/负都发）
-  function claimDailyPracticeBonus(){
-    let bonus = 0;
-    const todayKey = (typeof getLocalDateKey === 'function') ? getLocalDateKey(new Date()) : '';
-    if (todayKey && state.practiceStats.lastPracticeDate !== todayKey){
-      bonus = 30;
-      state.practiceStats.lastPracticeDate = todayKey;
-    }
-    return bonus;
-  }
-
-  function openPractice(chIdx){
+  // 营地节点：跳转到主站对应章节的正文知识点（第一章小节，用户可翻页浏览全部）
+  function openKnowledge(chIdx){
     const ch = CHAPTERS[chIdx];
     if (!ch) return;
     if (!isChapterUnlocked(chIdx)){
       Sound.play('lock');
-      flashHint('🔒 需先通关上一章，才能训练', 1800);
+      flashHint('🔒 需先通关上一章，才能查看本章知识', 1800);
       return;
     }
-    const pool = (QUIZZES[ch.id] && QUIZZES[ch.id].length) ? QUIZZES[ch.id] : Object.values(QUIZZES).flat();
-    const wave = pickQuestions(pool, 5);
-    if (!wave.length){
-      flashHint('该章节暂无题目', 1800);
-      return;
-    }
-    state.quizStats.attempts = (state.quizStats.attempts || 0) + 1;
-    state.practiceStats.count = (state.practiceStats.count || 0) + 1;
-    Object.assign(battle, {
-      active: true, practice: true, chapterIdx: chIdx, chapterId: ch.id,
-      waves: [wave],
-      waveIdx: 0, enemies: [], eIdx: 0,
-      enemy: null, q: null,
-      lives: CONFIG.BATTLE_LIVES, maxLives: CONFIG.BATTLE_LIVES,
-      streak: 0, score: 0, correct: 0, total: 0,
-      locked: false, pendingTimeout: null,
-      timer: null, timeLeft: 0,
-    });
-    const panel = $('#battlePanel');
-    panel.hidden = false;
-    $('#battleSummary').hidden = true;
-    $('#battleFeedback').textContent = '';
-    $('#battleTitle').textContent = '🎯 ' + levelNameFor(chIdx) + ' 营地 · 训练战';
-    $('#battleClose').style.opacity = 1;
-    battle.returnFocusEl = (document.activeElement && document.activeElement.closest('.node')) || null;
-    $('#battleTitle').focus({ preventScroll: true });
-    bindBattleKeys();
-    loadBattleWave();
-    Sound.play('wave');
-    flashHint('🎯 ' + levelNameFor(chIdx) + ' 营地 · 5 题训练，不加通关进度', 2200);
+    Sound.play('click');
+    // 关闭闯关地图，回到主站课程视图并加载本章第一个小节
+    if (typeof switchView === 'function') switchView('course');
+    if (typeof loadSection === 'function') loadSection(chIdx, 0);
+    flashHint('📖 已进入「' + ch.title + '」知识区域', 2200);
   }
 
   // 答题键盘：1-4 / A-D 快速选选项（仅战斗激活时）
@@ -5990,15 +6107,15 @@ async function init() {
   function closeBattle(){
     stopBattleTimer();
     if (battle.pendingTimeout){ clearTimeout(battle.pendingTimeout); battle.pendingTimeout = null; }
+    if (resultRevealTimer){ clearTimeout(resultRevealTimer); resultRevealTimer = null; }
     battle.active = false;
     $('#battlePanel').hidden = true;
-    const ms = $('.monster-stage'); if (ms) ms.innerHTML = '';
-    // 重置战斗相关 UI
+    // 重置答题相关 UI
     $('#battleExplain').hidden = true;
-    const st = $('#battleStreak'); if (st) st.hidden = true;
     $('#battleFeedback').textContent = '';
     $('#battleFeedback').className = 'battle-feedback';
-    const prog = $('#battleProgress'); if (prog) prog.innerHTML = '';
+    const rv = $('#battleResultVideo');
+    if (rv){ rv.onended = null; try{ rv.pause(); }catch(e){} }
     // 焦点还给打开前的触发节点（键盘可达）
     const back = battle.returnFocusEl;
     battle.returnFocusEl = null;
@@ -6006,82 +6123,49 @@ async function init() {
       back.focus({ preventScroll: true });
     }
   }
-  function loadBattleWave(){
-    if (!battle.active) return;
-    const w = battle.waves[battle.waveIdx];
-    if (!w) { battleClear(); return; }
-    battle.enemies = w.slice();
-    battle.eIdx = 0;
-    $('#battleWave').textContent = `第 ${battle.waveIdx + 1} / ${battle.waves.length} 波`;
-    Sound.play('wave');
-    showBattleEnemy();
+  // 出题：顺序推进本章抽出的题目
+  function renderProgressSegs(){
+    const wrap = $('#battleSegs');
+    if (!wrap) return;
+    const total = battle.questions.length || 0;
+    let html = '';
+    for (let i = 0; i < total; i++){
+      const cls = (i < battle.qIdx) ? 'done' : (i === battle.qIdx ? 'now' : '');
+      html += '<i class="' + cls + '"></i>';
+    }
+    wrap.innerHTML = html;
   }
-  function showBattleEnemy(){
-    if (!battle.active) return;               // 关闭后残留 setTimeout 不再复活战斗
-    const en = battle.enemies[battle.eIdx];
-    if (!en){ battleWaveClear(); return; }
-    const isNewEnemy = battle.enemy !== en;   // 仅当推进到新敌人时重置血条
-    battle.enemy = en;
-    battle.q = en.q || en; // 兼容：enemy 直接是题目
-    const q = battle.q;
+  function showQuizQuestion(){
+    if (!battle.active) return;               // 关闭后残留 setTimeout 不再复活答题
+    const q = battle.questions[battle.qIdx];
+    if (!q){ quizFinish(); return; }
+    battle.q = q;
     battle.total++;
-
-    // 怪物：按难度选型，hp 对应连答次数
-    const mon = q.monster ? MONSTER[q.monster]
-      : (q.difficulty >= 3 ? MONSTER.dragon : q.difficulty === 2 ? MONSTER.orc : MONSTER.goblin);
-    battle.monster = mon;
-    mon.baseHp = mon.hp;      // 记录满血值
-    if (isNewEnemy) battle.enemyHp = mon.hp;  // 新敌人重置；同一敌人保留已扣血量
-    const stage = $('.monster-stage');
-    if (stage) stage.innerHTML = `<svg viewBox="0 0 100 100" width="130" height="130" class="monster-svg spawn">${mon.svg}</svg>`;
-    const enName = $('#battleEnemyName');
-    if (enName) enName.textContent = mon.name;
-    const hpFill = $('#battleHpFill');
-    if (hpFill) hpFill.style.transform = 'scaleX(' + (clamp((battle.enemyHp || mon.hp) / (mon.baseHp || 1), 0, 1)) + ')';
-    if (enName) enName.style.color = mon.c;
-
-     // 题目
-     $('#battleQtag').textContent = '难度 ' + (q.difficulty || 1) + ' · 已答对 ' + battle.correct;
+    // 题目
+    $('#battleQtag').textContent = '第 ' + (battle.qIdx + 1) + ' / ' + battle.questions.length + ' 题 · 已答对 ' + battle.correct;
+    renderProgressSegs();
     $('#battleQuestion').innerHTML = esc(q.question);
     $('#battleExplain').hidden = true;   // 新题先隐藏上次解析
     renderBattleOptions(q);
-
-    // 设置题目面板背景图（答案面板 question&selection.png）
-    const qna = $('.battle-qna');
-    if (qna) qna.style.backgroundImage = 'url("image/answer/question_selection.webp")';
-
-     // 重置战斗状态
-     battle.locked = false;
-     renderBattleLives();
-     renderProgress();
-     startBattleTimer();   // 每题 15 秒限时（CONFIG.BATTLE_SECONDS）
-   }
+    $('#battleFeedback').textContent = '';
+    $('#battleFeedback').className = 'battle-feedback';
+    // 重置答题状态
+    battle.locked = false;
+    startBattleTimer();   // 每题限时（CONFIG.BATTLE_SECONDS）
+  }
   function renderBattleOptions(q){
     const wrap = $('#battleOptions');
     wrap.innerHTML = '';
     const LETTERS = ['A','B','C','D','E','F'];
-    const IMG_SRC = ['A','B','C','D'];
     q.options.forEach((opt, i) => {
       const btn = document.createElement('button');
       btn.className = 'battle-opt';
-      btn.innerHTML = '<img src="image/answer/' + IMG_SRC[i] + '.png" alt="' + LETTERS[i] + '">' +
+      btn.innerHTML = '<span class="battle-opt-key">' + LETTERS[i] + '</span>' +
                       '<span class="battle-opt-text">' + esc(opt) + '</span>';
       btn.title = LETTERS[i] + '：' + opt;
       btn.onclick = () => chooseBattleOption(i);
       wrap.appendChild(btn);
     });
-  }
-  function renderProgress(){
-    const pct = clamp(battle.waves.length ? (battle.waveIdx + 1) / battle.waves.length : 0, 0, 1);
-    const el = $('#battleProgress');
-    if (!el) return;
-    // 使用 image/answer 的预渲染进度图（0/25/50/75/100%）
-    const step = pct < 0.125 ? 0 : pct < 0.375 ? 25 : pct < 0.625 ? 50 : pct < 0.875 ? 75 : 100;
-    el.innerHTML = '<img src="image/answer/progress' + step + '.png" alt="进度 ' + step + '%" class="progress-icon">';
-  }
-  function renderBattleLives(){
-    const el = $('#lifeCount');
-    if (el) el.textContent = battle.lives;
   }
   function chooseBattleOption(i){
     const q = battle.q;
@@ -6102,90 +6186,53 @@ async function init() {
       wrongAnswer(q, i);
     }
   }
+  // 答对：记分 + 展示解析，然后短暂停留后出下一题
   function correctAnswer(){
     sound('correct');
-    battle.correct++; battle.streak++;
-    state.quizStats.bestStreak = Math.max(state.quizStats.bestStreak, battle.streak);
-    const combo = Math.min(battle.streak, 5);
-    const gain = 10 * combo;
-    battle.score += gain;
-    $('#battleFeedback').textContent = '✔ 正确 +' + gain + ' 分';
-    $('#battleFeedback').className = 'battle-feedback good';
-    updateStreakUI();
-
-    // 连击反馈
-    if (battle.streak >= 3) sound('combo');
-    if (battle.streak >= 5 && battle.lives < battle.maxLives){
-      battle.lives++; sound('heart');
-      $('#battleFeedback').textContent += ' · ❤️ 恢复 1 心';
-    }
-
-    // 展示解析
+    battle.correct++;
     const q = battle.q;
+    $('#battleFeedback').textContent = '✔ 回答正确';
+    $('#battleFeedback').className = 'battle-feedback good';
+    // 展示解析
     if (q && q.explanation){
       const ex = $('#battleExplain');
       ex.hidden = false;
       ex.innerHTML = '<span class="explain-tag">💡 解析</span> ' + esc(q.explanation);
     }
-
-    // 怪物扣血（怪物区已从 UI 移除，逻辑保留驱动波次进度）
-    const mon = battle.monster;
-    battle.enemyHp = (battle.enemyHp || 1) - 1;
-    const hpFill = $('#battleHpFill');
-    if (hpFill) hpFill.style.transform = 'scaleX(' + clamp(battle.enemyHp / (mon.baseHp || 1), 0, 1) + ')';
-    const stg = $('.monster-svg');
-    if (stg){ stg.classList.add('hit'); setTimeout(()=>stg.classList.remove('hit'), 250); }
-
     // fly text（锚点回退到题目面板）
-    const anchor = $('.battle-enemy') || $('.battle-qna');
-    const r = anchor.getBoundingClientRect();
-    const hostR = $('#fxLayer').getBoundingClientRect();
-    flyText(r.left - hostR.left + r.width/2, r.top - hostR.top, '+' + gain, 'xp');
-    burstParticles(r.left - hostR.left + r.width/2, r.top - hostR.top + 40, ['#34d399','#10b981','#6ee7b7', mon.c], 18);
-
-    if (battle.enemyHp <= 0){
-      sound('kill');
-      burstParticles(r.left - hostR.left + r.width/2, r.top - hostR.top + 40, [mon.c, '#ffd700', '#fff'], 30);
-      // 击退反馈立即可见，留出读解析的时间再推进
-      $('#battleFeedback').textContent = '💥 击退敌人 · 继续前进！';
-      $('#battleFeedback').className = 'battle-feedback good';
-      battle.pendingTimeout = setTimeout(() => {
-        battle.pendingTimeout = null;
-        battle.eIdx++;
-        if (battle.eIdx >= battle.enemies.length){
-          battleWaveClear();
-        } else {
-          showBattleEnemy();
-        }
-      }, 1800);
-    } else {
-      // 同难度新题（怪物未死），留时间读解析
-      battle.pendingTimeout = setTimeout(() => {
-        battle.pendingTimeout = null;
-        showBattleEnemy();
-      }, 1600);
+    const anchor = $('.battle-qna');
+    if (anchor){
+      const r = anchor.getBoundingClientRect();
+      const hostR = $('#fxLayer').getBoundingClientRect();
+      flyText(r.left - hostR.left + r.width/2, r.top - hostR.top, '+1', 'xp');
+      burstParticles(r.left - hostR.left + r.width/2, r.top - hostR.top + 40, ['#34d399','#10b981','#6ee7b7'], 14);
     }
+    // 留出读解析的时间再推进
+    battle.pendingTimeout = setTimeout(() => {
+      battle.pendingTimeout = null;
+      battle.qIdx++;
+      showQuizQuestion();
+    }, 1700);
   }
+  // 答错：标红 + 展示解析 + 揭示正确答案，然后继续（无生命概念，答错不中断）
   function wrongAnswer(q, i, reason){
     if (battle.q == null) return;
     sound('wrong');
-    battle.streak = 0;
-    battle.lives--;
-    shakeMap(12);
-    renderBattleLives();
-    updateStreakUI();
-    $('#battleFeedback').textContent = (reason === 'timeout' ? '⏰ 时间到 · 剩余 ' : '✘ 答错 · 剩余 ') + battle.lives + ' 心';
+    const qq = battle.q;
+    $('#battleFeedback').textContent = reason === 'timeout' ? '⏰ 时间到' : '✘ 回答错误';
     $('#battleFeedback').className = 'battle-feedback bad';
     // 展示解析
-    const qq = battle.q;
     if (qq && qq.explanation){
       const ex = $('#battleExplain');
       ex.hidden = false;
       ex.innerHTML = '<span class="explain-tag">💡 解析</span> ' + esc(qq.explanation);
     }
-    if (battle.lives <= 0){ battleFail(); } else {
-      setTimeout(() => { if (battle.active && battle.q) showBattleEnemy(); }, 2000);
-    }
+    // 继续下一题（无生命概念）
+    battle.pendingTimeout = setTimeout(() => {
+      battle.pendingTimeout = null;
+      battle.qIdx++;
+      showQuizQuestion();
+    }, 2000);
   }
 
   /* ---- 每题限时：倒计时 + 超时判错 ---- */
@@ -6197,10 +6244,18 @@ async function init() {
     if (num) num.textContent = Math.max(0, Math.ceil(battle.timeLeft));
     const box = $('#battleTimer');
     if (box) box.classList.toggle('low', battle.timeLeft <= 3);
+    // 时限条：随剩余比例递减（scaleX 驱动，合成器友好）
+    const bar = $('#battleTimeBar');
+    if (bar){
+      const total = CONFIG.BATTLE_SECONDS || 25;
+      const pct = clamp(battle.timeLeft / total * 100, 0, 100);
+      bar.style.transform = 'scaleX(' + (pct / 100) + ')';
+      bar.classList.toggle('low', battle.timeLeft <= 3);
+    }
   }
   function startBattleTimer(){
     stopBattleTimer();
-    battle.timeLeft = CONFIG.BATTLE_SECONDS || 15;
+    battle.timeLeft = CONFIG.BATTLE_SECONDS || 25;
     updateTimerUI();
     battle.timer = setInterval(() => {
       battle.timeLeft -= 0.2;
@@ -6222,130 +6277,102 @@ async function init() {
     wrongAnswer(q, null, 'timeout');
   }
 
-  // 连击指示：显示当前连击数，达 5 时提示恢复 1 心
-  function updateStreakUI(){
-    const el = $('#battleStreak');
-    if (!el) return;
-    if (battle.streak >= 2){
-      el.hidden = false;
-      el.textContent = battle.streak >= 5
-        ? '🔥 连击 x' + battle.streak + ' · 满 5 回血'
-        : '🔥 连击 x' + battle.streak;
-      el.classList.toggle('streak-max', battle.streak >= 5);
-    } else {
-      el.hidden = true;
-    }
+  // 结算视频：胜利 / 失败。播完才揭示「再来一次 / 返回地图」按钮面板
+  let resultRevealTimer = null;
+  function revealResultBox(){
+    if (resultRevealTimer){ clearTimeout(resultRevealTimer); resultRevealTimer = null; }
+    const box = $('#battleSummaryBox');
+    if (box) box.hidden = false;
+    const wait = $('#battleSummaryWait');
+    if (wait) wait.hidden = true;
   }
-  function battleWaveClear(){
-    sound('wave');
-    battle.waveIdx++;
-    if (battle.waveIdx >= battle.waves.length){ battleClear(); } else { loadBattleWave(); }
-  }
-
-  // 结算视频：胜利 / 失败
   function playResultVideo(src){
     const v = $('#battleResultVideo');
     if (!v) return;
+    // 单次揭示：onended + 兜底计时器都只会揭示一次
+    let revealed = false;
+    const reveal = () => {
+      if (revealed) return;
+      revealed = true;
+      revealResultBox();
+    };
+    v.onended = reveal;
+    if (resultRevealTimer) clearTimeout(resultRevealTimer);
     try {
       if (v.getAttribute('src') !== src) v.setAttribute('src', src);
       v.currentTime = 0;
       v.muted = false;                 // 带声音播放一遍
       v.loop = false;
-      v.play().catch(() => {
-        // 浏览器自动播放策略拦截时兜底：静音播放
-        v.muted = true;
-        v.play().catch(() => {});
-      });
-    } catch (e) {}
+      const p = v.play();
+      if (p && typeof p.catch === 'function'){
+        p.catch(() => {
+          // 浏览器自动播放策略拦截时兜底：静音播放
+          v.muted = true;
+          v.play().catch(() => {});
+          // 静音也可能失败：直接揭示，避免卡住
+          setTimeout(reveal, 300);
+        });
+      }
+      // 兜底：视频卡住/时长不可知时，到时强制揭示
+      const dur = isFinite(v.duration) && v.duration > 0 ? v.duration : 8;
+      resultRevealTimer = setTimeout(reveal, dur * 1000 + 1500);
+    } catch (e){ reveal(); }
   }
 
-  function battleClear(){
+  // 全部题目作答完毕：按及格线判定通关 / 未通过
+  function quizFinish(){
     stopBattleTimer();
-    sound('victory');
-    if (battle.practice){
-      // 训练模式：不加通关进度，经验减半
-      const accP = battle.total ? battle.correct / battle.total : 0;
-      let xpP = Math.floor(accP * 20) + Math.min(battle.streak, 5);
-      if (battle.lives >= battle.maxLives && battle.total > 0) xpP += 20;
-      xpP = Math.max(1, Math.floor(xpP / 2));
-      // 每日首次训练奖励（胜/负都发）
-      const dailyBonus = claimDailyPracticeBonus();
-      if (dailyBonus) xpP += dailyBonus;
-      const resP = addExp(xpP);
-      if (battle.streak > (state.practiceStats.bestStreak || 0)) state.practiceStats.bestStreak = battle.streak;
-      if (battle.score > (state.practiceStats.bestScore || 0)) state.practiceStats.bestScore = battle.score;
-      $('#battleSummaryKind').textContent = '🏕️ 训练完成！';
-      $('#battleSummaryStats').innerHTML =
-        `正确 ${battle.correct}/${battle.total} · 得分 ${battle.score}` +
-        `<br>获得经验 <b>+${xpP}</b>${dailyBonus ? `（含每日首练 +${dailyBonus}）` : ''} · 训练 ${state.practiceStats.count} 次 · 最佳连击 ${state.practiceStats.bestStreak}` +
-        (resP.leveled ? `<br><b style="color:#fbbf24">🎉 升至 LV.${resP.newLevel}！</b>` : '');
-      if (dailyBonus && typeof showToast === 'function') showToast('🎁 每日首次训练 +30 经验');
-      $('#battleSummary').hidden = false;
-      playResultVideo('video/victory.mp4');
-      $('#battleOptions').innerHTML = '';
-      const progP = $('#battleProgress'); if (progP) progP.innerHTML = '';
-      updateHUD();
-      if (typeof checkBadges === 'function') checkBadges();
-      return;
-    }
-    // record rank (drives main-site badges: S/A grade)
-    if (battle.total > 0){
-      const accPct = Math.round(battle.correct / battle.total * 100);
-      if (battle.lives >= battle.maxLives && accPct >= 90){
+    const ch = CHAPTERS[battle.chapterIdx];
+    const total = battle.total || 0;
+    const correct = battle.correct || 0;
+    const acc = total ? correct / total : 0;
+    const pass = acc >= (CONFIG.PASS_RATE || 0.6);
+    $('#battleOptions').innerHTML = '';
+
+    if (pass){
+      sound('victory');
+      // 记录 S/A 评级（驱动主站徽章）
+      const accPct = Math.round(acc * 100);
+      if (accPct >= 90){
         state.quizStats.sCount = (state.quizStats.sCount || 0) + 1;
         state.quizStats.bestRank = 'S';
       } else if (accPct >= 80){
         state.quizStats.aCount = (state.quizStats.aCount || 0) + 1;
         if (state.quizStats.bestRank !== 'S') state.quizStats.bestRank = 'A';
       }
-    }
-    // 结算经验
-    const acc = battle.total ? battle.correct / battle.total : 0;
-    let xp = Math.floor(acc * 20) + Math.min(battle.streak, 5);
-    let full = false;
-    let extra = [];
-    if (battle.lives >= battle.maxLives && battle.total > 0){ full = true; xp += 20; extra.push('满血 +20'); }
-    if (battle.streak >= 5) extra.push('连击 +' + Math.min(battle.streak,5));
-    const res = addExp(xp);
-
-    // 标记章节通关（主小节全部完成）
-    const ch = CHAPTERS[battle.chapterIdx];
-    ch.sections.forEach(s => { state.completedSections[getSectionKey(ch, s)] = true; });
-    saveState();
-
-    $('#battleSummaryKind').textContent = '🏆 通关 ' + ch.title + '！';
-    const accPct = battle.total ? Math.round(battle.correct / battle.total * 100) : 0;
-    $('#battleSummaryStats').innerHTML =
-      `正确 ${battle.correct}/${battle.total}（${accPct}%）· 最高连击 ${state.quizStats.bestStreak} · 得分 ${battle.score}<br>`
-      + `获得经验 <b>+${xp}</b>${extra.length ? '（' + extra.join(' · ') + '）' : ''}`
-      + (res.leveled ? `<br><b style="color:#fbbf24">🎉 升至 LV.${res.newLevel}！</b>` : '');
-     $('#battleSummary').hidden = false;
-    playResultVideo('video/victory.mp4');
-    $('#battleOptions').innerHTML = '';
-    const prog = $('#battleProgress'); if (prog) prog.innerHTML = '';
-    updateHUD();
-    // 通关：仅重建该章城堡节点（完成旗），不重建整个精灵层
-    patchCastleState(battle.chapterIdx);
-    chapterClearBanner('🏆 ' + ch.title + ' 通关！');
-    if (res.leveled) sound('levelup');
-  }
-  function battleFail(){
-    stopBattleTimer();
-    sound('fail');
-    const ch = CHAPTERS[battle.chapterIdx];
-    $('#battleSummary').hidden = false;
-    playResultVideo('video/defeat.mp4');
-    $('#battleSummaryKind').textContent = battle.practice ? ('💔 训练中断 · ' + ch.title) : ('💔 城堡失守 · ' + ch.title);
-    if (battle.practice){
-      const db = claimDailyPracticeBonus();
-      if (db) addExp(db);
-      $('#battleSummaryStats').innerHTML = `正确 ${battle.correct}/${battle.total} · 生命耗尽，再试一次吧${db ? ` · 每日首练 +${db} 经验` : ''}`;
-      if (db && typeof showToast === 'function') showToast('🎁 每日首次训练 +30 经验');
+      // 结算经验：按正确率给分（每题 10 EXP × 正确率，向下取整，至少 1）
+      const xp = Math.max(1, Math.round(CONFIG.XP_PER_CORRECT * acc));
+      const res = addExp(xp);
+      // 标记章节通关（本章全部小节完成 → 解锁下一章）
+      ch.sections.forEach(s => { state.completedSections[getSectionKey(ch, s)] = true; });
+      saveState();
+      $('#battleSummaryKind').textContent = '🏆 通关 ' + ch.title + '！';
+      $('#battleSummaryStats').innerHTML =
+        `正确 ${correct}/${total}（${accPct}%）· 达标 ${Math.round((CONFIG.PASS_RATE || 0.6) * 100)}% 以上` +
+        `<br>获得经验 <b>+${xp}</b>`
+        + (res.leveled ? `<br><b style="color:#fbbf24">🎉 升至 LV.${res.newLevel}！</b>` : '');
+      $('#battleSummary').hidden = false;
+      const box = $('#battleSummaryBox'); if (box) box.hidden = true;
+      const wait = $('#battleSummaryWait'); if (wait) wait.hidden = false;
+      playResultVideo('video/victory.mp4');
+      updateHUD();
+      // 通关：仅重建该章城堡节点（完成旗），不重建整个精灵层
+      patchCastleState(battle.chapterIdx);
+      chapterClearBanner('🏆 ' + ch.title + ' 通关！');
+      if (res.leveled) sound('levelup');
     } else {
-      $('#battleSummaryStats').innerHTML = `正确 ${battle.correct}/${battle.total} · 生命耗尽，再试一次吧`;
+      sound('fail');
+      const accPct = Math.round(acc * 100);
+      $('#battleSummaryKind').textContent = '💔 未通关 · ' + ch.title;
+      $('#battleSummaryStats').innerHTML =
+        `正确 ${correct}/${total}（${accPct}%）· 需答对 ${Math.ceil((CONFIG.PASS_RATE || 0.6) * total)} 题以上才能通关，再试一次吧`;
+      $('#battleSummary').hidden = false;
+      const box = $('#battleSummaryBox'); if (box) box.hidden = true;
+      const wait = $('#battleSummaryWait'); if (wait) wait.hidden = false;
+      playResultVideo('video/defeat.mp4');
+      updateHUD();
     }
     battle.active = false;
-    updateHUD();
     if (typeof checkBadges === 'function') checkBadges();
   }
 
@@ -6367,7 +6394,7 @@ async function init() {
 
   /* ===================== 交互（点击节点） =====================
    * 事件委托：只绑一次，避免随 renderAll 无限累积导致弹窗叠开。
-   * 战斗为主——点任意城堡/营地都进入该章的波次战斗。
+   * 城堡 → 章节答题测验；营地 → 跳转主站章节正文知识点。
    */
   function bindNodeClick(){
     const nodesG = $(CLS.nodes);
@@ -6378,9 +6405,9 @@ async function init() {
       const isCamp = el.hasAttribute('data-camp');
       const chIdx = parseInt(el.getAttribute('data-ch'), 10);
       if (isNaN(chIdx)) return;
-      // 营地精灵：可点击但暂不进入战斗，仅提示
+      // 营地精灵：跳转主站对应章节的知识区域
       if (isCamp){
-        openPractice(chIdx);
+        openKnowledge(chIdx);
         return;
       }
       const st = getNodeStatus(mainNodeOf(chIdx) || { isMain:true, chIdx });
@@ -6472,18 +6499,18 @@ async function init() {
       $('#levelIntroStart').onclick = () => {
         const ci = introChIdx >= 0 ? introChIdx : 0;
         closeLevelIntro();
-        openBattle(ci);
+        openQuiz(ci);
       };
       const introClose = $('#levelIntroClose');
       if (introClose) introClose.onclick = closeLevelIntro;
       const introOv = $('#levelIntro');
       if (introOv) introOv.addEventListener('click', (ev) => { if (ev.target === introOv) closeLevelIntro(); });
       document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeLevelIntro(); });
-      // 关闭战斗
+      // 关闭答题面板
       $('#battleClose').onclick = closeBattle;
       $('#battleAgainBtn').onclick = () => {
         const ci = battle.chapterIdx >= 0 ? battle.chapterIdx : 0;
-        if (battle.practice) openPractice(ci); else openBattle(ci);
+        openQuiz(ci);
       };
       $('#battleBackMapBtn').onclick = closeBattle;
       $('#zoomIn').onclick = () => e.setZoom(S.scale * 1.3);
@@ -6505,7 +6532,8 @@ async function init() {
   e.getS = () => S;
   e.state = state;
   e.init = init;
-  e.openBattle = openBattle;
+  e.openQuiz = openQuiz;
+  e.openKnowledge = openKnowledge;
   e.addExp = addExp;
   e.updateHUD = updateHUD;
   e.renderAll = renderAll;
@@ -6537,6 +6565,9 @@ async function init() {
       _resetCamera();
       focusFirstUncleared();   // 地图可见后自动放大到第一个未通关章节
       if (nodeMapRef && nodeMapRef.length){
+        // 已渲染过：不整层重渲，只应用相机变换 + 刷新小地图（进入/切回更快）
+        applyTransform();
+      } else {
         renderTerrain();
         renderLinks(nodeMapRef, nodesRef);
         renderNodes(nodeMapRef, nodesRef);
@@ -6561,7 +6592,7 @@ async function init() {
 
 })();
 
-// --- js/quizgame-main.js ---
+// --- js/game/quizgame-main.js ---
 /* =============================================================
  * main.js —— 启动 / 入口视频 / 地图交互（拖拽·滚轮·键盘·小地图）
  * ============================================================= */
@@ -6608,7 +6639,10 @@ async function init() {
 
   window.QuizGameMain = { enter: enter, exit: exit };
 
-  /* ===================== 开场（一次性）：标题页 → loop 视频 → 开门动画 ===================== */
+  /* ===================== 开场（一次性）：loop 视频 → 开门动画 =====================
+   * 已移除静态标题页（「开始闯关」按钮页）。进入后直接播放 loop.mp4
+   * 并常显「点击进入」提示；点击 → enter.mp4（开门动画）→ 加载 → 地图。
+   */
   function initStartScreen(){
     const startView = document.getElementById('startView');
     const mapView = document.getElementById('qgMapView');
@@ -6616,34 +6650,24 @@ async function init() {
     const loopVideo = document.getElementById('startLoopVideo');
     const gameVideo = document.getElementById('startGameVideo');
     const loopAudio = document.getElementById('startLoopAudio');
-    const startCard = document.getElementById('startCard');
-    const startBg = document.getElementById('startBg');
-    const startQuote = document.querySelector('.start-quote');
-    const startBtn = document.getElementById('startBtn');
     const loopHint = document.getElementById('loopHint');
     const skipBtn = document.getElementById('skipIntroBtn');
     if (!startView || !mapView || !loopVideo || !gameVideo) return;
 
-    let phase = 'title';          // title → loop → enter（一次性开场）
+    let phase = 'loop';           // loop → enter（一次性开场）
     let startTimer = null;        // enter 视频兜底定时器
     let loopStallTimer = null;    // loop 视频卡住兜底
     const CENTER_W = 400, CENTER_H = 600;   // 点击中央区域判定（约 400×600）
 
-    // 供「← 返回」回到标题页时重置
+    // 供「← 返回」回到开场时重置（重播 loop）
     window.__startAPI = {
       reset(){
-        phase = 'title';
+        phase = 'loop';
         if (startTimer){ clearTimeout(startTimer); startTimer = null; }
         if (loopStallTimer){ clearTimeout(loopStallTimer); loopStallTimer = null; }
-        if (skipBtn) skipBtn.hidden = true;
-        loopVideo.pause(); loopVideo.hidden = true; loopVideo.classList.remove('show');
-        gameVideo.pause(); gameVideo.currentTime = 0; gameVideo.hidden = true; gameVideo.muted = true; gameVideo.classList.remove('show');
-        if (loopHint) loopHint.hidden = true;
-        if (startCard) startCard.classList.remove('hide');
-        if (startBg) startBg.classList.remove('fade');
-        if (startQuote) startQuote.classList.remove('fade');
-        loopAudio.volume = 1;
-        tryPlayMusic();           // 回到标题页重新尝试音乐
+        if (skipBtn) skipBtn.hidden = false;
+        if (loopHint) loopHint.hidden = false;
+        showLoopPhase();
       },
     };
 
@@ -6679,16 +6703,11 @@ async function init() {
       } catch (e) { loopAudio.pause(); }
     }
 
-    // 标题页 → loop 视频：标题页 1s 渐变消失，loop 循环播放 + 音乐
-    function startLoopPhase(){
-      if (phase !== 'title') return;
-      phase = 'loop';
-      Sound.unlock();            // 点击抵消浏览器自动播放拦截
-      Sound.play('click');
-      tryPlayMusic();            // 手势内开始背景音乐，loop 阶段延续
-      if (startCard) startCard.classList.add('hide');
-      if (startBg) startBg.classList.add('fade');
-      if (startQuote) startQuote.classList.add('fade');
+    // loop 阶段：播放 loop 视频 + 音乐，常显「点击进入」提示
+    function showLoopPhase(){
+      if (phase !== 'loop') return;
+      stopMusic();
+      tryPlayMusic();            // 背景音乐
       loopVideo.loop = true;
       loopVideo.muted = true;
       loopVideo.hidden = false;
@@ -6794,8 +6813,7 @@ async function init() {
     }
     if (skipBtn) skipBtn.addEventListener('click', skipToMap);
 
-    tryPlayMusic();   // 标题页尝试自动播放音乐
-    if (startBtn) startBtn.addEventListener('click', (e) => { e.stopPropagation(); startLoopPhase(); });
+    showLoopPhase();   // 直接进入 loop 阶段（无标题页按钮）
     startView.addEventListener('click', onLoopClick);
     startView.addEventListener('touchend', (e) => {
       const touch = e.changedTouches[0];
@@ -6804,8 +6822,7 @@ async function init() {
     }, { passive: true });
     document.addEventListener('keydown', (e) => {
       if ((e.key === ' ' || e.key === 'Enter') && startView.classList.contains('active')){
-        if (phase === 'title') startLoopPhase();
-        else if (phase === 'loop') startOpeningVideo();
+        if (phase === 'loop') startOpeningVideo();
       }
     });
   }
@@ -6910,18 +6927,31 @@ async function init() {
       }
     }, true);
 
-    // 滚轮缩放（以光标为中心）
-    world.addEventListener('wheel', (e) => {
-      e.preventDefault();
+    // 滚轮缩放（以光标为中心）—— rAF 节流合并：累积滚轮步数，每帧只应用一次
+    let wheelSteps = 0;
+    let wheelAnchor = { x: 0, y: 0 };
+    let wheelRaf = null;
+    const onWheelApply = () => {
+      wheelRaf = null;
+      const steps = wheelSteps;
+      wheelSteps = 0;
+      if (steps === 0) return;
+      const factor = Math.pow(1.2, steps);
       const s = G.getS();
-      const before = G.screenToVB(e.clientX, e.clientY);
-      const factor = e.deltaY < 0 ? 1.2 : 1 / 1.2;
+      const before = G.screenToVB(wheelAnchor.x, wheelAnchor.y);
       G.setZoom(s.scale * factor);
       const after = G.vbToScreen(before.x, before.y);
-      s.currentX += (e.clientX - after.x) / (s.fit * s.scale);
-      s.currentY += (e.clientY - after.y) / (s.fit * s.scale);
+      s.currentX += (wheelAnchor.x - after.x) / (s.fit * s.scale);
+      s.currentY += (wheelAnchor.y - after.y) / (s.fit * s.scale);
       G.clampPos();
       G.setZoom(s.scale);
+    };
+    world.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      wheelSteps += e.deltaY < 0 ? 1 : -1;
+      wheelAnchor.x = e.clientX; wheelAnchor.y = e.clientY;
+      if (wheelRaf) return;
+      wheelRaf = requestAnimationFrame(onWheelApply);
     }, { passive: false });
 
     // 键盘平移 / 缩放

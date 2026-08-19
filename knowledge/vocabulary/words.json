@@ -1,0 +1,924 @@
+{
+  "lists": {
+    "zsb": {
+      "name": "专升本核心词",
+      "nameEn": "Zhuanshengben Core",
+      "description": "专升本考试必备词汇",
+      "wordCount": 100
+    },
+    "cet4": {
+      "name": "英语四级",
+      "nameEn": "CET-4",
+      "description": "大学英语四级考试词汇",
+      "wordCount": 100
+    },
+    "cet6": {
+      "name": "英语六级",
+      "nameEn": "CET-6",
+      "description": "大学英语六级考试词汇",
+      "wordCount": 100
+    }
+  },
+  "words": [
+    {
+      "id": "zsb_001",
+      "list": "zsb",
+      "word": "abandon",
+      "phonetic": "/əˈbændən/",
+      "definition": "放弃；遗弃",
+      "example": "Don't abandon your dreams easily.",
+      "exampleTranslation": "不要轻易放弃你的梦想。"
+    },
+    {
+      "id": "zsb_002",
+      "list": "zsb",
+      "word": "ability",
+      "phonetic": "/əˈbɪləti/",
+      "definition": "能力；才能",
+      "example": "She has the ability to speak three languages.",
+      "exampleTranslation": "她有说三种语言的能力。"
+    },
+    {
+      "id": "zsb_003",
+      "list": "zsb",
+      "word": "able",
+      "phonetic": "/ˈeɪbl/",
+      "definition": "能够的；有能力的",
+      "example": "He is able to finish the task on time.",
+      "exampleTranslation": "他能够按时完成任务。"
+    },
+    {
+      "id": "zsb_004",
+      "list": "zsb",
+      "word": "about",
+      "phonetic": "/əˈbaʊt/",
+      "definition": "关于；大约",
+      "example": "We talked about the plan.",
+      "exampleTranslation": "我们讨论了这个计划。"
+    },
+    {
+      "id": "zsb_005",
+      "list": "zsb",
+      "word": "above",
+      "phonetic": "/əˈbʌv/",
+      "definition": "在...上面；上述的",
+      "example": "The bird flew above the clouds.",
+      "exampleTranslation": "鸟儿飞到了云层之上。"
+    },
+    {
+      "id": "zsb_006",
+      "list": "zsb",
+      "word": "abroad",
+      "phonetic": "/əˈbrɔːd/",
+      "definition": "到国外；在国外",
+      "example": "She decided to study abroad.",
+      "exampleTranslation": "她决定去国外留学。"
+    },
+    {
+      "id": "zsb_007",
+      "list": "zsb",
+      "word": "absence",
+      "phonetic": "/ˈæbsəns/",
+      "definition": "缺席；缺乏",
+      "example": "His absence was noticed by the teacher.",
+      "exampleTranslation": "老师注意到了他的缺席。"
+    },
+    {
+      "id": "zsb_008",
+      "list": "zsb",
+      "word": "absolute",
+      "phonetic": "/ˈæbsəluːt/",
+      "definition": "绝对的；完全的",
+      "example": "It is an absolute necessity.",
+      "exampleTranslation": "这是绝对必要的。"
+    },
+    {
+      "id": "zsb_009",
+      "list": "zsb",
+      "word": "absorb",
+      "phonetic": "/əbˈzɔːb/",
+      "definition": "吸收；理解",
+      "example": "Plants absorb water from the soil.",
+      "exampleTranslation": "植物从土壤中吸收水分。"
+    },
+    {
+      "id": "zsb_010",
+      "list": "zsb",
+      "word": "abstract",
+      "phonetic": "/ˈæbstrækt/",
+      "definition": "抽象的；摘要",
+      "example": "The concept is too abstract for children.",
+      "exampleTranslation": "这个概念对儿童来说太抽象了。"
+    },
+    {
+      "id": "zsb_011",
+      "list": "zsb",
+      "word": "abundant",
+      "phonetic": "/əˈbʌndənt/",
+      "definition": "丰富的；充裕的",
+      "example": "China is abundant in natural resources.",
+      "exampleTranslation": "中国自然资源丰富。"
+    },
+    {
+      "id": "zsb_012",
+      "list": "zsb",
+      "word": "academic",
+      "phonetic": "/ˌækəˈdemɪk/",
+      "definition": "学术的；学院的",
+      "example": "She has excellent academic achievements.",
+      "exampleTranslation": "她有出色的学业成绩。"
+    },
+    {
+      "id": "zsb_013",
+      "list": "zsb",
+      "word": "accept",
+      "phonetic": "/əkˈsept/",
+      "definition": "接受；承认",
+      "example": "Please accept my sincere apology.",
+      "exampleTranslation": "请接受我真诚的道歉。"
+    },
+    {
+      "id": "zsb_014",
+      "list": "zsb",
+      "word": "access",
+      "phonetic": "/ˈækses/",
+      "definition": "进入；访问；使用",
+      "example": "Students have access to the library.",
+      "exampleTranslation": "学生可以进入图书馆。"
+    },
+    {
+      "id": "zsb_015",
+      "list": "zsb",
+      "word": "accident",
+      "phonetic": "/ˈæksɪdənt/",
+      "definition": "事故；意外",
+      "example": "The accident happened on the highway.",
+      "exampleTranslation": "事故发生在高速公路上。"
+    },
+    {
+      "id": "zsb_016",
+      "list": "zsb",
+      "word": "accompany",
+      "phonetic": "/əˈkʌmpəni/",
+      "definition": "陪伴；伴随",
+      "example": "She accompanied her friend to the hospital.",
+      "exampleTranslation": "她陪朋友去了医院。"
+    },
+    {
+      "id": "zsb_017",
+      "list": "zsb",
+      "word": "accomplish",
+      "phonetic": "/əˈkʌmplɪʃ/",
+      "definition": "完成；达到",
+      "example": "We must accomplish this task today.",
+      "exampleTranslation": "我们必须今天完成这项任务。"
+    },
+    {
+      "id": "zsb_018",
+      "list": "zsb",
+      "word": "according",
+      "phonetic": "/əˈkɔːdɪŋ/",
+      "definition": "根据；按照",
+      "example": "According to the weather report, it will rain.",
+      "exampleTranslation": "根据天气预报，将会下雨。"
+    },
+    {
+      "id": "zsb_019",
+      "list": "zsb",
+      "word": "account",
+      "phonetic": "/əˈkaʊnt/",
+      "definition": "账户；叙述；解释",
+      "example": "She opened a bank account.",
+      "exampleTranslation": "她开了一个银行账户。"
+    },
+    {
+      "id": "zsb_020",
+      "list": "zsb",
+      "word": "accurate",
+      "phonetic": "/ˈækjərət/",
+      "definition": "准确的；精确的",
+      "example": "Please give an accurate answer.",
+      "exampleTranslation": "请给出准确的答案。"
+    },
+    {
+      "id": "zsb_021",
+      "list": "zsb",
+      "word": "achieve",
+      "phonetic": "/əˈtʃiːv/",
+      "definition": "实现；达到；完成",
+      "example": "She worked hard to achieve her goals.",
+      "exampleTranslation": "她努力工作以实现她的目标。"
+    },
+    {
+      "id": "zsb_022",
+      "list": "zsb",
+      "word": "acknowledge",
+      "phonetic": "/əkˈnɒlɪdʒ/",
+      "definition": "承认；确认",
+      "example": "He acknowledged his mistake.",
+      "exampleTranslation": "他承认了他的错误。"
+    },
+    {
+      "id": "zsb_023",
+      "list": "zsb",
+      "word": "acquire",
+      "phonetic": "/əˈkwaɪə(r)/",
+      "definition": "获得；学到",
+      "example": "We must acquire new knowledge.",
+      "exampleTranslation": "我们必须获取新知识。"
+    },
+    {
+      "id": "zsb_024",
+      "list": "zsb",
+      "word": "across",
+      "phonetic": "/əˈkrɒs/",
+      "definition": "穿过；在...对面",
+      "example": "The river flows across the city.",
+      "exampleTranslation": "这条河穿城而过。"
+    },
+    {
+      "id": "zsb_025",
+      "list": "zsb",
+      "word": "active",
+      "phonetic": "/ˈæktɪv/",
+      "definition": "积极的；活跃的",
+      "example": "She is an active participant in the discussion.",
+      "exampleTranslation": "她是讨论的积极参与者。"
+    },
+    {
+      "id": "zsb_026",
+      "list": "zsb",
+      "word": "activity",
+      "phonetic": "/ækˈtɪvəti/",
+      "definition": "活动；行动",
+      "example": "Outdoor activities are good for health.",
+      "exampleTranslation": "户外活动对健康有益。"
+    },
+    {
+      "id": "zsb_027",
+      "list": "zsb",
+      "word": "actual",
+      "phonetic": "/ˈæktʃuəl/",
+      "definition": "实际的；真实的",
+      "example": "What is the actual situation?",
+      "exampleTranslation": "实际情况是什么？"
+    },
+    {
+      "id": "zsb_028",
+      "list": "zsb",
+      "word": "adapt",
+      "phonetic": "/əˈdæpt/",
+      "definition": "适应；改编",
+      "example": "We must adapt to the new environment.",
+      "exampleTranslation": "我们必须适应新环境。"
+    },
+    {
+      "id": "zsb_029",
+      "list": "zsb",
+      "word": "addition",
+      "phonetic": "/əˈdɪʃn/",
+      "definition": "增加；加法",
+      "example": "In addition to English, he studies French.",
+      "exampleTranslation": "除了英语，他还学法语。"
+    },
+    {
+      "id": "zsb_030",
+      "list": "zsb",
+      "word": "adequate",
+      "phonetic": "/ˈædɪkwət/",
+      "definition": "足够的；适当的",
+      "example": "The food is adequate for ten people.",
+      "exampleTranslation": "这些食物够十个人吃。"
+    },
+    {
+      "id": "zsb_031",
+      "list": "zsb",
+      "word": "adjust",
+      "phonetic": "/əˈdʒʌst/",
+      "definition": "调整；适应",
+      "example": "Please adjust the volume.",
+      "exampleTranslation": "请调节音量。"
+    },
+    {
+      "id": "zsb_032",
+      "list": "zsb",
+      "word": "administration",
+      "phonetic": "/ədˌmɪnɪˈstreɪʃn/",
+      "definition": "管理；行政",
+      "example": "She works in hospital administration.",
+      "exampleTranslation": "她在医院管理部门工作。"
+    },
+    {
+      "id": "zsb_033",
+      "list": "zsb",
+      "word": "admire",
+      "phonetic": "/ədˈmaɪə(r)/",
+      "definition": "钦佩；欣赏",
+      "example": "I admire her courage.",
+      "exampleTranslation": "我钦佩她的勇气。"
+    },
+    {
+      "id": "zsb_034",
+      "list": "zsb",
+      "word": "admit",
+      "phonetic": "/ədˈmɪt/",
+      "definition": "承认；准许进入",
+      "example": "He admitted that he was wrong.",
+      "exampleTranslation": "他承认他错了。"
+    },
+    {
+      "id": "zsb_035",
+      "list": "zsb",
+      "word": "adopt",
+      "phonetic": "/əˈdɒpt/",
+      "definition": "采用；收养",
+      "example": "They adopted a child from the orphanage.",
+      "exampleTranslation": "他们从孤儿院收养了一个孩子。"
+    },
+    {
+      "id": "zsb_036",
+      "list": "zsb",
+      "word": "adult",
+      "phonetic": "/ˈædʌlt/",
+      "definition": "成年人",
+      "example": "This movie is for adults only.",
+      "exampleTranslation": "这部电影只适合成年人观看。"
+    },
+    {
+      "id": "zsb_037",
+      "list": "zsb",
+      "word": "advance",
+      "phonetic": "/ədˈvɑːns/",
+      "definition": "前进；进步",
+      "example": "Technology has advanced rapidly.",
+      "exampleTranslation": "技术进步很快。"
+    },
+    {
+      "id": "zsb_038",
+      "list": "zsb",
+      "word": "advantage",
+      "phonetic": "/ədˈvɑːntɪdʒ/",
+      "definition": "优势；好处",
+      "example": "Exercise has many health advantages.",
+      "exampleTranslation": "锻炼有很多健康好处。"
+    },
+    {
+      "id": "zsb_039",
+      "list": "zsb",
+      "word": "adventure",
+      "phonetic": "/ədˈventʃə(r)/",
+      "definition": "冒险；奇遇",
+      "example": "The journey was a great adventure.",
+      "exampleTranslation": "这次旅行是一次很棒的冒险。"
+    },
+    {
+      "id": "zsb_040",
+      "list": "zsb",
+      "word": "advertisement",
+      "phonetic": "/ədˈvɜːtɪsmənt/",
+      "definition": "广告",
+      "example": "I saw the advertisement on TV.",
+      "exampleTranslation": "我在电视上看到了这个广告。"
+    },
+    {
+      "id": "zsb_041",
+      "list": "zsb",
+      "word": "advice",
+      "phonetic": "/ədˈvaɪs/",
+      "definition": "建议；劝告",
+      "example": "Thank you for your advice.",
+      "exampleTranslation": "谢谢你的建议。"
+    },
+    {
+      "id": "zsb_042",
+      "list": "zsb",
+      "word": "advise",
+      "phonetic": "/ədˈvaɪz/",
+      "definition": "建议；劝告",
+      "example": "I advise you to start early.",
+      "exampleTranslation": "我建议你早点开始。"
+    },
+    {
+      "id": "zsb_043",
+      "list": "zsb",
+      "word": "affair",
+      "phonetic": "/əˈfeə(r)/",
+      "definition": "事件；事务",
+      "example": "The wedding was a grand affair.",
+      "exampleTranslation": "婚礼是一场盛大的活动。"
+    },
+    {
+      "id": "zsb_044",
+      "list": "zsb",
+      "word": "affect",
+      "phonetic": "/əˈfekt/",
+      "definition": "影响；感动",
+      "example": "The weather affects my mood.",
+      "exampleTranslation": "天气影响我的心情。"
+    },
+    {
+      "id": "zsb_045",
+      "list": "zsb",
+      "word": "afford",
+      "phonetic": "/əˈfɔːd/",
+      "definition": "负担得起；提供",
+      "example": "I can't afford a new car.",
+      "exampleTranslation": "我买不起新车。"
+    },
+    {
+      "id": "zsb_046",
+      "list": "zsb",
+      "word": "afraid",
+      "phonetic": "/əˈfreɪd/",
+      "definition": "害怕的；担心的",
+      "example": "Don't be afraid of failure.",
+      "exampleTranslation": "不要害怕失败。"
+    },
+    {
+      "id": "zsb_047",
+      "list": "zsb",
+      "word": "after",
+      "phonetic": "/ˈɑːftə(r)/",
+      "definition": "在...之后",
+      "example": "Let's meet after school.",
+      "exampleTranslation": "我们放学后见吧。"
+    },
+    {
+      "id": "zsb_048",
+      "list": "zsb",
+      "word": "afternoon",
+      "phonetic": "/ˌɑːftəˈnuːn/",
+      "definition": "下午",
+      "example": "I have a meeting this afternoon.",
+      "exampleTranslation": "今天下午我有个会议。"
+    },
+    {
+      "id": "zsb_049",
+      "list": "zsb",
+      "word": "again",
+      "phonetic": "/əˈɡen/",
+      "definition": "再次；又",
+      "example": "Please try again.",
+      "exampleTranslation": "请再试一次。"
+    },
+    {
+      "id": "zsb_050",
+      "list": "zsb",
+      "word": "against",
+      "phonetic": "/əˈɡenst/",
+      "definition": "反对；靠着",
+      "example": "He leaned against the wall.",
+      "exampleTranslation": "他靠在墙上。"
+    },
+    {
+      "id": "zsb_051",
+      "list": "zsb",
+      "word": "age",
+      "phonetic": "/eɪdʒ/",
+      "definition": "年龄；时代",
+      "example": "What is your age?",
+      "exampleTranslation": "你多大了？"
+    },
+    {
+      "id": "zsb_052",
+      "list": "zsb",
+      "word": "agency",
+      "phonetic": "/ˈeɪdʒənsi/",
+      "definition": "代理；机构",
+      "example": "She works for a travel agency.",
+      "exampleTranslation": "她在一家旅行社工作。"
+    },
+    {
+      "id": "zsb_053",
+      "list": "zsb",
+      "word": "agent",
+      "phonetic": "/ˈeɪdʒənt/",
+      "definition": "代理人；经纪人",
+      "example": "He is a real estate agent.",
+      "exampleTranslation": "他是个房地产经纪人。"
+    },
+    {
+      "id": "zsb_054",
+      "list": "zsb",
+      "word": "agree",
+      "phonetic": "/əˈɡriː/",
+      "definition": "同意；赞成",
+      "example": "I agree with your opinion.",
+      "exampleTranslation": "我同意你的意见。"
+    },
+    {
+      "id": "zsb_055",
+      "list": "zsb",
+      "word": "agreement",
+      "phonetic": "/əˈɡriːmənt/",
+      "definition": "协议；同意",
+      "example": "We reached an agreement on the price.",
+      "exampleTranslation": "我们就价格达成了协议。"
+    },
+    {
+      "id": "zsb_056",
+      "list": "zsb",
+      "word": "ahead",
+      "phonetic": "/əˈhed/",
+      "definition": "在前面；提前",
+      "example": "Go straight ahead.",
+      "exampleTranslation": "一直往前走。"
+    },
+    {
+      "id": "zsb_057",
+      "list": "zsb",
+      "word": "aid",
+      "phonetic": "/eɪd/",
+      "definition": "帮助；援助",
+      "example": "First aid is important.",
+      "exampleTranslation": "急救很重要。"
+    },
+    {
+      "id": "zsb_058",
+      "list": "zsb",
+      "word": "aim",
+      "phonetic": "/eɪm/",
+      "definition": "目标；瞄准",
+      "example": "What's your aim in life?",
+      "exampleTranslation": "你的人生目标是什么？"
+    },
+    {
+      "id": "zsb_059",
+      "list": "zsb",
+      "word": "air",
+      "phonetic": "/eə(r)/",
+      "definition": "空气；天空",
+      "example": "Fresh air is good for health.",
+      "exampleTranslation": "新鲜空气对健康有益。"
+    },
+    {
+      "id": "zsb_060",
+      "list": "zsb",
+      "word": "aircraft",
+      "phonetic": "/ˈeəkrɑːft/",
+      "definition": "飞机；航空器",
+      "example": "The aircraft landed safely.",
+      "exampleTranslation": "飞机安全着陆了。"
+    },
+    {
+      "id": "zsb_061",
+      "list": "zsb",
+      "word": "airline",
+      "phonetic": "/ˈeəlaɪn/",
+      "definition": "航空公司",
+      "example": "Which airline do you prefer?",
+      "exampleTranslation": "你喜欢哪家航空公司？"
+    },
+    {
+      "id": "zsb_062",
+      "list": "zsb",
+      "word": "airport",
+      "phonetic": "/ˈeəpɔːt/",
+      "definition": "机场",
+      "example": "I will pick you up at the airport.",
+      "exampleTranslation": "我会去机场接你。"
+    },
+    {
+      "id": "zsb_063",
+      "list": "zsb",
+      "word": "alarm",
+      "phonetic": "/əˈlɑːm/",
+      "definition": "警报；惊恐",
+      "example": "The fire alarm went off.",
+      "exampleTranslation": "火警响了。"
+    },
+    {
+      "id": "zsb_064",
+      "list": "zsb",
+      "word": "album",
+      "phonetic": "/ˈælbəm/",
+      "definition": "相册；专辑",
+      "example": "This is a photo album.",
+      "exampleTranslation": "这是一本相册。"
+    },
+    {
+      "id": "zsb_065",
+      "list": "zsb",
+      "word": "alcohol",
+      "phonetic": "/ˈælkəhɒl/",
+      "definition": "酒精；酒",
+      "example": "Alcohol is bad for health.",
+      "exampleTranslation": "酒精对身体有害。"
+    },
+    {
+      "id": "zsb_066",
+      "list": "zsb",
+      "word": "alike",
+      "phonetic": "/əˈlaɪk/",
+      "definition": "相似的；同样的",
+      "example": "The two sisters look alike.",
+      "exampleTranslation": "两姐妹看起来很像。"
+    },
+    {
+      "id": "zsb_067",
+      "list": "zsb",
+      "word": "alive",
+      "phonetic": "/əˈlaɪv/",
+      "definition": "活着的；活跃的",
+      "example": "Is she still alive?",
+      "exampleTranslation": "她还活着吗？"
+    },
+    {
+      "id": "zsb_068",
+      "list": "zsb",
+      "word": "allow",
+      "phonetic": "/əˈlaʊ/",
+      "definition": "允许；准许",
+      "example": "Smoking is not allowed here.",
+      "exampleTranslation": "这里不允许吸烟。"
+    },
+    {
+      "id": "zsb_069",
+      "list": "zsb",
+      "word": "almost",
+      "phonetic": "/ˈɔːlməʊst/",
+      "definition": "几乎；差不多",
+      "example": "It's almost time to go.",
+      "exampleTranslation": "差不多该走了。"
+    },
+    {
+      "id": "zsb_070",
+      "list": "zsb",
+      "word": "alone",
+      "phonetic": "/əˈləʊn/",
+      "definition": "单独的；孤独的",
+      "example": "She lives alone.",
+      "exampleTranslation": "她一个人住。"
+    },
+    {
+      "id": "zsb_071",
+      "list": "zsb",
+      "word": "along",
+      "phonetic": "/əˈlɒŋ/",
+      "definition": "沿着；一起",
+      "example": "Walk along the river.",
+      "exampleTranslation": "沿着河边走。"
+    },
+    {
+      "id": "zsb_072",
+      "list": "zsb",
+      "word": "aloud",
+      "phonetic": "/əˈlaʊd/",
+      "definition": "大声地",
+      "example": "Please read aloud.",
+      "exampleTranslation": "请大声朗读。"
+    },
+    {
+      "id": "zsb_073",
+      "list": "zsb",
+      "word": "already",
+      "phonetic": "/ɔːlˈredi/",
+      "definition": "已经",
+      "example": "I have already finished my homework.",
+      "exampleTranslation": "我已经完成了作业。"
+    },
+    {
+      "id": "zsb_074",
+      "list": "zsb",
+      "word": "also",
+      "phonetic": "/ˈɔːlsəʊ/",
+      "definition": "也；同样",
+      "example": "She also likes reading.",
+      "exampleTranslation": "她也喜欢阅读。"
+    },
+    {
+      "id": "zsb_075",
+      "list": "zsb",
+      "word": "alter",
+      "phonetic": "/ˈɔːltə(r)/",
+      "definition": "改变；修改",
+      "example": "You should alter your plan.",
+      "exampleTranslation": "你应该改变你的计划。"
+    },
+    {
+      "id": "zsb_076",
+      "list": "zsb",
+      "word": "although",
+      "phonetic": "/ɔːlˈðəʊ/",
+      "definition": "虽然；尽管",
+      "example": "Although it was raining, we went out.",
+      "exampleTranslation": "虽然下雨了，我们还是出去了。"
+    },
+    {
+      "id": "zsb_077",
+      "list": "zsb",
+      "word": "always",
+      "phonetic": "/ˈɔːlweɪz/",
+      "definition": "总是；永远",
+      "example": "He always arrives on time.",
+      "exampleTranslation": "他总是准时到达。"
+    },
+    {
+      "id": "zsb_078",
+      "list": "zsb",
+      "word": "ambition",
+      "phonetic": "/æmˈbɪʃn/",
+      "definition": "雄心；抱负",
+      "example": "She has great ambitions.",
+      "exampleTranslation": "她有远大的抱负。"
+    },
+    {
+      "id": "zsb_079",
+      "list": "zsb",
+      "word": "ambulance",
+      "phonetic": "/ˈæmbjələns/",
+      "definition": "救护车",
+      "example": "Call an ambulance immediately!",
+      "exampleTranslation": "立刻叫救护车！"
+    },
+    {
+      "id": "zsb_080",
+      "list": "zsb",
+      "word": "among",
+      "phonetic": "/əˈmʌŋ/",
+      "definition": "在...之中",
+      "example": "She is among friends.",
+      "exampleTranslation": "她在朋友之中。"
+    },
+    {
+      "id": "zsb_081",
+      "list": "zsb",
+      "word": "amount",
+      "phonetic": "/əˈmaʊnt/",
+      "definition": "数量；总额",
+      "example": "A large amount of money was stolen.",
+      "exampleTranslation": "大量金钱被偷了。"
+    },
+    {
+      "id": "zsb_082",
+      "list": "zsb",
+      "word": "ample",
+      "phonetic": "/ˈæmpl/",
+      "definition": "充足的；宽敞的",
+      "example": "We have ample time to finish.",
+      "exampleTranslation": "我们有充足的时间完成。"
+    },
+    {
+      "id": "zsb_083",
+      "list": "zsb",
+      "word": "analyze",
+      "phonetic": "/ˈænəlaɪz/",
+      "definition": "分析",
+      "example": "We need to analyze the data carefully.",
+      "exampleTranslation": "我们需要仔细分析数据。"
+    },
+    {
+      "id": "zsb_084",
+      "list": "zsb",
+      "word": "ancient",
+      "phonetic": "/ˈeɪnʃənt/",
+      "definition": "古代的；古老的",
+      "example": "China is an ancient civilization.",
+      "exampleTranslation": "中国是一个古老的文明。"
+    },
+    {
+      "id": "zsb_085",
+      "list": "zsb",
+      "word": "anger",
+      "phonetic": "/ˈæŋɡə(r)/",
+      "definition": "愤怒；生气",
+      "example": "He couldn't hide his anger.",
+      "exampleTranslation": "他无法掩饰他的愤怒。"
+    },
+    {
+      "id": "zsb_086",
+      "list": "zsb",
+      "word": "angle",
+      "phonetic": "/ˈæŋɡl/",
+      "definition": "角度",
+      "example": "The angle is 90 degrees.",
+      "exampleTranslation": "这个角度是90度。"
+    },
+    {
+      "id": "zsb_087",
+      "list": "zsb",
+      "word": "angry",
+      "phonetic": "/ˈæŋɡri/",
+      "definition": "生气的；愤怒的",
+      "example": "She was angry with him.",
+      "exampleTranslation": "她生他的气。"
+    },
+    {
+      "id": "zsb_088",
+      "list": "zsb",
+      "word": "animal",
+      "phonetic": "/ˈænɪml/",
+      "definition": "动物",
+      "example": "Dogs are faithful animals.",
+      "exampleTranslation": "狗是忠诚的动物。"
+    },
+    {
+      "id": "zsb_089",
+      "list": "zsb",
+      "word": "announce",
+      "phonetic": "/əˈnaʊns/",
+      "definition": "宣布；通知",
+      "example": "The government announced new policies.",
+      "exampleTranslation": "政府宣布了新政策。"
+    },
+    {
+      "id": "zsb_090",
+      "list": "zsb",
+      "word": "annoy",
+      "phonetic": "/əˈnɔɪ/",
+      "definition": "使烦恼；打扰",
+      "example": "His words annoyed her.",
+      "exampleTranslation": "他的话让她很烦恼。"
+    },
+    {
+      "id": "zsb_091",
+      "list": "zsb",
+      "word": "annual",
+      "phonetic": "/ˈænjuəl/",
+      "definition": "每年的；年度的",
+      "example": "This is our annual meeting.",
+      "exampleTranslation": "这是我们的年度会议。"
+    },
+    {
+      "id": "zsb_092",
+      "list": "zsb",
+      "word": "another",
+      "phonetic": "/əˈnʌðə(r)/",
+      "definition": "另一个；再一个",
+      "example": "Would you like another cup of tea?",
+      "exampleTranslation": "你想再要一杯茶吗？"
+    },
+    {
+      "id": "zsb_093",
+      "list": "zsb",
+      "word": "answer",
+      "phonetic": "/ˈɑːnsə(r)/",
+      "definition": "回答；答案",
+      "example": "I don't know the answer.",
+      "exampleTranslation": "我不知道答案。"
+    },
+    {
+      "id": "zsb_094",
+      "list": "zsb",
+      "word": "anticipate",
+      "phonetic": "/ænˈtɪsɪpeɪt/",
+      "definition": "预期；期望",
+      "example": "We anticipate great changes.",
+      "exampleTranslation": "我们预期会有重大变化。"
+    },
+    {
+      "id": "zsb_095",
+      "list": "zsb",
+      "word": "anxiety",
+      "phonetic": "/æŋˈzaɪəti/",
+      "definition": "焦虑；担心",
+      "example": "He felt great anxiety about the exam.",
+      "exampleTranslation": "他对考试感到非常焦虑。"
+    },
+    {
+      "id": "zsb_096",
+      "list": "zsb",
+      "word": "anxious",
+      "phonetic": "/ˈæŋkʃəs/",
+      "definition": "焦虑的；担心的",
+      "example": "She was anxious about her health.",
+      "exampleTranslation": "她担心自己的健康。"
+    },
+    {
+      "id": "zsb_097",
+      "list": "zsb",
+      "word": "any",
+      "phonetic": "/ˈeni/",
+      "definition": "任何；一些",
+      "example": "Do you have any questions?",
+      "exampleTranslation": "你有什么问题吗？"
+    },
+    {
+      "id": "zsb_098",
+      "list": "zsb",
+      "word": "anybody",
+      "phonetic": "/ˈenibɒdi/",
+      "definition": "任何人",
+      "example": "Is anybody home?",
+      "exampleTranslation": "有人在家吗？"
+    },
+    {
+      "id": "zsb_099",
+      "list": "zsb",
+      "word": "anyone",
+      "phonetic": "/ˈeniwʌn/",
+      "definition": "任何人",
+      "example": "Can anyone help me?",
+      "exampleTranslation": "有人能帮我吗？"
+    },
+    {
+      "id": "zsb_100",
+      "list": "zsb",
+      "word": "anything",
+      "phonetic": "/ˈeniθɪŋ/",
+      "definition": "任何事",
+      "example": "You can ask me anything.",
+      "exampleTranslation": "你可以问我任何事。"
+    }
+  ]
+}

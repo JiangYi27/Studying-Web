@@ -1,0 +1,861 @@
+/* ==================== 登录前视频首页 + 登录界面层（液态玻璃 + EVE 机器人） ==================== */
+/* 未登录 → 完整视频首页；点「开始学习」→ 首页隐藏，登录界面层覆盖（视频为底 + 液态玻璃卡）。 */
+
+/* ---- 遮罩本体 ---- */
+.login-overlay {
+  background: #000;
+}
+/* 登录成功退出：overlay 平滑淡出（380ms），避免瞬间消失生硬 */
+.login-overlay.login-fading {
+  opacity: 0;
+  transition: opacity 380ms ease;
+  pointer-events: none;
+}
+
+/* ==================== 背景层（视频 + PNG + 遮罩 + 页面） ==================== */
+.login-hero-videos { position: absolute; inset: 0; z-index: 0; }
+.login-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1000ms ease-in-out;
+  will-change: opacity;
+}
+.login-hero-video.active { opacity: 1; }
+
+@keyframes trainBob {
+  0%, 100% { transform: translateY(0) scale(1.03); }
+  50%      { transform: translateY(-6px) scale(1.03); }
+}
+.login-hero-png {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+  animation: trainBob 3s ease-in-out infinite;
+}
+.login-hero-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.28) 100%),
+    linear-gradient(rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.18) 100%);
+}
+body.dark .login-hero-shade {
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.42) 100%),
+    linear-gradient(rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.30) 100%);
+}
+
+/* 通用显隐 */
+.auth-hidden { display: none !important; }
+
+/* ==================== 完整英雄首页（默认显示） ==================== */
+.login-hero-page {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Noto Serif SC', ui-serif, 'Songti SC', 'SimSun', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.serif-accent { font-family: 'Instrument Serif', 'Georgia', serif; }
+
+/* ---- 导航 ---- */
+.login-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 40px;
+}
+.login-nav-logo { color: #fff; font-style: italic; font-size: 30px; letter-spacing: -0.02em; text-decoration: none; }
+.login-nav-desktop { display: block; }
+.login-nav-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 10px 8px 24px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.01);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10),
+              inset 0 0 18px rgba(255, 255, 255, 0.05);
+}
+.login-nav-pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.65), rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.5));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask-composite: exclude;
+  pointer-events: none;
+}
+.login-nav-link {
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 4px 12px;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 300ms ease;
+}
+.login-nav-link:hover { color: #fff; }
+.login-nav-cta {
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  margin-left: 8px;
+  background: #fff;
+  color: #000;
+  border-radius: 9999px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: transform 300ms ease;
+}
+.login-nav-cta:hover { transform: scale(1.04); }
+
+/* ---- 汉堡按钮 & 移动菜单 ---- */
+.login-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 9999px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.01);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+.login-menu-icons { display: grid; place-items: center; }
+.login-menu-icon { grid-area: 1 / 1; transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms cubic-bezier(0.4, 0, 0.2, 1); }
+.login-menu-icon--close { transform: rotate(90deg); opacity: 0; }
+#loginMenuBtn.open .login-menu-icon--open { transform: rotate(-90deg); opacity: 0; }
+#loginMenuBtn.open .login-menu-icon--close { transform: rotate(0deg);   opacity: 1; }
+
+.login-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms ease;
+}
+.login-menu-overlay.open { opacity: 1; pointer-events: auto; }
+.login-menu-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 384px;
+  transform: scale(0.97);
+  transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.login-menu-overlay.open .login-menu-panel { transform: scale(1); }
+.login-menu-link {
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: #fff;
+  font-size: 30px;
+  text-align: center;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.login-menu-cta {
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  margin-top: 16px;
+  background: #fff;
+  color: #000;
+  border-radius: 9999px;
+  padding: 12px 32px;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.login-menu-overlay.open .login-menu-link:nth-child(1) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+.login-menu-overlay.open .login-menu-link:nth-child(2) { transition-delay: 150ms; opacity: 1; transform: translateY(0); }
+.login-menu-overlay.open .login-menu-link:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+.login-menu-overlay.open .login-menu-link:nth-child(4) { transition-delay: 250ms; opacity: 1; transform: translateY(0); }
+.login-menu-overlay.open .login-menu-cta { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+
+/* ---- Hero 主体 ---- */
+.login-hero-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10vh 24px 0;
+  text-align: center;
+  transition: color 700ms ease;
+}
+.login-hero-badge {
+  position: relative;
+  border-radius: 9999px;
+  padding: 8px 20px;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 13px;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 0.025em;
+  background: rgba(255, 255, 255, 0.01);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10),
+              inset 0 0 18px rgba(255, 255, 255, 0.05);
+}
+.login-hero-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.65), rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.5));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask-composite: exclude;
+  pointer-events: none;
+}
+.login-hero-heading {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-weight: 800;
+  font-size: clamp(30px, 5vw, 60px);
+  line-height: 1.6;              /* 两行间距加大（line-height 1.15 → 1.6） */
+  color: #fff;
+  text-shadow:
+    0 2px 18px rgba(0, 0, 0, 0.6),
+    0 1px 4px rgba(0, 0, 0, 0.4);
+  -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.6);
+  max-width: 56rem;
+}
+.login-hero-heading .heading-line-1 { display: inline-block; margin-left: -90px; }
+.login-hero-heading-sub { display: inline-block; margin-left: 90px; }
+.login-hero-sub {
+  margin: 20px 0 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: clamp(14px, 1.6vw, 18px);
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.7;
+  max-width: 36rem;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
+}
+/* ---- Email 表单 ---- */
+.login-hero-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 8px 8px 8px 24px;
+  margin-top: 56px;
+  width: 100%;
+  max-width: 320px;
+  background: rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10),
+              inset 0 0 18px rgba(255, 255, 255, 0.05);
+}
+.login-hero-form::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.65), rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.5));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          mask-composite: exclude;
+  pointer-events: none;
+}
+.login-hero-email {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  caret-color: #fff;
+}
+/* 去掉浏览器自动填充的默认白/黄底 */
+.login-hero-email:-webkit-autofill,
+.login-hero-email:-webkit-autofill:hover,
+.login-hero-email:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff;
+  -webkit-box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.35) inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+.login-hero-email::placeholder { color: rgba(255, 255, 255, 0.55); }
+.login-hero-cta {
+  flex-shrink: 0;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  transition: transform 300ms ease;
+}
+.login-hero-cta:hover { transform: scale(1.04); }
+/* ---- 视频切换器 ---- */
+.login-hero-vtabs {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 24px;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 15px;
+}
+.login-hero-vtabs .login-hero-vtab {
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0 0 4px;
+  color: #fff;
+  border-bottom: 1px solid transparent;
+  font-family: inherit;
+  font-size: inherit;
+  transition: color 300ms ease, border-color 300ms ease, opacity 300ms ease;
+}
+.login-hero-vtabs .login-hero-vtab:not(.active) { opacity: 0.5; }
+.login-hero-vtabs .login-hero-vtab:not(.active):hover { opacity: 0.8; }
+.login-hero-vtabs .login-hero-vtab.active { color: #fff; border-bottom: 1px solid #fff; }
+/* ---- 功能说明 ---- */
+.login-hero-features {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+.login-hero-features .feat-dot { opacity: 0.4; }
+.login-hero-features i { color: #fff; margin-right: 5px; font-size: 12px; }
+/* ---- slogan ---- */
+.login-hero-slogan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-bottom: 24px;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+.login-slogan-dot { opacity: 0.4; }
+/* 深林暗色（dark-mode 挂在 #loginBg 上，由 login-page.js activate() 切换） */
+#loginBg.dark-mode .login-hero-email::placeholder { color: rgba(24, 44, 65, 0.5); }
+#loginBg.dark-mode .login-hero-vtabs .login-hero-vtab.active { color: #182C41; border-color: #182C41; }
+#loginBg.dark-mode .login-hero-vtabs .login-hero-vtab:not(.active) { color: #182C41; }
+#loginBg.dark-mode .login-hero-heading,
+#loginBg.dark-mode .login-hero-sub {
+  color: #fff;
+  text-shadow: 0 0 14px rgba(24, 44, 65, 0.45), 0 0 4px rgba(0, 0, 0, 0.6);
+}
+
+/* ==================== 登录界面层（覆盖首页） ==================== */
+.login-auth-page {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-back-btn {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border: 1px solid var(--liquid-glass-border, rgba(255, 255, 255, 0.6));
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--text-primary, #fff);
+  font-size: 14px;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.login-back-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+body.dark .login-back-btn { background: rgba(15, 23, 42, 0.72); color: #e2e8f0; }
+
+/* ---- 登录卡：液态玻璃（复用 --liquid-glass-* 体系，与仪表盘一致） ---- */
+.login-auth-card {
+  /* 登录/注册两卡等大：同宽 460px。去掉 backdrop-filter 避免移动端视频背景上玻璃模糊闪屏，
+     改用较高不透明度底色保证可读性。高度自适应内容。 */
+  width: 460px;
+  max-width: 92vw;
+  padding: 30px 38px 28px;
+  border-radius: var(--radius-lg, 20px);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-shadow), var(--liquid-glass-glow);
+  text-align: center;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+body.dark .login-auth-card { background: rgba(15, 23, 42, 0.85); }
+.login-auth-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--liquid-glass-highlight);
+  pointer-events: none;
+  opacity: 0.3;
+  border-radius: inherit;
+}
+.login-auth-card > * { position: relative; z-index: 1; }
+
+.login-title { font-size: 24px; font-weight: 700; color: var(--text-primary); letter-spacing: 1px; margin: 0 0 2px; }
+.login-subtitle { font-size: 13px; color: var(--text-secondary); margin: 0 0 18px; }
+
+/* ---- EVE 机器人 logo ---- */
+.login-eva { display: flex; justify-content: center; margin-bottom: 8px; }
+/* 小尺寸：缩小机器人本体（原设计 ~6rem×12rem，zoom 0.32 → 约 42×85px） */
+.login-eva--small .eva { zoom: 0.32; }
+.login-eva .modelViewPort {
+  perspective: 1000px;
+  width: 20rem;
+  aspect-ratio: 1;
+  max-width: 100px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 去掉黑圆底，让机器人直接悬浮在玻璃卡上 */
+  background: transparent;
+  overflow: visible;
+}
+.login-eva .eva {
+  --EVA-ROTATION-DURATION: 4s;
+  transform-style: preserve-3d;
+  animation: rotateRight var(--EVA-ROTATION-DURATION) linear infinite alternate;
+}
+.login-eva .head {
+  position: relative;
+  width: 6rem;
+  height: 4rem;
+  border-radius: 48% 53% 45% 55% / 79% 79% 20% 22%;
+  background: linear-gradient(to right, white 45%, gray);
+}
+.login-eva .eyeChamber {
+  width: 4.5rem;
+  height: 2.75rem;
+  position: relative;
+  left: 50%;
+  top: 55%;
+  border-radius: 45% 53% 45% 48% / 62% 59% 35% 34%;
+  background-color: #0c203c;
+  box-shadow: 0px 0px 2px 2px white, inset 0px 0px 0px 2px black;
+  transform: translate(-50%, -50%);
+  animation: moveRight var(--EVA-ROTATION-DURATION) linear infinite alternate;
+}
+.login-eva .eye {
+  width: 1.2rem;
+  height: 1.5rem;
+  position: absolute;
+  border-radius: 50%;
+}
+.login-eva .eye:first-child {
+  left: 12px;
+  top: 50%;
+  background: repeating-linear-gradient(65deg, #9bdaeb 0px, #9bdaeb 1px, white 2px);
+  box-shadow: inset 0px 0px 5px #04b8d5, 0px 0px 15px 1px #0bdaeb;
+  transform: translate(0, -50%) rotate(-65deg);
+}
+.login-eva .eye:nth-child(2) {
+  right: 12px;
+  top: 50%;
+  background: repeating-linear-gradient(-65deg, #9bdaeb 0px, #9bdaeb 1px, white 2px);
+  box-shadow: inset 0px 0px 5px #04b8d5, 0px 0px 15px 1px #0bdaeb;
+  transform: translate(0, -50%) rotate(65deg);
+}
+.login-eva .body {
+  width: 6rem;
+  height: 8rem;
+  position: relative;
+  margin-block-start: 0.25rem;
+  border-radius: 47% 53% 45% 55% / 12% 9% 90% 88%;
+  background: linear-gradient(to right, white 35%, gray);
+}
+.login-eva .hand {
+  position: absolute;
+  left: -1.5rem;
+  top: 0.75rem;
+  width: 2rem;
+  height: 5.5rem;
+  border-radius: 40%;
+  background: linear-gradient(to left, white 15%, gray);
+  box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.25);
+  transform: rotateY(55deg) rotateZ(10deg);
+}
+.login-eva .hand:first-child {
+  animation: compensateRotation var(--EVA-ROTATION-DURATION) linear infinite alternate;
+}
+.login-eva .hand:nth-child(2) {
+  left: 92%;
+  background: linear-gradient(to right, white 15%, gray);
+  transform: rotateY(55deg) rotateZ(-10deg);
+  animation: compensateRotationRight var(--EVA-ROTATION-DURATION) linear infinite alternate;
+}
+.login-eva .scannerThing {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 60%;
+  top: 10%;
+  border-top: 180px solid #9bdaeb;
+  border-left: 250px solid transparent;
+  border-right: 250px solid transparent;
+  transform-origin: top left;
+  mask: linear-gradient(to right, white, transparent 35%);
+  animation: glow 2s cubic-bezier(0.86, 0, 0.07, 1) infinite;
+}
+.login-eva .scannerOrigin {
+  position: absolute;
+  width: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  left: 60%;
+  top: 10%;
+  background: #9bdaeb;
+  box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5);
+  animation: moveRight var(--EVA-ROTATION-DURATION) linear infinite;
+}
+@keyframes rotateRight {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(25deg); }
+}
+@keyframes moveRight {
+  from { transform: translate(-50%, -50%); }
+  to { transform: translate(-40%, -50%); }
+}
+@keyframes compensateRotation {
+  from { transform: rotateY(55deg) rotateZ(10deg); }
+  to { transform: rotatey(30deg) rotateZ(10deg); }
+}
+@keyframes compensateRotationRight {
+  from { transform: rotateY(55deg) rotateZ(-10deg); }
+  to { transform: rotateY(70deg) rotateZ(-10deg); }
+}
+@keyframes glow {
+  from { opacity: 0; }
+  20% { opacity: 1; }
+  45% { transform: rotate(-25deg); }
+  75% { transform: rotate(5deg); }
+  100% { opacity: 0; }
+}
+
+/* ---- 输入框：不透明底（去掉 backdrop-filter，避免视频背景上玻璃模糊闪屏） ---- */
+.login-auth-card .login-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: var(--radius-md, 14px);
+  padding: 11px 14px;
+  margin-bottom: 11px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--liquid-glass-border);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+body.dark .login-auth-card .login-field { background: rgba(30, 41, 59, 0.9); }
+.login-auth-card .login-field:focus-within {
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: var(--input-shadow-focus);
+  transform: scale(1.02);
+}
+body.dark .login-auth-card .login-field:focus-within { background: rgba(30, 41, 59, 1); }
+.login-auth-card .login-field i {
+  color: var(--text-muted);
+  font-size: 15px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.login-auth-card .login-field input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: inherit;
+  min-width: 0;
+}
+.login-auth-card .login-field input::placeholder { color: var(--text-muted); }
+.login-auth-card .login-error {
+  min-height: 1.2em;
+  font-size: 13px;
+  color: var(--danger);
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+/* ---- 登录按钮：不透明底（去掉 backdrop-filter） ---- */
+.login-auth-card .login-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-md, 14px);
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(var(--accent-rgb), 0.3);
+  border: 1px solid var(--accent);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+}
+body.dark .login-auth-card .login-btn { background: var(--accent); color: #fff; }
+.login-auth-card .login-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(var(--accent-rgb), 0.4);
+}
+.login-auth-card .login-btn:active:not(:disabled) { transform: translateY(0); }
+.login-auth-card .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ---- 站点下拉框（登录/注册卡内） ---- */
+.login-site-select-wrap {
+  margin-bottom: 4px;
+  text-align: left;
+}
+.login-site-select-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 7px;
+}
+.login-site-select-label i { color: var(--accent); font-size: 14px; width: 18px; text-align: center; }
+.login-site-select {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-md, 14px);
+  border: 1px solid var(--liquid-glass-border);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+body.dark .login-site-select { background: rgba(30, 41, 59, 0.9); }
+.login-site-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--input-shadow-focus);
+}
+
+/* ---- 站点选择按钮（预留兼容） ---- */
+.login-auth-card .login-sites-title {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 4px 0 14px;
+  text-align: center;
+}
+.login-auth-card .login-sites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.login-auth-card .login-site-btn {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--liquid-glass-border);
+  border-radius: var(--radius-md, 14px);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+body.dark .login-auth-card .login-site-btn { background: rgba(30, 41, 59, 0.9); }
+.login-auth-card .login-site-btn:hover {
+  border-color: var(--accent);
+  box-shadow: var(--input-shadow-focus);
+  transform: translateY(-1px);
+}
+
+/* ---- 登录/注册切换链接 ---- */
+.login-auth-card .login-switch {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.login-auth-card .login-switch-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 6px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity var(--transition-fast);
+}
+.login-auth-card .login-switch-btn:hover { opacity: 0.8; }
+
+/* ---- 右上角 logo ---- */
+.login-auth-card .login-auth-logo {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--liquid-glass-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.login-auth-card .login-auth-logo:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.login-auth-card .login-auth-logo img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+/* ---- 右上角"研习室"文字（整个 auth 层通用） ---- */
+.login-auth-brand {
+  position: absolute;
+  top: 20px;
+  right: 28px;
+  z-index: 10;
+  color: rgba(255, 255, 255, 0.85);
+  font-style: italic;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  transition: opacity var(--transition-fast);
+}
+.login-auth-brand:hover { opacity: 0.8; color: rgba(255, 255, 255, 0.85); }
+
+/* ---- 站点下拉框：直接内嵌在 login-field 里（非弹窗） ---- */
+.login-site-select-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+  min-width: 0;
+}
+.login-site-select-input option {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* 注册表单：字段与登录一致，仅初始隐藏（JS 切换 display） */
+.login-auth-card .login-register-form {
+  margin-top: 20px;
+  border-top: 1px solid var(--liquid-glass-border);
+  padding-top: 18px;
+}
+
+/* ==================== 响应式 ==================== */
+@media (max-width: 480px) {
+  .login-nav { padding: 20px 24px; }
+  .login-nav-logo { font-size: 26px; }
+  .login-hero-body { padding-top: 8vh; }
+  .login-hero-slogan { font-size: 12px; gap: 10px; }
+  .login-auth-card {
+    padding: 24px 20px 22px;
+  }
+  .login-eva .modelViewPort { max-width: 90px; }
+  .login-eva--small .eva { zoom: 0.3; }
+  .login-back-btn { top: 16px; left: 16px; }
+  /* 小屏：标题左右偏移收窄，避免溢出 */
+  .login-hero-heading .heading-line-1 { margin-left: -45px; }
+  .login-hero-heading-sub { margin-left: 45px; }
+}
+@media (max-width: 768px) {
+  .login-nav-desktop { display: none; }
+  .login-menu-btn { display: flex; }
+}
+@media (min-width: 769px) {
+  .login-menu-btn { display: none; }
+}
+@media (max-height: 700px) {
+  .login-hero-body { padding-top: 6vh; }
+  .login-hero-form { margin-top: 40px; }
+  /* 矮屏：机器人 logo 缩小，卡片内边距收窄，内容自适应 */
+  .login-auth-card { padding-top: 18px; padding-bottom: 18px; }
+  .login-eva .modelViewPort { max-width: 80px; }
+  .login-eva--small .eva { zoom: 0.26; }
+}
