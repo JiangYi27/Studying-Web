@@ -6,43 +6,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>知识库 · 研习室</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="/css/bundle.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- 登录首页字体：Instrument Serif (logo 斜体) + Noto Serif SC (中文衬线) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@500;600;700;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Serif+SC:wght@500;600;700;900&display=swap"
+    rel="stylesheet">
   <!-- Prism 代码高亮样式（体积小，保留首屏加载避免闪烁） -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css"
     rel="stylesheet">
   <!-- Chart.js：由 dashboard.js 按需懒加载（非首屏） -->
   <!-- 基础 -->
-  <link rel="stylesheet" href="/css/variables.css">
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/layout.css">
-  <link rel="stylesheet" href="/css/components/search.css">
-  <link rel="stylesheet" href="/css/components/bookmark.css">
-  <link rel="stylesheet" href="/css/components/rich-content.css">
-  <link rel="stylesheet" href="/css/components/notes.css">
-  <link rel="stylesheet" href="/css/components/bottom-nav.css">
-  <link rel="stylesheet" href="/css/components/outline.css">
-  <link rel="stylesheet" href="/css/components/calendar.css">
-  <link rel="stylesheet" href="/css/components/table.css">
-  <link rel="stylesheet" href="/css/components/badge-modal.css">
-  <link rel="stylesheet" href="/css/components/responsive.css">
-  <link rel="stylesheet" href="/css/components/login.css">
-  <link rel="stylesheet" href="/css/views/shared.css">
-  <link rel="stylesheet" href="/css/views/home.css">
-  <link rel="stylesheet" href="/css/views/course.css">
-  <link rel="stylesheet" href="/css/views/dashboard.css">
-  <link rel="stylesheet" href="/css/views/roadmap.css">
-  <link rel="stylesheet" href="/css/views/badges.css">
-  <link rel="stylesheet" href="/css/views/settings.css">
-  <link rel="stylesheet" href="/css/views/extension.css">
-  <link rel="stylesheet" href="/css/views/tasks.css">
-  <link rel="stylesheet" href="/css/views/responsive.css">
-  <link rel="stylesheet" href="/css/game.css">
-  <link rel="stylesheet" href="/css/focus-mode.css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </head>
@@ -52,7 +57,8 @@
     <!--  -->
     <header class="top-bar">
       <div class="top-left">
-        <img src="/image/logo.png" alt="Logo" class="logo-img" id="logoImg" width="36" height="36" onerror="this.style.display='none'">
+        <img src="/image/logo.png" alt="Logo" class="logo-img" id="logoImg" width="36" height="36"
+          onerror="this.style.display='none'">
         <span class="logo-text" id="logoText">lab研习室</span>
       </div>
       <div class="top-right">
@@ -69,8 +75,10 @@
         </button>
         <div class="noise-container">
           <button id="noiseQuickBtn" class="noise-music-btn" title="白噪音 / 背景音乐">
-            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-              <path d="M400-120q-66 0-113-47t-47-113q0-66 47-113t113-47q23 0 42.5 5.5T480-418v-422h240v160H560v400q0 66-47 113t-113 47Z"/>
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+              fill="currentColor">
+              <path
+                d="M400-120q-66 0-113-47t-47-113q0-66 47-113t113-47q23 0 42.5 5.5T480-418v-422h240v160H560v400q0 66-47 113t-113 47Z" />
             </svg>
             <div class="noise-music-ring"></div>
           </button>
@@ -78,7 +86,10 @@
             <div class="noise-panel-header">
               <span>背景音乐</span>
               <button id="noiseMuteBtn" class="icon-btn-sm" title="静音">
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+                  <path
+                    d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                </svg>
               </button>
             </div>
             <!-- 歌曲列表 -->
@@ -86,16 +97,27 @@
             <!-- 控制栏：播放/暂停 + 关闭 -->
             <div class="noise-controls-row">
               <button id="noisePlayBtn" class="noise-ctrl-btn" title="播放 / 暂停">
-                <svg class="ctrl-ico-play" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                <svg class="ctrl-ico-pause" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                <svg class="ctrl-ico-play" viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+                <svg class="ctrl-ico-pause" viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
               </button>
               <button id="noiseStopBtn" class="noise-ctrl-btn noise-ctrl-danger" title="关闭音乐">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 6h12v12H6z"/></svg>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                  <path d="M6 6h12v12H6z" />
+                </svg>
               </button>
               <div class="noise-volume-row">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                  <path d="M3 9v6h4l5 5V4L7 9H3z" />
+                </svg>
                 <input type="range" id="noiseVolume" min="0" max="1" step="0.05" value="0.3">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+                  <path
+                    d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                </svg>
               </div>
             </div>
             <div id="noiseStatus" class="noise-status"></div>
@@ -121,11 +143,15 @@
                 </div>
               </div>
             </li>
-            <li><hr class="user-dropdown-divider"></li>
+            <li>
+              <hr class="user-dropdown-divider">
+            </li>
             <!-- 切换站点 -->
             <li class="user-dropdown-section-title"><i class="fas fa-globe"></i> 切换站点</li>
             <li id="siteSwitchDropdown"></li>
-            <li><hr class="user-dropdown-divider"></li>
+            <li>
+              <hr class="user-dropdown-divider">
+            </li>
             <!-- 修改资料 -->
             <li>
               <a class="user-dropdown-item" href="#" id="editProfileBtn">
@@ -151,31 +177,27 @@
       <aside class="app-sidebar" id="sidebar">
         <div class="sidebar-panel" id="navPanel">
           <nav class="side-nav">
-            <a class="nav-item active" data-view="home"><i class="fas fa-home"></i> <span>主页</span></a>
-            <a class="nav-item" data-view="tasks"><i class="fas fa-clipboard-list"></i> <span>任务清单</span></a>
-            <a class="nav-item" data-view="course"><i class="fas fa-book-open"></i> <span>课程学习</span></a>
-            <a class="nav-item" data-view="extension"><i class="fas fa-layer-group"></i> <span>拓展知识</span></a>
-            <a class="nav-item" data-view="dashboard"><i class="fas fa-chart-pie"></i> <span>学习记录</span></a>
-            <a class="nav-item" data-view="roadmap" data-site="c"><i class="fas fa-map-signs"></i> <span>实战闯关</span></a>
-            <a class="nav-item ai-qa-toggle" id="aiQaToggle"><i class="fas fa-robot"></i> <span>AI答疑解惑</span><i
-                class="fas fa-chevron-right ai-chevron"></i></a>
-            <div class="ai-dropdown" id="aiDropdown">
-              <a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer"
-                class="ai-link-item ai-deepseek">
-                <i class="fas fa-brain"></i> DeepSeek
-              </a>
-              <a href="https://www.doubao.com/" target="_blank" rel="noopener noreferrer"
-                class="ai-link-item ai-doubao">
-                <i class="fas fa-bolt"></i> 豆包
-              </a>
-            </div>
-            <!--
-              ⚠️ 背单词功能仅限英语语法站点使用
-              C语言站点禁用的原因：背单词功能面向英语学习，与C语言学习内容无关
-            -->
-            <a class="nav-item" id="vocabNavItem" href="/vocabulary.html"><i class="fas fa-book-spelling"></i> <span>背单词</span></a>
-            <a class="nav-item" data-view="badges"><i class="fas fa-medal"></i> <span>我的成就</span></a>
-            <a class="nav-item" data-view="settings"><i class="fas fa-cog"></i> <span>设置</span></a>
+            <a class="nav-item active" data-view="home" data-feature="home"><i class="fas fa-home"></i>
+              <span>主页</span></a>
+            <a class="nav-item" data-view="tasks" data-feature="tasks"><i class="fas fa-clipboard-list"></i>
+              <span>任务清单</span></a>
+            <a class="nav-item" data-view="course" data-feature="course"><i class="fas fa-book-open"></i>
+              <span>课程学习</span></a>
+            <a class="nav-item" data-view="extension" data-feature="extension"><i class="fas fa-layer-group"></i>
+              <span>拓展知识</span></a>
+            <a class="nav-item" data-view="dashboard" data-feature="dashboard"><i class="fas fa-chart-pie"></i>
+              <span>学习记录</span></a>
+            <a class="nav-item" data-view="roadmap" data-feature="roadmap" data-site="c"><i
+                class="fas fa-map-signs"></i> <span>实战闯关</span></a>
+            <a class="nav-item" data-feature="ai_qa" id="aiQaToggle" data-view="aiqa"><i class="fas fa-robot"></i>
+              <span>AI答疑解惑</span></a>
+            <!-- 背单词功能仅限英语语法站点使用 -->
+            <a class="nav-item" id="vocabNavItem" data-feature="vocabulary" href="/vocabulary.html"><i
+                class="fas fa-spell-check"></i> <span>背单词</span></a>
+            <a class="nav-item" data-view="badges" data-feature="badges"><i class="fas fa-medal"></i>
+              <span>我的成就</span></a>
+            <a class="nav-item" data-view="settings" data-feature="settings"><i class="fas fa-cog"></i>
+              <span>设置</span></a>
           </nav>
         </div>
         <div class="sidebar-panel hidden" id="coursePanel">
@@ -186,7 +208,8 @@
           <div class="course-search-wrap" id="courseSearchWrap" style="padding: 8px 12px;">
             <div class="course-search-box">
               <i class="fas fa-search course-search-icon"></i>
-              <input type="text" id="courseSearchInput" class="course-search-input" placeholder="搜索章节..." autocomplete="off">
+              <input type="text" id="courseSearchInput" class="course-search-input" placeholder="搜索章节..."
+                autocomplete="off">
             </div>
             <div id="courseSearchResults" class="course-search-results"></div>
           </div>
@@ -219,7 +242,8 @@
               </div>
               <div class="welcome-info">
                 <div class="welcome-greeting" id="welcomeGreeting">欢迎回来</div>
-                <div class="welcome-name" id="welcomeName">学习者 <span class="welcome-level-chip" id="welcomeLevelChip">LV1</span></div>
+                <div class="welcome-name" id="welcomeName">学习者 <span class="welcome-level-chip"
+                    id="welcomeLevelChip">LV1</span></div>
               </div>
             </div>
             <div class="hero-cta" id="continueCard">
@@ -393,7 +417,8 @@
                 <button class="task-quick-btn" data-template="背英语单词50个"><i class="fas fa-book-open"></i> 背单词</button>
                 <button class="task-quick-btn" data-template="做英语阅读理解2篇"><i class="fas fa-file-alt"></i> 阅读理解</button>
                 <button class="task-quick-btn" data-template="练习C语言指针与数组"><i class="fas fa-code"></i> C语言练习</button>
-                <button class="task-quick-btn" data-template="复习C语言函数与结构体"><i class="fas fa-code-branch"></i> 复习结构体</button>
+                <button class="task-quick-btn" data-template="复习C语言函数与结构体"><i class="fas fa-code-branch"></i>
+                  复习结构体</button>
               </div>
             </div>
 
@@ -447,7 +472,8 @@
           <div id="contentBody" class="rich-content"></div>
           <div class="action-bar">
             <button class="btn btn-progress" id="progressBtn" disabled><i class="far fa-circle"></i> 标记已学</button>
-            <button class="btn btn-outline-secondary bookmark-toggle" id="bookmarkBtnInline" title="添加书签"><i class="far fa-bookmark"></i></button>
+            <button class="btn btn-outline-secondary bookmark-toggle" id="bookmarkBtnInline" title="添加书签"><i
+                class="far fa-bookmark"></i></button>
           </div>
           <div class="note-area">
             <div class="note-header">
@@ -734,7 +760,9 @@
                 <div class="hud-level-title" id="hudTitle">学徒</div>
                 <div class="hud-sep"></div>
                 <div class="hud-exp-wrap">
-                  <div class="hud-exp-bar"><div class="hud-exp-bar-inner" id="hudExpBar"></div></div>
+                  <div class="hud-exp-bar">
+                    <div class="hud-exp-bar-inner" id="hudExpBar"></div>
+                  </div>
                   <div class="hud-exp-nums" id="hudExpNums">0 / 100</div>
                 </div>
                 <div class="hud-progress" title="已闯关章节">
@@ -749,16 +777,19 @@
                 <svg id="skill-tree-svg" viewBox="0 0 4508 2400" preserveAspectRatio="xMidYMid meet">
                   <defs>
                     <filter id="glowFilter">
-                      <feGaussianBlur stdDeviation="6" result="blur"/>
-                      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                      <feGaussianBlur stdDeviation="6" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
                     </filter>
                     <linearGradient id="roadGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0" stop-color="#caa05a"/>
-                      <stop offset="1" stop-color="#d9b06b"/>
+                      <stop offset="0" stop-color="#caa05a" />
+                      <stop offset="1" stop-color="#d9b06b" />
                     </linearGradient>
-                    <marker id="arrowMain" viewBox="0 0 10 10" refX="8" refY="5"
-                            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+                    <marker id="arrowMain" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7"
+                      orient="auto-start-reverse">
+                      <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24" />
                     </marker>
                   </defs>
                   <g id="map-group">
@@ -779,8 +810,9 @@
                   <button class="zoom-btn" id="zoomIn" aria-label="放大">＋</button>
                   <button class="zoom-btn" id="zoomOut" aria-label="缩小">－</button>
                   <button class="zoom-btn home" id="zoomHome" aria-label="还原视图">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M3 9 L12 3 L21 9 M5 10 v10 h14 V10"/>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                      stroke-linejoin="round">
+                      <path d="M3 9 L12 3 L21 9 M5 10 v10 h14 V10" />
                     </svg>
                   </button>
                 </div>
@@ -792,14 +824,18 @@
                 <div class="map-hint" id="mapHint" role="status" aria-live="polite"></div>
 
                 <!-- 章节答题面板（纯答题，无游戏战斗元素） -->
-                <div class="battle-panel" id="battlePanel" role="dialog" aria-modal="true" aria-labelledby="battleTitle" hidden>
+                <div class="battle-panel" id="battlePanel" role="dialog" aria-modal="true" aria-labelledby="battleTitle"
+                  hidden>
                   <button class="battle-close" id="battleClose" title="退出">✕</button>
                   <div class="battle-topbar">
                     <div class="battle-head">
                       <span class="battle-title" id="battleTitle" tabindex="-1">章节</span>
-                      <span class="battle-timer" id="battleTimer" title="每题限时">⏱ <span id="battleTimerNum">25</span>s</span>
+                      <span class="battle-timer" id="battleTimer" title="每题限时">⏱ <span
+                          id="battleTimerNum">25</span>s</span>
                     </div>
-                    <div class="battle-timebar"><div class="battle-timebar-inner" id="battleTimeBar"></div></div>
+                    <div class="battle-timebar">
+                      <div class="battle-timebar-inner" id="battleTimeBar"></div>
+                    </div>
                   </div>
                   <div class="battle-qna">
                     <div class="battle-progress" id="battleProgress">
@@ -850,7 +886,7 @@
           <!-- 地图背景音乐（可开关） -->
           <audio id="mapAudio" src="/audio/background.mp3" loop preload="none"></audio>
         </div>
-<!-- ========== 优化后的徽章视图 ========== -->
+        <!-- ========== 优化后的徽章视图 ========== -->
         <div class="view" id="badgesView">
           <div class="badges-header">
             <h2><i class="fas fa-medal"></i> 我的徽章</h2>
@@ -864,21 +900,74 @@
           </div>
           <div class="badge-rarity-legend" id="badgeRarityLegend">
             <div class="rarity-stat rarity-common" data-rarity="common"><span class="rarity-dot"></span>普通
-              <strong>0/0</strong></div>
+              <strong>0/0</strong>
+            </div>
             <div class="rarity-stat rarity-uncommon" data-rarity="uncommon"><span class="rarity-dot"></span>优秀
-              <strong>0/0</strong></div>
+              <strong>0/0</strong>
+            </div>
             <div class="rarity-stat rarity-rare" data-rarity="rare"><span class="rarity-dot"></span>稀有
-              <strong>0/0</strong></div>
+              <strong>0/0</strong>
+            </div>
             <div class="rarity-stat rarity-epic" data-rarity="epic"><span class="rarity-dot"></span>史诗
-              <strong>0/0</strong></div>
+              <strong>0/0</strong>
+            </div>
             <div class="rarity-stat rarity-legendary" data-rarity="legendary"><span class="rarity-dot"></span>传说
-              <strong>0/0</strong></div>
+              <strong>0/0</strong>
+            </div>
           </div>
           <div class="badge-category-filters" id="badgeCategoryFilters">
             <button class="badge-category-btn active" data-category="all">全部</button>
           </div>
           <div class="badge-list" id="badgeList">
             <!-- 动态生成卡片 -->
+          </div>
+        </div>
+
+        <!-- AI 答疑解惑视图 -->
+        <div class="view" id="aiqaView">
+          <div class="aiqa-header">
+            <div class="aiqa-title">
+              <h2><i class="fas fa-robot"></i> AI 答疑解惑</h2>
+              <p>选择合适的 AI 工具，让学习更高效</p>
+            </div>
+          </div>
+          <div class="aiqa-grid">
+            <a href="https://chat.deepseek.com/" target="_blank" class="ai-card ai-deepseek">
+              <div class="ai-img-wrap"><img src="./image/AI/deepseek.png" alt="DeepSeek"
+                  onerror="this.style.display='none'"></div>
+              <div class="ai-name">DeepSeek</div>
+              <div class="ai-desc">深度思考，逻辑推理强</div>
+            </a>
+            <a href="https://qianwen.aliyun.com/" target="_blank" class="ai-card ai-tongyi">
+              <div class="ai-img-wrap"><img src="./image/AI/tongyiqianwen.png" alt="通义千问" onerror="this.style.display='none'">
+              </div>
+              <div class="ai-name">通义千问</div>
+              <div class="ai-desc">阿里大模型，多场景覆盖</div>
+            </a>
+            <a href="https://www.doubao.com/" target="_blank" class="ai-card ai-doubao">
+              <div class="ai-img-wrap"><img src="./image/AI/doubao.png" alt="豆包" onerror="this.style.display='none'">
+              </div>
+              <div class="ai-name">豆包</div>
+              <div class="ai-desc">字节跳动，创意写作出色</div>
+            </a>
+            <a href="https://kimi.moonshot.cn/" target="_blank" class="ai-card ai-kimi">
+              <div class="ai-img-wrap"><img src="./image/AI/kimi.png" alt="Kimi" onerror="this.style.display='none'">
+              </div>
+              <div class="ai-name">Kimi</div>
+              <div class="ai-desc">长文本处理，支持文件</div>
+            </a>
+            <a href="https://www.zhipuai.cn/" target="_blank" class="ai-card ai-zhipu">
+              <div class="ai-img-wrap"><img src="./image/AI/zhipuqingyan.png" alt="智谱清言"
+                  onerror="this.style.display='none'"></div>
+              <div class="ai-name">智谱清言</div>
+              <div class="ai-desc">中英双语，科学知识丰富</div>
+            </a>
+            <a href="https://xinghuo.xfyun.cn/" target="_blank" class="ai-card ai-xunfei">
+              <div class="ai-img-wrap"><img src="image/AI/xunfeixinghuo.png" alt="讯飞星火" onerror="this.style.display='none'">
+              </div>
+              <div class="ai-name">讯飞星火</div>
+              <div class="ai-desc">语音交互，实时转写强</div>
+            </a>
           </div>
         </div>
 
@@ -890,299 +979,534 @@
               <p class="settings-subtitle">个性化你的学习体验</p>
             </div>
 
-            <!-- 个人信息 -->
-            <div class="settings-card">
-              <div class="settings-card-header">
-                <i class="fas fa-user-circle"></i>
-                <span>个人信息</span>
-              </div>
-              <div class="settings-card-body">
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-user-edit"></i> 修改资料
-                  </div>
-                  <div class="setting-control">
-                    <button class="btn btn-sm btn-outline-primary" id="editProfileBtn2">
-                      <i class="fas fa-edit"></i> 修改
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="settings-layout">
+              <!-- 左侧导航 -->
+              <nav class="settings-nav">
+                <button class="settings-nav-item active" data-section="account">
+                  <i class="fas fa-user-circle"></i> 账号
+                </button>
+                <button class="settings-nav-item" data-section="appearance">
+                  <i class="fas fa-palette"></i> 外观
+                </button>
+                <button class="settings-nav-item" data-section="learning">
+                  <i class="fas fa-heart"></i> 学习
+                </button>
+                <div class="settings-nav-divider"></div>
+                <button class="settings-nav-item" data-section="data">
+                  <i class="fas fa-database"></i> 数据
+                </button>
+                <button class="settings-nav-item" data-section="about">
+                  <i class="fas fa-info-circle"></i> 关于
+                </button>
+              </nav>
 
-            <!-- 外观设置 -->
-            <div class="settings-card">
-              <div class="settings-card-header">
-                <i class="fas fa-palette"></i>
-                <span>外观</span>
-              </div>
-              <div class="settings-card-body">
-                <!-- 深色模式 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-moon"></i> 深色模式
+              <!-- 右侧内容 -->
+              <div class="settings-content">
+
+                <!-- ===== 账号 ===== -->
+                <div class="settings-section active" id="section-account">
+                  <div class="settings-section-header">
+                    <h3><i class="fas fa-user-circle"></i> 账号信息</h3>
+                    <p>管理你的个人资料和账号安全</p>
                   </div>
-                  <div class="setting-control">
-                    <div class="toggle-switch">
-                      <input type="checkbox" id="darkModeSetting" class="toggle-input">
-                      <label for="darkModeSetting" class="toggle-slider"></label>
+
+                  <!-- 账号主页卡片 -->
+                  <div class="settings-profile-card" id="settingsProfileCard">
+                    <div class="profile-avatar-wrap">
+                      <img id="settingsAccountAvatar" src="/image/admin-avatar.png" alt="头像" class="profile-avatar-img">
+                      <i class="fas fa-user account-avatar-fallback" id="settingsAccountAvatarFallback" style="display:none"></i>
+                      <button class="profile-avatar-edit-btn" id="changeAvatarBtn" title="更换头像">
+                        <i class="fas fa-camera"></i>
+                      </button>
+                    </div>
+                    <div class="profile-info">
+                      <div class="profile-display-name" id="settingsDisplayName">加载中...</div>
+                      <div class="profile-email" id="settingsAccountEmail">
+                        <i class="fas fa-envelope"></i> <span>—</span>
+                      </div>
+                      <div class="profile-meta">
+                        <span id="settingsAccountUsername"><i class="fas fa-user"></i></span>
+                        <span id="settingsAccountSite"><i class="fas fa-globe"></i></span>
+                      </div>
+                    </div>
+                    <div class="profile-actions">
+                      <button class="btn-profile-action" id="openEditProfileBtn">
+                        <i class="fas fa-user-edit"></i> 编辑资料
+                      </button>
+                      <button class="btn-profile-action btn-profile-action-secondary" id="changePasswordBtn">
+                        <i class="fas fa-key"></i> 修改密码
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- 账号安全卡 -->
+                  <div class="settings-card">
+                    <div class="settings-card-header">
+                      <i class="fas fa-shield-alt"></i>
+                      <span>账号安全</span>
+                    </div>
+                    <div class="settings-card-body">
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main"><i class="fas fa-key"></i> 登录密码</div>
+                          <span class="setting-label-sub">已设置</span>
+                        </div>
+                        <div class="setting-control">
+                          <button class="btn btn-sm btn-outline-primary" id="changePasswordBtn2">修改</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- 主题色 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-tint"></i> 主题色
+                <!-- ===== 外观 ===== -->
+                <div class="settings-section" id="section-appearance">
+                  <div class="settings-section-header">
+                    <h3><i class="fas fa-palette"></i> 外观设置</h3>
+                    <p>自定义界面颜色、主题和视觉效果</p>
                   </div>
-                  <div class="setting-control">
-                    <div class="theme-color-picker" id="themeColorPicker">
-                      <button type="button" class="theme-color-option" data-color="#6366f1" title="紫色"><span
-                          class="color-swatch" style="background:#6366f1"></span></button>
-                      <button type="button" class="theme-color-option" data-color="#3b82f6" title="蓝色"><span
-                          class="color-swatch" style="background:#3b82f6"></span></button>
-                      <button type="button" class="theme-color-option" data-color="#10b981" title="绿色"><span
-                          class="color-swatch" style="background:#10b981"></span></button>
-                      <button type="button" class="theme-color-option" data-color="#f59e0b" title="橙色"><span
-                          class="color-swatch" style="background:#f59e0b"></span></button>
-                      <button type="button" class="theme-color-option" data-color="#ef4444" title="红色"><span
-                          class="color-swatch" style="background:#ef4444"></span></button>
-                      <input type="color" id="themeColorCustom" class="theme-color-custom" value="#6366f1">
+
+                  <div class="settings-card">
+                    <div class="settings-card-header">
+                      <i class="fas fa-moon"></i>
+                      <span>模式</span>
+                    </div>
+                    <div class="settings-card-body">
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-moon"></i> 深色模式
+                          </div>
+                          <span class="setting-label-sub">开启后切换为深色主题</span>
+                        </div>
+                        <div class="setting-control">
+                          <div class="toggle-switch">
+                            <input type="checkbox" id="darkModeSetting" class="toggle-input" role="switch" aria-label="深色模式">
+                            <label for="darkModeSetting" class="toggle-slider"></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="settings-card">
+                    <div class="settings-card-header">
+                      <i class="fas fa-tint"></i>
+                      <span>主题色</span>
+                    </div>
+                    <div class="settings-card-body">
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-palette"></i> 主题颜色
+                          </div>
+                          <span class="setting-label-sub">选择你喜欢的主色调</span>
+                        </div>
+                        <div class="setting-control">
+                          <div class="theme-color-picker" id="themeColorPicker">
+                            <button type="button" class="theme-color-option" data-color="#6366f1" title="紫色"><span
+                                class="color-swatch" style="background:#6366f1"></span></button>
+                            <button type="button" class="theme-color-option" data-color="#3b82f6" title="蓝色"><span
+                                class="color-swatch" style="background:#3b82f6"></span></button>
+                            <button type="button" class="theme-color-option" data-color="#10b981" title="绿色"><span
+                                class="color-swatch" style="background:#10b981"></span></button>
+                            <button type="button" class="theme-color-option" data-color="#f59e0b" title="橙色"><span
+                                class="color-swatch" style="background:#f59e0b"></span></button>
+                            <button type="button" class="theme-color-option" data-color="#ef4444" title="红色"><span
+                                class="color-swatch" style="background:#ef4444"></span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="settings-card">
+                    <div class="settings-card-header">
+                      <i class="fas fa-image"></i>
+                      <span>背景样式</span>
+                    </div>
+                    <div class="settings-card-body">
+                      <!-- 背景模式切换标签页 -->
+                      <div class="bg-mode-tabs" role="tablist" aria-label="背景模式">
+                        <button class="bg-mode-tab active" data-bg-mode="gradient" role="tab" aria-selected="true" aria-controls="gradientArea">
+                          <i class="fas fa-palette"></i> 渐变背景
+                        </button>
+                        <button class="bg-mode-tab" data-bg-mode="video" role="tab" aria-selected="false" aria-controls="videoArea">
+                          <i class="fas fa-video"></i> 视频壁纸
+                        </button>
+                      </div>
+
+                      <!-- 渐变背景区域 -->
+                      <div id="gradientArea" class="bg-options-area" role="tabpanel">
+                        <div class="bg-gradient-col">
+                          <div class="setting-row">
+                            <div class="setting-label">
+                              <div class="setting-label-main">
+                                <i class="fas fa-layer-group"></i> 渐变样式
+                              </div>
+                              <span class="setting-label-sub">为界面选择柔和的渐变背景</span>
+                            </div>
+                            <div class="setting-control">
+                              <div class="gradient-picker" id="gradientPicker">
+                                <button type="button" class="gradient-option gradient-none active" data-gradient="none"
+                                  title="无" aria-label="无渐变"></button>
+                                <button type="button" class="gradient-option gradient-aurora" data-gradient="aurora"
+                                  title="极光" aria-label="极光渐变"></button>
+                                <button type="button" class="gradient-option gradient-ocean" data-gradient="ocean"
+                                  title="海洋" aria-label="海洋渐变"></button>
+                                <button type="button" class="gradient-option gradient-sunset" data-gradient="sunset"
+                                  title="日落" aria-label="日落渐变"></button>
+                                <button type="button" class="gradient-option gradient-forest" data-gradient="forest"
+                                  title="森林" aria-label="森林渐变"></button>
+                                <button type="button" class="gradient-option gradient-midnight" data-gradient="midnight"
+                                  title="午夜" aria-label="午夜渐变"></button>
+                                <button type="button" class="gradient-option gradient-lake" data-gradient="lake"
+                                  title="湖光" aria-label="湖光渐变"></button>
+                                <button type="button" class="gradient-option gradient-peach" data-gradient="peach"
+                                  title="蜜桃" aria-label="蜜桃渐变"></button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 视频壁纸区域 -->
+                      <div id="videoArea" class="bg-options-area" role="tabpanel" style="display:none">
+                        <div class="bg-video-col">
+                          <!-- 视频网格选择器 -->
+                          <div class="video-grid" id="videoGrid" aria-label="选择视频壁纸">
+                            <div class="video-card" data-video="grassland" tabindex="0" role="button" aria-pressed="false" aria-label="草地视频">
+                              <div class="video-card-placeholder">
+                                <i class="fas fa-seedling"></i>
+                                <span>grassland.mp4</span>
+                              </div>
+                              <span class="video-card-name">🌿 草地</span>
+                              <span class="video-card-check"><i class="fas fa-check"></i></span>
+                            </div>
+                            <div class="video-card" data-video="forest" tabindex="0" role="button" aria-pressed="false" aria-label="森林视频">
+                              <div class="video-card-placeholder">
+                                <i class="fas fa-tree"></i>
+                                <span>forest.mp4</span>
+                              </div>
+                              <span class="video-card-name">🌲 森林</span>
+                              <span class="video-card-check"><i class="fas fa-check"></i></span>
+                            </div>
+                            <div class="video-card" data-video="city" tabindex="0" role="button" aria-pressed="false" aria-label="城市视频">
+                              <div class="video-card-placeholder">
+                                <i class="fas fa-city"></i>
+                                <span>city.mp4</span>
+                              </div>
+                              <span class="video-card-name">🏙️ 城市</span>
+                              <span class="video-card-check"><i class="fas fa-check"></i></span>
+                            </div>
+                            <div class="video-card" data-video="gallery" tabindex="0" role="button" aria-pressed="false" aria-label="画廊视频">
+                              <div class="video-card-placeholder">
+                                <i class="fas fa-images"></i>
+                                <span>gallery.mp4</span>
+                              </div>
+                              <span class="video-card-name">🖼️ 画廊</span>
+                              <span class="video-card-check"><i class="fas fa-check"></i></span>
+                            </div>
+                            <div class="video-card" data-video="flower" tabindex="0" role="button" aria-pressed="false" aria-label="花海视频">
+                              <div class="video-card-placeholder">
+                                <i class="fas fa-spa"></i>
+                                <span>flower.mp4</span>
+                              </div>
+                              <span class="video-card-name">🌸 花海</span>
+                              <span class="video-card-check"><i class="fas fa-check"></i></span>
+                            </div>
+                            <div class="video-card" data-video="gorge" tabindex="0" role="button" aria-pressed="false" aria-label="峡谷视频">
+                              <div class="video-card-placeholder">
+                                <i class="fas fa-mountain"></i>
+                                <span>gorge.mp4</span>
+                              </div>
+                              <span class="video-card-name">🏔️ 峡谷</span>
+                              <span class="video-card-check"><i class="fas fa-check"></i></span>
+                            </div>
+                            <div class="video-card" data-video="green-gallery" tabindex="0" role="button" aria-pressed="false" aria-label="绿色长廊视频">
+                              <div class="video-card-placeholder">
+                                <i class="fas fa-leaf"></i>
+                                <span>green gallery.mp4</span>
+                              </div>
+                              <span class="video-card-name">🍃 绿色长廊</span>
+                              <span class="video-card-check"><i class="fas fa-check"></i></span>
+                            </div>
+                          </div>
+
+                          <!-- 动态/静态模式切换 -->
+                          <div class="video-mode-row">
+                            <div class="setting-label">
+                              <div class="setting-label-main">
+                                <i class="fas fa-film"></i> 播放模式
+                              </div>
+                              <span class="setting-label-sub">选择动态视频或静态壁纸</span>
+                            </div>
+                            <div class="setting-control">
+                              <span class="video-mode-label" id="videoModeLabel">动态播放</span>
+                              <div class="toggle-switch">
+                                <input type="checkbox" id="videoStaticMode" class="toggle-input" role="switch" aria-label="动态/静态模式">
+                                <label for="videoStaticMode" class="toggle-slider"></label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- 视频预览窗口 -->
+                        <div class="video-preview-area">
+                          <div class="video-preview-window" id="videoPreviewWindow" aria-label="视频预览" role="img">
+                            <div class="video-preview-empty" id="videoPreviewEmpty">
+                              <i class="fas fa-photo-video"></i>
+                              <span>选择视频预览</span>
+                            </div>
+                            <video id="videoPreviewPlayer" muted loop preload="none" style="display:none"></video>
+                            <div class="video-preview-overlay"></div>
+                            <div class="video-preview-label" id="videoPreviewLabel" style="display:none"></div>
+                          </div>
+                          <div style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:6px;">
+                            <i class="fas fa-eye"></i> 实时预览
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="settings-card">
+                    <div class="settings-card-header">
+                      <i class="fas fa-music"></i>
+                      <span>背景音乐</span>
+                    </div>
+                    <div class="settings-card-body">
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-music"></i> 背景音乐
+                          </div>
+                          <span class="setting-label-sub">学习时播放舒缓的白噪音或音乐</span>
+                        </div>
+                        <div class="setting-control">
+                          <select id="noiseSelectSetting" class="setting-select">
+                            <option value="">关闭</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- 字体大小 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-font"></i> 字体大小 (<span id="fontSizeValue">16</span>px)
+                <!-- ===== 学习 ===== -->
+                <div class="settings-section" id="section-learning">
+                  <div class="settings-section-header">
+                    <h3><i class="fas fa-heart"></i> 学习偏好</h3>
+                    <p>调整学习节奏和提醒设置</p>
                   </div>
-                  <div class="setting-control">
-                    <input type="range" id="fontSizeSetting" min="12" max="24" value="16" class="setting-slider">
-                  </div>
-                </div>
 
-                <!-- 背景音乐 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-music"></i> 背景音乐
-                  </div>
-                  <div class="setting-control">
-                    <select id="noiseSelectSetting" class="setting-select">
-                      <option value="">关闭</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- 聚焦模式 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-book-reader"></i> 聚焦模式
-                  </div>
-                  <div class="setting-control">
-                    <div class="toggle-switch">
-                      <input type="checkbox" id="focusModeSetting" class="toggle-input">
-                      <label for="focusModeSetting" class="toggle-slider"></label>
+                  <div class="settings-card">
+                    <div class="settings-card-body">
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-bullseye"></i> 每日学习目标
+                          </div>
+                          <span class="setting-label-sub">每天完成的小节数量</span>
+                        </div>
+                        <div class="setting-control">
+                          <input type="number" id="dailyGoalSetting" min="1" max="20" value="1"
+                            class="setting-number-input">
+                          <span class="setting-value">小节/天</span>
+                        </div>
+                      </div>
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-check-circle"></i> 自动标记已学
+                          </div>
+                          <span class="setting-label-sub">完成小节后自动标记为已学</span>
+                        </div>
+                        <div class="setting-control">
+                          <div class="toggle-switch">
+                            <input type="checkbox" id="autoMarkSetting" class="toggle-input" role="switch" aria-label="自动标记已学">
+                            <label for="autoMarkSetting" class="toggle-slider"></label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-bell"></i> 学习提醒
+                          </div>
+                          <span class="setting-label-sub">每日提醒你坚持学习</span>
+                        </div>
+                        <div class="setting-control">
+                          <div class="toggle-switch">
+                            <input type="checkbox" id="studyReminderSetting" class="toggle-input" role="switch" aria-label="学习提醒">
+                            <label for="studyReminderSetting" class="toggle-slider"></label>
+                          </div>
+                          <input type="time" id="reminderTimeSetting" value="19:00" class="setting-time-input"
+                            style="padding:4px 8px;border-radius:6px;border:1px solid var(--border-color);background:var(--input-bg);color:var(--text-primary);font-size:0.82rem;width:90px;">
+                        </div>
+                      </div>
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-sync-alt"></i> 复习间隔
+                          </div>
+                          <span class="setting-label-sub">已学内容多久后提醒复习</span>
+                        </div>
+                        <div class="setting-control">
+                          <select id="reviewIntervalSetting" class="setting-select">
+                            <option value="1">1天后</option>
+                            <option value="3" selected>3天后</option>
+                            <option value="7">7天后</option>
+                            <option value="14">14天后</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- 侧边栏自动折叠 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-compress-alt"></i> 侧边栏自动折叠
+                <!-- ===== 数据 ===== -->
+                <div class="settings-section" id="section-data">
+                  <div class="settings-section-header">
+                    <h3><i class="fas fa-database"></i> 数据管理</h3>
+                    <p>导入导出和重置你的学习数据</p>
                   </div>
-                  <div class="setting-control">
-                    <div class="toggle-switch">
-                      <input type="checkbox" id="sidebarAutoCollapseSetting" class="toggle-input">
-                      <label for="sidebarAutoCollapseSetting" class="toggle-slider"></label>
+
+                  <div class="settings-card">
+                    <div class="settings-card-body">
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-download"></i> 导出全部数据
+                          </div>
+                          <span class="setting-label-sub">将所有学习数据导出为 JSON 文件</span>
+                        </div>
+                        <div class="setting-control">
+                          <button class="btn btn-sm btn-outline-primary" id="exportAllDataBtn">
+                            <i class="fas fa-download"></i> 导出
+                          </button>
+                        </div>
+                      </div>
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-upload"></i> 导入数据
+                          </div>
+                          <span class="setting-label-sub">从 JSON 文件恢复学习数据</span>
+                        </div>
+                        <div class="setting-control">
+                          <button class="btn btn-sm btn-outline-primary" id="importDataBtn">
+                            <i class="fas fa-upload"></i> 导入
+                          </button>
+                          <input type="file" id="importDataFile" accept=".json" style="display:none">
+                        </div>
+                      </div>
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-chart-bar"></i> 数据统计
+                          </div>
+                          <span class="setting-label-sub">查看详细的学习数据报告</span>
+                        </div>
+                        <div class="setting-control">
+                          <button class="btn btn-sm btn-outline-info" id="dataStatsBtn">
+                            <i class="fas fa-info-circle"></i> 查看
+                          </button>
+                        </div>
+                      </div>
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-file-alt"></i> 导出笔记
+                          </div>
+                          <span class="setting-label-sub">将笔记导出为备份文件</span>
+                        </div>
+                        <div class="setting-control">
+                          <button class="btn btn-sm btn-outline-secondary" id="exportNotesBtn2">
+                            <i class="fas fa-file-export"></i> 导出
+                          </button>
+                        </div>
+                      </div>
+                      <div class="setting-row">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-trash-alt"></i> 清除笔记
+                          </div>
+                          <span class="setting-label-sub">删除所有笔记内容</span>
+                        </div>
+                        <div class="setting-control">
+                          <button class="btn btn-sm btn-outline-warning" id="clearNotesBtn">
+                            <i class="fas fa-trash"></i> 清除
+                          </button>
+                        </div>
+                      </div>
+                      <div class="setting-row setting-row-danger">
+                        <div class="setting-label">
+                          <div class="setting-label-main">
+                            <i class="fas fa-exclamation-triangle"></i> 重置学习进度
+                          </div>
+                          <span class="setting-label-sub">清除所有学习记录，此操作不可逆</span>
+                        </div>
+                        <div class="setting-control">
+                          <button class="btn-danger" id="resetProgressBtn2">
+                            <i class="fas fa-undo"></i> 重置
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- 学习偏好 -->
-            <div class="settings-card">
-              <div class="settings-card-header">
-                <i class="fas fa-heart"></i>
-                <span>学习偏好</span>
-              </div>
-              <div class="settings-card-body">
-                <!-- 每日学习目标 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-bullseye"></i> 每日学习目标
+                <!-- ===== 关于 ===== -->
+                <div class="settings-section" id="section-about">
+                  <div class="settings-section-header">
+                    <h3><i class="fas fa-info-circle"></i> 关于</h3>
+                    <p>了解更多关于知识库的信息</p>
                   </div>
-                  <div class="setting-control">
-                    <input type="number" id="dailyGoalSetting" min="1" max="20" value="1" class="setting-number-input">
-                    <span class="setting-suffix">小节/天</span>
-                  </div>
-                </div>
 
-                <!-- 自动标记已学 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-check-circle"></i> 自动标记已学
+                  <div class="settings-card">
+                    <div class="settings-card-body">
+                      <div class="about-info">
+                        <div class="about-row">
+                          <span class="label"><i class="fas fa-tag"></i> 版本</span>
+                          <span class="value">v1.0.1</span>
+                        </div>
+                        <div class="about-row">
+                          <span class="label"><i class="fas fa-code"></i> 开发者</span>
+                          <span class="value">孤屿·行舟</span>
+                        </div>
+                        <div class="about-row">
+                          <span class="label"><i class="fas fa-clock"></i> 构建时间</span>
+                          <span class="value">2026-08-19</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="setting-control">
-                    <div class="toggle-switch">
-                      <input type="checkbox" id="autoMarkSetting" class="toggle-input">
-                      <label for="autoMarkSetting" class="toggle-slider"></label>
+
+                  <div class="settings-card">
+                    <div class="settings-card-header">
+                      <i class="fas fa-graduation-cap"></i>
+                      <span>技术栈</span>
+                    </div>
+                    <div class="settings-card-body">
+                      <div class="about-info">
+                        <div class="about-row">
+                          <span class="label">前端框架</span>
+                          <span class="value">原生 JavaScript + CSS</span>
+                        </div>
+                        <div class="about-row">
+                          <span class="label">UI 库</span>
+                          <span class="value">Bootstrap 5 + FontAwesome</span>
+                        </div>
+                        <div class="about-row">
+                          <span class="label">图表</span>
+                          <span class="value">Chart.js</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- 学习提醒 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-bell"></i> 学习提醒
-                  </div>
-                  <div class="setting-control">
-                    <div class="toggle-switch">
-                      <input type="checkbox" id="studyReminderSetting" class="toggle-input">
-                      <label for="studyReminderSetting" class="toggle-slider"></label>
-                    </div>
-                    <input type="time" id="reminderTimeSetting" class="setting-time-input" value="19:00">
-                  </div>
-                </div>
-
-                <!-- 复习间隔 -->
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-sync-alt"></i> 复习间隔
-                  </div>
-                  <div class="setting-control">
-                    <select id="reviewIntervalSetting" class="setting-select">
-                      <option value="1">1天后</option>
-                      <option value="3" selected>3天后</option>
-                      <option value="7">7天后</option>
-                      <option value="14">14天后</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 数据管理 -->
-            <div class="settings-card">
-              <div class="settings-card-header">
-                <i class="fas fa-database"></i>
-                <span>数据管理</span>
-              </div>
-              <div class="settings-card-body">
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-download"></i> 导出全部数据
-                  </div>
-                  <div class="setting-control">
-                    <button class="btn btn-sm btn-outline-primary" id="exportAllDataBtn">
-                      <i class="fas fa-file-export"></i> 导出
-                    </button>
-                  </div>
-                </div>
-
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-upload"></i> 导入数据
-                  </div>
-                  <div class="setting-control">
-                    <button class="btn btn-sm btn-outline-primary" id="importDataBtn">
-                      <i class="fas fa-file-import"></i> 导入
-                    </button>
-                    <input type="file" id="importDataFile" accept=".json" style="display:none">
-                  </div>
-                </div>
-
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-chart-bar"></i> 数据统计
-                  </div>
-                  <div class="setting-control">
-                    <button class="btn btn-sm btn-outline-info" id="dataStatsBtn">
-                      <i class="fas fa-info-circle"></i> 查看
-                    </button>
-                  </div>
-                </div>
-
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-file-export"></i> 导出笔记
-                  </div>
-                  <div class="setting-control">
-                    <button class="btn btn-sm btn-outline-secondary" id="exportNotesBtn2">
-                      <i class="fas fa-file-alt"></i> 导出
-                    </button>
-                  </div>
-                </div>
-
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-trash-alt"></i> 清除笔记
-                  </div>
-                  <div class="setting-control">
-                    <button class="btn btn-sm btn-outline-warning" id="clearNotesBtn">
-                      <i class="fas fa-trash"></i> 清除
-                    </button>
-                  </div>
-                </div>
-
-                <div class="setting-row setting-row-danger">
-                  <div class="setting-label">
-                    <i class="fas fa-exclamation-triangle"></i> 重置学习进度
-                  </div>
-                  <div class="setting-control">
-                    <button class="btn btn-sm btn-outline-danger" id="resetProgressBtn2">
-                      <i class="fas fa-undo"></i> 重置
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 密码管理 -->
-            <div class="settings-card">
-              <div class="settings-card-header">
-                <i class="fas fa-lock"></i>
-                <span>密码管理</span>
-              </div>
-              <div class="settings-card-body">
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-key"></i> 修改密码
-                  </div>
-                  <div class="setting-control">
-                    <button class="btn btn-sm btn-outline-primary" id="changePasswordBtn">
-                      <i class="fas fa-edit"></i> 修改
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 关于 -->
-            <div class="settings-card">
-              <div class="settings-card-header">
-                <i class="fas fa-info-circle"></i>
-                <span>关于</span>
-              </div>
-              <div class="settings-card-body">
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-tag"></i> 版本
-                  </div>
-                  <div class="setting-control">
-                    <span class="setting-value">v1.0.1</span>
-                  </div>
-                </div>
-                <div class="setting-row">
-                  <div class="setting-label">
-                    <i class="fas fa-code"></i> 开发者
-                  </div>
-                  <div class="setting-control">
-                    <span class="setting-value">孤屿·行舟</span>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -1307,7 +1631,8 @@
         </div>
         <div class="modal-body">
           <div class="mb-3 text-center">
-            <img id="editAvatarPreview" src="/image/admin-avatar.png" alt="头像预览" class="rounded" style="width:80px;height:80px;object-fit:cover;border:2px solid var(--border-color)">
+            <img id="editAvatarPreview" src="/image/admin-avatar.png" alt="头像预览" class="rounded"
+              style="width:80px;height:80px;object-fit:cover;border:2px solid var(--border-color)">
           </div>
           <!-- 图片上传区域 -->
           <div class="mb-3">
@@ -1340,6 +1665,15 @@
 
   <audio id="noiseAudio" loop preload="none" playsinline></audio>
 
+  <!-- 全局视频背景 -->
+  <video id="videoBackground" muted loop playsinline></video>
+  <div class="video-bg-overlay" id="videoBgOverlay" style="display:none"></div>
+
+  <!-- 自动保存提示 -->
+  <div class="settings-save-toast" id="settingsSaveToast" role="status" aria-live="polite">
+    <i class="fas fa-check-circle"></i> 已自动保存
+  </div>
+
   <!-- 音乐播放可视化特效（右下角，播放时显示） -->
   <div id="musicVisualizer" class="music-visualizer" style="display:none">
     <svg width="100" height="100" viewBox="0 0 100 100">
@@ -1358,7 +1692,7 @@
     <div class="box"></div>
   </div>
 
-    <script type="importmap">
+  <script type="importmap">
     {
       "imports": {
         "three": "/vendor/three/three.module.min.js",
@@ -1366,39 +1700,42 @@
       }
     }
   </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/bundle.js" defer></script>
+
+
   <!-- Prism：由 roadmap.js 首次遇到代码块时懒加载 -->
   <!-- 工具函数 & 数据（无依赖） -->
-  <script src="/js/utils/helpers.js" defer></script>
-  <script src="/js/data/chapters.js" defer></script>
+
+
   <!-- 核心状态管理 -->
-  <script src="/js/core/main.js" defer></script>
+
   <!-- 核心功能模块 -->
-  <script src="/js/core/toast.js" defer></script>
+
   <!-- 功能特性 -->
-  <script src="/js/features/badges.js" defer></script>
-  <script src="/js/features/study-timer.js" defer></script>
-  <script src="/js/features/bookmark.js" defer></script>
-  <script src="/js/features/search.js" defer></script>
-  <script src="/js/features/course-search.js" defer></script>
-  <script src="/js/features/notes.js" defer></script>
-  <script src="/js/features/noise.js" defer></script>
-  <script src="/js/features/keyboard.js" defer></script>
+
+
+
+
+
+
+
+
   <!-- 登录鉴权门控（须在 roadmap.js 之前加载） -->
-  <script src="/js/features/auth.js" defer></script>
+
   <!-- 视图模块 -->
-  <script src="/js/views/home.js" defer></script>
-  <script src="/js/features/tasks.js" defer></script>
-  <script src="/js/views/dashboard.js" defer></script>
-  <script src="/js/views/extension.js" defer></script>
+
+
+
+
   <!-- 核心应用逻辑 -->
-  <script src="/js/views/roadmap.js" defer></script>
+
   <!-- 实战闯关（Quiz Game 体验） -->
-  <script src="/js/game/quizgame-data.js" defer></script>
-  <script src="/js/game/quizgame-audio.js" defer></script>
-  <script src="/js/game/quizgame-game.js" defer></script>
-  <script src="/js/game/quizgame-main.js" defer></script>
-  <script src="/js/focus-mode.js" defer></script>
+
+
+
+
+
 </body>
 
 </html>

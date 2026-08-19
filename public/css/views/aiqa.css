@@ -1,0 +1,112 @@
+/* ==================== AI 答疑解惑视图 ==================== */
+#aiqaView {
+    max-width: 100%;
+    padding: 0;
+}
+
+.aiqa-header {
+    margin-bottom: 32px;
+}
+
+.aiqa-title h2 {
+    margin: 0 0 6px;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.aiqa-title h2 i {
+    margin-right: 8px;
+    color: var(--accent);
+}
+
+.aiqa-title p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.aiqa-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.ai-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px 28px;
+    border-radius: var(--radius-lg);
+    background: var(--glass-bg);
+    border: 1px solid rgba(var(--accent-rgb), 0.12);
+    backdrop-filter: blur(12px);
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.25s ease;
+}
+
+.ai-card:hover {
+    border-color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.08);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+
+.ai-card:active {
+    transform: translateY(-2px);
+}
+
+.ai-img-wrap {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 18px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--glass-bg);
+    border: 1px solid rgba(128, 128, 128, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.ai-img-wrap .ai-icon-fallback {
+    font-size: 28px;
+    color: var(--text-muted);
+}
+
+.ai-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.ai-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.ai-tags {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.ai-tag {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent);
+    font-weight: 600;
+}

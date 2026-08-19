@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const config = require('../config');
 const store = require('../config/store');
+const staticUsersConfig = require('../config/users');
 
 // ==================== 中间件：管理员鉴权 ====================
 function requireAdmin(req, res, next) {
@@ -227,8 +228,8 @@ router.put('/users/:username', requireAdmin, (req, res) => {
 router.delete('/users/:username', requireAdmin, (req, res) => {
   const { username } = req.params;
 
-  // 不允许删除静态账号
-  const isStatic = config.users.some(
+  // 不允许删除静态账号（只检查 config/users.js 原始定义，不含合并的注册账号）
+  const isStatic = staticUsersConfig.users.some(
     (u) => u.username && u.username.toLowerCase() === username.trim().toLowerCase()
   );
   if (isStatic) {
@@ -438,7 +439,8 @@ router.get('/sites', requireAdmin, (req, res) => {
       name: s.name,
       subtitle: s.subtitle,
       theme: s.theme ? s.theme.accent : '#6366f1',
-      targetDate: s.targetDate || null
+      targetDate: s.targetDate || null,
+      features: s.features || []
     }));
     res.json({ success: true, sites });
   } catch (err) {
@@ -456,20 +458,13 @@ router.get('/sites/:key', requireAdmin, (req, res) => {
       key: site.key,
       name: site.name,
       subtitle: site.subtitle,
-      theme: site.theme ? site.theme.accent : '#6366f1'
+      theme: site.theme ? site.theme.accent : '#6366f1',
+      features: site.features || []
     }
   });
 });
 
-// ==================== 创建/更新站点 ====================
-router.post('/sites', requireAdmin, (req, res) => {
-  // 站点配置需要手动修改 config.js，此接口预留
-  res.status(501).json({ error: '请手动修改 config.js 配置站点' });
-});
-
-router.put('/sites/:key', requireAdmin, (req, res) => {
-  res.status(501).json({ error: '请手动修改 config.js 配置站点' });
-});
+// ==================== 创建/更新站点（已迁移到下方真实实现） ====================
 
 // ==================== 导出全部数据 ====================
 router.get('/export', requireAdmin, (req, res) => {
@@ -713,7 +708,7 @@ router.post('/backup', requireAdmin, (req, res) => {
 // ==================== 站点 CRUD（通过写 config/sites.js） ====================
 router.post('/sites', requireAdmin, (req, res) => {
   try {
-    const { name, key, subtitle, theme } = req.body || {};
+    const { name, key, subtitle, theme, features } = req.body || {};
     if (!name || !key) return res.status(400).json({ error: '站点名称和Key不能为空' });
 
     const fs = require('fs');
@@ -739,6 +734,7 @@ router.post('/sites', requireAdmin, (req, res) => {
       logoText: 'lab研习室',
       logo: '/image/logo.png',
       targetDate: null,
+      features: features || [],
     };
     existing.push(newSite);
 
@@ -766,7 +762,7 @@ module.exports = {
 router.put('/sites/:key', requireAdmin, (req, res) => {
   try {
     const { key } = req.params;
-    const { name, subtitle, theme } = req.body || {};
+    const { name, subtitle, theme, features } = req.body || {};
 
     const fs = require('fs');
     const path = require('path');
@@ -780,6 +776,7 @@ router.put('/sites/:key', requireAdmin, (req, res) => {
     if (name) existing[idx].name = name;
     if (subtitle !== undefined) existing[idx].subtitle = subtitle;
     if (theme) existing[idx].theme = { accent: theme };
+    if (Array.isArray(features)) existing[idx].features = features;
 
     const newContent = `/**
  * 站点注册表

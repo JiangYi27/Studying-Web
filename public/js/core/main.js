@@ -73,6 +73,9 @@ const state = {
     sidebarCollapsed: false,
     focusMode: false,
     themeColor: '#6366f1',
+    gradientBg: 'none',
+    videoBg: '',
+    videoBgStatic: false,
     dailyGoal: 1,
     autoMarkCompleted: false,
     studyReminder: false,
@@ -111,6 +114,9 @@ function saveState() {
         sidebarCollapsed: state.sidebarCollapsed,
         focusMode: state.focusMode,
         themeColor: state.themeColor,
+        gradientBg: state.gradientBg,
+        videoBg: state.videoBg,
+        videoBgStatic: state.videoBgStatic,
         dailyGoal: state.dailyGoal,
         autoMarkCompleted: state.autoMarkCompleted,
         studyReminder: state.studyReminder,
@@ -127,11 +133,22 @@ function saveState() {
 }
 
 let saveStateDebounceTimer = null;
+let settingsToastTimer = null;
 function saveStateDebounced() {
     if (saveStateDebounceTimer) return;
     saveStateDebounceTimer = setTimeout(() => {
         saveState();
         saveStateDebounceTimer = null;
+        // 显示设置自动保存提示
+        var toast = document.getElementById('settingsSaveToast');
+        if (toast) {
+            if (settingsToastTimer) clearTimeout(settingsToastTimer);
+            toast.classList.add('show');
+            settingsToastTimer = setTimeout(function() {
+                toast.classList.remove('show');
+                settingsToastTimer = null;
+            }, 2500);
+        }
     }, 1000);
 }
 

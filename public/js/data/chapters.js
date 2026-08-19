@@ -24,7 +24,7 @@ const C_CHAPTERS = [
 // ==================== 站点分组 ====================
 // 键与后端 config/sites.js 中的 chaptersKey 对应
 const SITES = {
-    c: { chapters: C_CHAPTERS },
+    c: { chapters: C_CHAPTERS, features: ['home', 'tasks', 'course', 'extension', 'dashboard', 'roadmap', 'ai_qa', 'badges', 'settings'] },
     grammar: {
         chapters: [
             { id: '01', title: '重塑语法认知框架', folder: '01-重塑语法认知框架', sections: ['01-简单句与五大句型', '02-句子成分与句子分类', '03-十大词类与动词总览', '04-动词的分类', '05-16种时态终极详解', '06-易混易错对比索引'], sectionTitles: ['简单句与五大句型', '句子成分与句子分类', '十大词类与动词总览', '动词的分类', '16种时态终极详解', '易混易错对比索引'], icon: '🧠' },
@@ -33,6 +33,7 @@ const SITES = {
             { id: '04', title: '词类', folder: '04-词类', sections: ['01-冠词', '02-介词', '03-名词', '04-数词', '05-形容词', '06-副词', '07-连词', '08-叹词', '09-限定词', '10-代词'], sectionTitles: ['冠词', '介词', '名词', '数词', '形容词', '副词', '连词', '叹词', '限定词', '代词'], icon: '🔤' },
             { id: '05', title: '句子成分与分类', folder: '05-句子成分与分类', sections: ['01-句子成分总览', '02-被动语态', '03-倒装句', '04-强调', '05-省略', '06-主谓一致'], sectionTitles: ['句子成分总览', '被动语态', '倒装句', '强调', '省略', '主谓一致'], icon: '🏗️' },
         ],
+        features: ['home', 'tasks', 'course', 'extension', 'dashboard', 'vocabulary', 'ai_qa', 'badges', 'settings'],
     },
 };
 
@@ -95,16 +96,20 @@ function setSite(siteKey) {
     updateSidebarVisibility(key);
 }
 
-// 侧边栏站点隔离：根据当前站点显示/隐藏对应菜单项
+// 侧边栏功能隔离：根据当前站点的 features 列表显示/隐藏菜单项
 function updateSidebarVisibility(siteKey) {
-    document.querySelectorAll('.nav-item[data-site]').forEach(item => {
-        const requiredSite = item.dataset.site;
-        // 如果没有 data-site 或匹配当前站点则显示，否则隐藏
-        if (!requiredSite || requiredSite === siteKey) {
-            item.style.display = '';
-        } else {
-            item.style.display = 'none';
-        }
+    // 优先从 API 加载的站点配置读取 features（admin 后台修改后实时生效）
+    let features = [];
+    if (window.__currentUser && window.__currentUser.sites) {
+        const site = window.__currentUser.sites.find(s => s.key === siteKey);
+        features = site && site.features ? site.features : [];
+    }
+    if (!features.length && SITES[siteKey]) {
+        features = SITES[siteKey].features || [];
+    }
+    document.querySelectorAll('.nav-item[data-feature]').forEach(item => {
+        const feat = item.dataset.feature;
+        item.style.display = features.includes(feat) ? '' : 'none';
     });
 }
 

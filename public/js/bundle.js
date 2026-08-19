@@ -1,4 +1,4 @@
-/*! C语言知识库 - 合并脚本 | 生成时间: 2026-08-18T00:24:38.020Z */
+/*! C语言知识库 - 合并脚本 | 生成时间: 2026-08-19T11:52:00.979Z */
 (function(){
 "use strict";
 
@@ -98,7 +98,7 @@ const C_CHAPTERS = [
 // ==================== 站点分组 ====================
 // 键与后端 config/sites.js 中的 chaptersKey 对应
 const SITES = {
-    c: { chapters: C_CHAPTERS },
+    c: { chapters: C_CHAPTERS, features: ['home', 'tasks', 'course', 'extension', 'dashboard', 'roadmap', 'ai_qa', 'badges', 'settings'] },
     grammar: {
         chapters: [
             { id: '01', title: '重塑语法认知框架', folder: '01-重塑语法认知框架', sections: ['01-简单句与五大句型', '02-句子成分与句子分类', '03-十大词类与动词总览', '04-动词的分类', '05-16种时态终极详解', '06-易混易错对比索引'], sectionTitles: ['简单句与五大句型', '句子成分与句子分类', '十大词类与动词总览', '动词的分类', '16种时态终极详解', '易混易错对比索引'], icon: '🧠' },
@@ -107,6 +107,7 @@ const SITES = {
             { id: '04', title: '词类', folder: '04-词类', sections: ['01-冠词', '02-介词', '03-名词', '04-数词', '05-形容词', '06-副词', '07-连词', '08-叹词', '09-限定词', '10-代词'], sectionTitles: ['冠词', '介词', '名词', '数词', '形容词', '副词', '连词', '叹词', '限定词', '代词'], icon: '🔤' },
             { id: '05', title: '句子成分与分类', folder: '05-句子成分与分类', sections: ['01-句子成分总览', '02-被动语态', '03-倒装句', '04-强调', '05-省略', '06-主谓一致'], sectionTitles: ['句子成分总览', '被动语态', '倒装句', '强调', '省略', '主谓一致'], icon: '🏗️' },
         ],
+        features: ['home', 'tasks', 'course', 'extension', 'dashboard', 'vocabulary', 'ai_qa', 'badges', 'settings'],
     },
 };
 
@@ -166,6 +167,24 @@ function setSite(siteKey) {
     QUOTES = QUOTES_BY_SITE[key] || QUOTES_BY_SITE.c;
     const target = TARGET_DATE_BY_SITE[key] || TARGET_DATE_BY_SITE.c;
     TARGET_DATE = new Date(target + 'T00:00:00+08:00');
+    updateSidebarVisibility(key);
+}
+
+// 侧边栏功能隔离：根据当前站点的 features 列表显示/隐藏菜单项
+function updateSidebarVisibility(siteKey) {
+    // 优先从 API 加载的站点配置读取 features（admin 后台修改后实时生效）
+    let features = [];
+    if (window.__currentUser && window.__currentUser.sites) {
+        const site = window.__currentUser.sites.find(s => s.key === siteKey);
+        features = site && site.features ? site.features : [];
+    }
+    if (!features.length && SITES[siteKey]) {
+        features = SITES[siteKey].features || [];
+    }
+    document.querySelectorAll('.nav-item[data-feature]').forEach(item => {
+        const feat = item.dataset.feature;
+        item.style.display = features.includes(feat) ? '' : 'none';
+    });
 }
 
 // 倒计时目标（按站点）
@@ -467,6 +486,9 @@ const state = {
     sidebarCollapsed: false,
     focusMode: false,
     themeColor: '#6366f1',
+    gradientBg: 'none',
+    videoBg: '',
+    videoBgStatic: false,
     dailyGoal: 1,
     autoMarkCompleted: false,
     studyReminder: false,
@@ -505,6 +527,9 @@ function saveState() {
         sidebarCollapsed: state.sidebarCollapsed,
         focusMode: state.focusMode,
         themeColor: state.themeColor,
+        gradientBg: state.gradientBg,
+        videoBg: state.videoBg,
+        videoBgStatic: state.videoBgStatic,
         dailyGoal: state.dailyGoal,
         autoMarkCompleted: state.autoMarkCompleted,
         studyReminder: state.studyReminder,
@@ -521,11 +546,22 @@ function saveState() {
 }
 
 let saveStateDebounceTimer = null;
+let settingsToastTimer = null;
 function saveStateDebounced() {
     if (saveStateDebounceTimer) return;
     saveStateDebounceTimer = setTimeout(() => {
         saveState();
         saveStateDebounceTimer = null;
+        // 显示设置自动保存提示
+        var toast = document.getElementById('settingsSaveToast');
+        if (toast) {
+            if (settingsToastTimer) clearTimeout(settingsToastTimer);
+            toast.classList.add('show');
+            settingsToastTimer = setTimeout(function() {
+                toast.classList.remove('show');
+                settingsToastTimer = null;
+            }, 2500);
+        }
     }, 1000);
 }
 
@@ -918,6 +954,235 @@ function initSearch() {
             searchInput.focus();
         }
     });
+}
+
+// --- js/features/course-search.js ---
+/* ==================== 课程目录搜索 ==================== */
+/* 依赖：CHAPTERS（来自 data/chapters.js）、loadSection、switchView（来自 roadmap.js） */
+/**
+ * 初始化课程目录搜索功能
+ */
+function initCourseSearch() {
+    const searchInput = document.getElementById('courseSearchInput');
+    const searchResults = document.getElementById('courseSearchResults');
+    if (!searchInput || !searchResults) return;
+
+    // 构建搜索索引
+    const searchIndex = [];
+    CHAPTERS.forEach((ch, chIdx) => {
+        ch.sections.forEach((sec, secIdx) => {
+            searchIndex.push({
+                chIdx,
+                secIdx,
+                chTitle: ch.title,
+                secTitle: ch.sectionTitles[secIdx],
+                searchText: (ch.title + ' ' + ch.sectionTitles[secIdx] + ' ' + sec).toLowerCase(),
+            });
+        });
+    });
+
+    // 点击搜索结果跳转
+    searchResults.addEventListener('click', (e) => {
+        const item = e.target.closest('.course-search-item');
+        if (!item) return;
+        const chIdx = parseInt(item.dataset.chIdx);
+        const secIdx = parseInt(item.dataset.secIdx);
+        state.currentChapterIndex = chIdx;
+        state.currentSectionIndex = secIdx;
+        loadSection(chIdx, secIdx);
+        switchView('course');
+        searchResults.classList.remove('active');
+        searchInput.value = '';
+    });
+
+    // 输入联想
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.trim().toLowerCase();
+        if (query.length < 1) {
+            searchResults.classList.remove('active');
+            return;
+        }
+        const results = searchIndex.filter((item) => item.searchText.includes(query)).slice(0, 10);
+        if (results.length === 0) {
+            searchResults.innerHTML = '<div class="course-search-item" style="color:var(--text-muted);cursor:default">未找到结果</div>';
+        } else {
+            searchResults.innerHTML = results
+                .map(
+                    (r) => `
+                <div class="course-search-item" data-ch-idx="${r.chIdx}" data-sec-idx="${r.secIdx}">
+                  <span class="item-title">${r.secTitle}</span>
+                  <span class="item-sub">第${chapterNo(CHAPTERS[r.chIdx])}章</span>
+                </div>
+              `
+                )
+                .join('');
+        }
+        searchResults.classList.add('active');
+    });
+
+    // 点击外部关闭
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+            searchResults.classList.remove('active');
+        }
+    });
+}
+
+// --- js/features/video-background.js ---
+// ==================== 视频壁纸配置 ====================
+const VIDEO_BG_MAP = {
+    grassland: '/video/background/grassland.mp4',
+    forest:    '/video/background/forest.mp4',
+    city:      '/video/background/city.mp4',
+    gallery:   '/video/background/gallery.mp4',
+    flower:    '/video/background/flower.mp4',
+    gorge:     '/video/background/gorge.mp4',
+    'green-gallery': '/video/background/green gallery.mp4',
+};
+
+function initVideoBackground() {
+    // 背景模式标签页切换
+    const bgModeTabs = document.querySelectorAll('.bg-mode-tab');
+    const gradientArea = document.getElementById('gradientArea');
+    const videoArea = document.getElementById('videoArea');
+
+    bgModeTabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            const mode = tab.dataset.bgMode;
+            bgModeTabs.forEach(function (t) {
+                t.classList.toggle('active', t === tab);
+                t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+            });
+            if (mode === 'gradient') {
+                if (gradientArea) gradientArea.style.display = '';
+                if (videoArea) videoArea.style.display = 'none';
+            } else {
+                if (gradientArea) gradientArea.style.display = 'none';
+                if (videoArea) videoArea.style.display = '';
+            }
+        });
+    });
+
+    // 视频卡片选择
+    const videoCards = document.querySelectorAll('.video-card');
+    videoCards.forEach(function (card) {
+        card.addEventListener('click', function () {
+            const videoId = card.dataset.video;
+            state.videoBg = videoId;
+            state.gradientBg = 'none';
+            applyGradientBg('none');
+            applyVideoBackground();
+            videoCards.forEach(function (c) {
+                c.classList.toggle('active', c === card);
+                c.setAttribute('aria-pressed', c === card ? 'true' : 'false');
+            });
+            document.querySelectorAll('.gradient-option').forEach(function (opt) {
+                opt.classList.toggle('active', opt.dataset.gradient === 'none');
+            });
+            const videoTab = document.querySelector('.bg-mode-tab[data-bg-mode="video"]');
+            if (videoTab && !videoTab.classList.contains('active')) videoTab.click();
+            saveStateDebounced();
+        });
+        card.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+        });
+    });
+
+    // 动态/静态模式切换
+    const videoStaticToggle = document.getElementById('videoStaticMode');
+    const videoModeLabel = document.getElementById('videoModeLabel');
+    if (videoStaticToggle) {
+        videoStaticToggle.checked = state.videoBgStatic;
+        if (videoModeLabel) videoModeLabel.textContent = state.videoBgStatic ? '静态壁纸' : '动态播放';
+        videoStaticToggle.addEventListener('change', function () {
+            state.videoBgStatic = videoStaticToggle.checked;
+            if (videoModeLabel) videoModeLabel.textContent = state.videoBgStatic ? '静态壁纸' : '动态播放';
+            toggleVideoMode();
+            saveStateDebounced();
+        });
+    }
+
+    // 预览窗口 hover 时播放预览
+    const previewPlayer = document.getElementById('videoPreviewPlayer');
+    const previewEmpty = document.getElementById('videoPreviewEmpty');
+    const previewLabel = document.getElementById('videoPreviewLabel');
+    videoCards.forEach(function (card) {
+        card.addEventListener('mouseenter', function () {
+            const videoId = card.dataset.video;
+            const src = VIDEO_BG_MAP[videoId];
+            if (!src || !previewPlayer) return;
+            previewPlayer.src = src;
+            previewPlayer.style.display = '';
+            if (previewEmpty) previewEmpty.style.display = 'none';
+            if (previewLabel) {
+                previewLabel.textContent = card.querySelector('.video-card-name').textContent;
+                previewLabel.style.display = '';
+            }
+            previewPlayer.currentTime = 0;
+            previewPlayer.play().catch(function () {});
+        });
+        card.addEventListener('mouseleave', function () {
+            if (previewPlayer) { previewPlayer.pause(); previewPlayer.src = ''; previewPlayer.style.display = 'none'; }
+            if (previewEmpty) previewEmpty.style.display = '';
+            if (previewLabel) previewLabel.style.display = 'none';
+        });
+    });
+
+    // 恢复状态：同步UI
+    if (state.videoBg) {
+        const activeCard = document.querySelector('.video-card[data-video="' + state.videoBg + '"]');
+        if (activeCard) {
+            videoCards.forEach(function (c) {
+                c.classList.toggle('active', c === activeCard);
+                c.setAttribute('aria-pressed', c === activeCard ? 'true' : 'false');
+            });
+        }
+    }
+    if (state.videoBgStatic && videoStaticToggle) {
+        videoStaticToggle.checked = true;
+        if (videoModeLabel) videoModeLabel.textContent = '静态壁纸';
+    }
+
+    applyVideoBackground();
+}
+
+function applyVideoBackground() {
+    const videoEl = document.getElementById('videoBackground');
+    const overlay = document.getElementById('videoBgOverlay');
+    if (!videoEl) return;
+
+    videoEl.pause();
+    videoEl.src = '';
+    videoEl.classList.remove('active');
+
+    if (state.videoBg && VIDEO_BG_MAP[state.videoBg]) {
+        const src = VIDEO_BG_MAP[state.videoBg];
+        videoEl.src = src;
+        videoEl.load();
+        if (!state.videoBgStatic) {
+            videoEl.play().catch(function () {});
+        } else {
+            videoEl.currentTime = 0;
+            videoEl.pause();
+        }
+        videoEl.classList.add('active');
+        if (overlay) overlay.style.display = '';
+        document.body.classList.add('video-bg-active');
+    } else {
+        if (overlay) overlay.style.display = 'none';
+        document.body.classList.remove('video-bg-active');
+    }
+}
+
+function toggleVideoMode() {
+    const videoEl = document.getElementById('videoBackground');
+    if (!videoEl || !state.videoBg) return;
+    if (!state.videoBgStatic) {
+        videoEl.play().catch(function () {});
+    } else {
+        videoEl.currentTime = 0;
+        videoEl.pause();
+    }
 }
 
 // --- js/features/notes.js ---
@@ -1751,15 +2016,28 @@ function initKeyboardShortcuts() {
 /* 登录前页面是独立 EJS（views/login.ejs + login-page.js），不在此文件。
    本文件只负责 /app 应用壳的引导：已登录则初始化应用；未登录/会话过期跳回登录页。
    登录/注册/选站表单逻辑在 public/js/login-page.js。 */
-// ==================== 全局 401 拦截 ====================
+// ==================== 全局 401 拦截 + CSRF Token ====================
 // 任何 /api 请求返回 401（且非登录接口自身）时，会话过期 → 整页跳回登录页。
+// 同时自动为所有非 GET 请求附加 CSRF token。
 (function intercept401() {
-  const originalFetch = window.fetch;
+  var originalFetch = window.fetch;
   window.fetch = async function (...args) {
-    const res = await originalFetch.apply(this, args);
-    const url = String(args[0] || '');
+    var url = String(args[0] || '');
+    var options = args[1] || {};
+
+    // 为非 GET/HEAD/OPTIONS 请求自动附加 CSRF token
+    var method = (options.method || 'GET').toUpperCase();
+    if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) {
+      var csrfToken = sessionStorage.getItem('csrfToken');
+      if (csrfToken) {
+        options = Object.assign({}, options);
+        options.headers = Object.assign({}, options.headers || {});
+        options.headers['x-csrf-token'] = csrfToken;
+      }
+    }
+
+    var res = await originalFetch.call(this, url, options);
     if (res.status === 401 && url.indexOf('/api/auth/') === -1) {
-      // 已登录的 API 返回 401 = 会话失效，跳登录页（登录接口自身的 401 不触发）
       if (window.location.pathname !== '/') {
         window.location.replace('/');
       }
@@ -1885,6 +2163,9 @@ async function selectSite(siteKey) {
         window.__currentUser = me;
         applySiteConfig(me);
         if (typeof setSite === 'function') setSite(siteKey);
+        // 背单词功能仅限英语语法站点（可见性由 data-feature=vocabulary 控制）
+        var vocabEl = document.getElementById('vocabNavItem');
+        if (vocabEl) vocabEl.href = '/vocabulary.html?site=' + siteKey;
         // 强制标记脏数据，确保切换站点后章节树和仪表盘立即重建
         if (typeof chapterTreeDirty !== 'undefined') chapterTreeDirty = true;
         if (typeof dashboardDirty !== 'undefined') dashboardDirty = true;
@@ -1919,6 +2200,81 @@ async function handleLogout(e) {
   window.location.replace('/');
 }
 
+// ==================== 账号信息填充 ====================
+function populateSettingsAccountInfo(me) {
+    const user = (me && me.user) || {};
+    const displayNameEl = document.getElementById('settingsDisplayName');
+    const usernameEl = document.getElementById('settingsAccountUsername');
+    const emailEl = document.getElementById('settingsAccountEmail');
+    const siteEl = document.getElementById('settingsAccountSite');
+    const avatarImg = document.getElementById('settingsAccountAvatar');
+    const avatarFallback = document.getElementById('settingsAccountAvatarFallback');
+
+    if (displayNameEl) displayNameEl.textContent = user.displayName || user.username || '未知';
+
+    if (usernameEl) {
+        usernameEl.innerHTML = '<i class="fas fa-user-circle"></i> ' + (user.username || '');
+    }
+    if (emailEl) {
+        const email = user.email || '';
+        emailEl.innerHTML = '<i class="fas fa-envelope"></i> ' + email;
+    }
+    if (siteEl && me && me.sites) {
+        const currentSite = me.sites.find(function (s) { return s.key === me.site; });
+        siteEl.innerHTML = '<i class="fas fa-globe"></i> ' + (currentSite ? currentSite.name : me.site);
+    }
+
+    // 头像
+    if (user.avatar && avatarImg) {
+        avatarImg.src = user.avatar;
+        avatarImg.style.display = '';
+        if (avatarFallback) avatarFallback.style.display = 'none';
+    } else if (avatarFallback) {
+        avatarFallback.style.display = '';
+        if (avatarImg) avatarImg.style.display = 'none';
+    }
+
+    // 快捷按钮绑定
+    const openEditBtn = document.getElementById('openEditProfileBtn');
+    const quickPwdBtn = document.getElementById('quickChangePwdBtn');
+    const quickExportBtn = document.getElementById('quickExportBtn');
+    const quickImportBtn = document.getElementById('quickImportBtn');
+
+    if (openEditBtn) {
+        openEditBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            // 复用 editProfileModal
+            var modal = document.getElementById('editProfileModal');
+            if (modal && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                var m = new bootstrap.Modal(modal);
+                m.show();
+            }
+        });
+    }
+    if (quickPwdBtn) {
+        quickPwdBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var modal = document.getElementById('changePasswordModal');
+            if (modal && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                var m = new bootstrap.Modal(modal);
+                m.show();
+            }
+        });
+    }
+    if (quickExportBtn) {
+        quickExportBtn.addEventListener('click', function () {
+            var btn = document.getElementById('exportAllDataBtn');
+            if (btn) btn.click();
+        });
+    }
+    if (quickImportBtn) {
+        quickImportBtn.addEventListener('click', function () {
+            var btn = document.getElementById('importDataBtn');
+            if (btn) btn.click();
+        });
+    }
+}
+
 // ==================== /app 引导 ====================
 function initAuth() {
   // 应用前先应用深色偏好（扫描任意站点的状态 key，兼容旧版单一 key）
@@ -1943,8 +2299,15 @@ function initAuth() {
       window.__currentUser = me;
       // 下拉用户信息块
       renderDropdownUser();
+      // 填充设置页账号信息
+      populateSettingsAccountInfo(me);
       // 站点切换下拉绑定
       bindSiteSwitcher();
+      // 获取 CSRF token
+      fetch('/api/csrf-token')
+        .then(function (r) { return r.json(); })
+        .then(function (d) { if (d.csrfToken) sessionStorage.setItem('csrfToken', d.csrfToken); })
+        .catch(function () {});
       // 已登录但尚未选定站点（多站点账号）：服务端 /app 已允许进入（不强制选站），回登录页选站
       if (me.hasSite === false || !me.site) {
         if (me.sites && me.sites.length > 1) {
@@ -1959,6 +2322,9 @@ function initAuth() {
       }
       // 应用站点数据（章节/语录/目标）
       if (typeof setSite === 'function') setSite(me.site || 'c');
+      // 背单词功能仅限英语语法站点（可见性由 data-feature=vocabulary 控制）
+      var vocabEl = document.getElementById('vocabNavItem');
+      if (vocabEl) vocabEl.href = '/vocabulary.html?site=' + (me.site || 'c');
       // 应用站点标题/副标题/主题
       applySiteConfig(me);
       // 启动应用
@@ -4122,6 +4488,7 @@ function switchView(viewName) {
     if (viewName === 'course') {
         document.getElementById('coursePanel').classList.remove('hidden');
         document.getElementById('navPanel').classList.add('hidden');
+        initCourseSearch();
         if (state.currentChapterIndex === null && CHAPTERS.length > 0) {
             loadSection(0, 0);
         }
@@ -4466,10 +4833,33 @@ function initFontSize() {
 
 // ==================== 设置视图 ====================
 function initSettings() {
+    // 设置导航切换
+    const navItems = document.querySelectorAll('.settings-nav-item');
+    const sections = document.querySelectorAll('.settings-section');
+    navItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            const target = item.dataset.section;
+            navItems.forEach(function (n) {
+                n.classList.remove('active');
+                n.setAttribute('aria-selected', 'false');
+            });
+            sections.forEach(function (s) { s.classList.remove('active'); });
+            item.classList.add('active');
+            item.setAttribute('aria-selected', 'true');
+            document.getElementById('section-' + target)?.classList.add('active');
+        });
+    });
+
     const darkModeSetting = document.getElementById('darkModeSetting');
     if (darkModeSetting) {
         darkModeSetting.checked = state.darkMode;
-        darkModeSetting.onchange = function () { state.darkMode = darkModeSetting.checked; applyDarkMode(); saveStateDebounced(); };
+        darkModeSetting.setAttribute('aria-checked', state.darkMode);
+        darkModeSetting.onchange = function () {
+            state.darkMode = darkModeSetting.checked;
+            darkModeSetting.setAttribute('aria-checked', state.darkMode);
+            applyDarkMode();
+            saveStateDebounced();
+        };
     }
 
     const themeColorOptions = document.querySelectorAll('.theme-color-option');
@@ -4499,12 +4889,31 @@ function initSettings() {
         fontSizeSetting.oninput = function () { state.fontSize = parseInt(fontSizeSetting.value); applyFontSize(); saveStateDebounced(); };
     }
 
-
     const focusModeSetting = document.getElementById('focusModeSetting');
     if (focusModeSetting) { focusModeSetting.checked = state.focusMode; focusModeSetting.onchange = function () { state.focusMode = focusModeSetting.checked; applyFocusMode(); saveStateDebounced(); }; }
 
     const sidebarAutoCollapseSetting = document.getElementById('sidebarAutoCollapseSetting');
     if (sidebarAutoCollapseSetting) { sidebarAutoCollapseSetting.checked = state.sidebarAutoCollapse; sidebarAutoCollapseSetting.onchange = function () { state.sidebarAutoCollapse = sidebarAutoCollapseSetting.checked; saveStateDebounced(); }; }
+
+    // 渐变背景选择器
+    const gradientOptions = document.querySelectorAll('.gradient-option');
+    gradientOptions.forEach(function (opt) {
+        opt.classList.toggle('active', (opt.dataset.gradient || 'none') === (state.gradientBg || 'none'));
+        opt.addEventListener('click', function () {
+            const grad = opt.dataset.gradient || 'none';
+            state.gradientBg = grad;
+            applyGradientBg(grad);
+            gradientOptions.forEach(function (o) { o.classList.toggle('active', o === opt); });
+            document.querySelectorAll('.video-card').forEach(function (c) {
+                c.classList.remove('active');
+                c.setAttribute('aria-pressed', 'false');
+            });
+            state.videoBg = '';
+            const gradientTab = document.querySelector('.bg-mode-tab[data-bg-mode="gradient"]');
+            if (gradientTab) gradientTab.click();
+            saveStateDebounced();
+        });
+    });
 
     const dailyGoalSetting = document.getElementById('dailyGoalSetting');
     if (dailyGoalSetting) { dailyGoalSetting.value = state.dailyGoal; dailyGoalSetting.onchange = function () { state.dailyGoal = parseInt(dailyGoalSetting.value) || 1; saveStateDebounced(); }; }
@@ -4525,6 +4934,41 @@ function initSettings() {
     document.getElementById('importDataFile')?.addEventListener('change', importData);
     document.getElementById('dataStatsBtn')?.addEventListener('click', showDataStats);
     document.getElementById('clearNotesBtn')?.addEventListener('click', clearNotes);
+
+    // 视频壁纸初始化
+    if (typeof initVideoBackground === 'function') initVideoBackground();
+}
+
+// ==================== 深色模式 ====================
+function applyDarkMode() {
+    if (state.darkMode) {
+        document.body.classList.add('dark');
+        var icon = document.querySelector('#darkModeToggle i');
+        if (icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
+    } else {
+        document.body.classList.remove('dark');
+        var icon = document.querySelector('#darkModeToggle i');
+        if (icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
+    }
+    var darkModeSetting = document.getElementById('darkModeSetting');
+    if (darkModeSetting) {
+        darkModeSetting.checked = state.darkMode;
+        darkModeSetting.setAttribute('aria-checked', state.darkMode);
+    }
+}
+
+// ==================== 渐变背景 ====================
+function applyGradientBg(type) {
+    var body = document.body;
+    body.className = body.className.replace(/gradient-\S+/g, '').trim();
+    if (type && type !== 'none') {
+        body.classList.add('gradient-' + type);
+    }
+    // 选择渐变时自动关闭视频壁纸
+    if (type && type !== 'none' && state.videoBg) {
+        state.videoBg = '';
+        applyVideoBackground();
+    }
 }
 
 // ==================== 主题色 ====================
@@ -4651,10 +5095,10 @@ function bindEvents() {
     document.getElementById('closeOutline')?.addEventListener('click', function () { document.getElementById('outlinePanel')?.classList.remove('visible'); });
 
     document.getElementById('focusModeBtn')?.addEventListener('click', function () {
-        state.focusMode = !state.focusMode;
-        applyFocusMode();
-        saveStateDebounced();
-        showToast(state.focusMode ? '🔍 聚焦模式开启' : '聚焦模式关闭');
+        // 课程页面按钮：打开全屏专注时钟（与主页按钮行为一致）
+        if (window.FocusMode) {
+            window.FocusMode.open();
+        }
     });
 
     document.getElementById('randomSectionBtn')?.addEventListener('click', function () {
@@ -4779,6 +5223,8 @@ function exportNotes() {
 // ==================== 应用初始化 ====================
 async function init() {
     loadState();
+    applyGradientBg(state.gradientBg);
+    applyVideoBackground();
     // 等待题库加载完成再初始化 UI，确保游戏节点点击时题库已可用
     await loadQuizzes();
     chapterTreeDirty = true;
@@ -7019,6 +7465,332 @@ async function init() {
     }
   }
 
+})();
+
+// --- js/focus-mode.js ---
+/* ==================== 专注模式 — loc.html 视觉 · 纯JS实现 ==================== */
+(function () {
+  'use strict';
+
+  var overlay, timerInterval, countdownSeconds = 25 * 60, isRunning = false;
+  var clockInterval = null;
+  var prevDigits = { h: '--', m: '--', s: '--' };
+
+  function createOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.className = 'focus-overlay';
+    overlay.innerHTML =
+      '<div class="focus-home-btn" id="focusHomeBtn" title="返回主页"><i class="fas fa-home"></i></div>' +
+      '<div class="container">' +
+        '<div class="main-title">⏳ 专注时钟</div>' +
+        '<div class="clock-scale"><div class="focus-flip-clock" id="focusClock"></div></div>' +
+        '<div class="quote">"<em>专注当下，成就未来</em>"</div>' +
+        '<div class="control-panel">' +
+          '<div class="countdown-display" id="countdownDisplay">25:00 <span class="unit">分钟</span></div>' +
+          '<div class="control-group">' +
+            '<button class="btn btn-icon" id="btnMinus">−</button>' +
+            '<input type="number" class="control-input" id="minutesInput" value="25" min="1" max="60" />' +
+            '<button class="btn btn-icon" id="btnPlus">+</button>' +
+            '<span class="control-label" style="margin-left:4px;">分钟</span>' +
+          '</div>' +
+          '<div class="control-group">' +
+            '<button class="btn btn-primary" id="btnStartPause">开始</button>' +
+            '<button class="btn btn-danger" id="btnReset">重置</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="fullscreen-wrap">' +
+          '<button class="btn-fullscreen" id="fullscreenButton">⛶ 全屏</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    // 事件绑定
+    document.getElementById('btnStartPause').addEventListener('click', toggleTimer);
+    document.getElementById('btnReset').addEventListener('click', resetTimer);
+    document.getElementById('btnMinus').addEventListener('click', minusTimer);
+    document.getElementById('btnPlus').addEventListener('click', plusTimer);
+    document.getElementById('minutesInput').addEventListener('change', syncFromInput);
+    document.getElementById('fullscreenButton').addEventListener('click', toggleFullscreen);
+
+    // 返回主页
+    var homeBtn = document.getElementById('focusHomeBtn');
+    if (homeBtn) homeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      // 直接跳转，不先 close()，避免跳转前原页面闪现
+      window.location.href = '/';
+    });
+
+    // 注意：不绑定"点击空白退出"——避免误触退出专注模式
+
+    // ESC关闭
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && overlay.classList.contains('show')) close();
+    });
+
+    updateCountdownDisplay(countdownSeconds);
+  }
+
+  // ===== 翻页时钟（自研，上/下半切分同一数字，仅变化时翻页） =====
+  function digitHtml(d) {
+    return '<div class="focus-digit" data-d="' + d + '">' +
+      '<div class="focus-half top"><span class="focus-num">' + d + '</span></div>' +
+      '<div class="focus-half bottom"><span class="focus-num">' + d + '</span></div>' +
+      '</div>';
+  }
+
+  function colonHtml() {
+    return '<span class="focus-colon"></span>';
+  }
+
+  function pairHtml(str) {
+    return '<span class="focus-flip-group">' + digitHtml(str[0]) + digitHtml(str[1]) + '</span>';
+  }
+
+  function renderClockFace() {
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2, '0');
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var s = String(now.getSeconds()).padStart(2, '0');
+    var wrap = document.getElementById('focusClock');
+    if (!wrap) return;
+    wrap.innerHTML = pairHtml(h) + colonHtml() + pairHtml(m) + colonHtml() + pairHtml(s);
+    prevDigits = { h: h, m: m, s: s };
+  }
+
+  // 仅当数字变化时，在对应位子上生成翻页动画层（标准FlipClock双翻页层）
+  function animateFlip(pos, newVal) {
+    var wrap = document.getElementById('focusClock');
+    if (!wrap) return;
+    var digits = wrap.querySelectorAll('.focus-digit');
+    if (!digits[pos]) return;
+    var digit = digits[pos];
+
+    var halfTop = digit.querySelector('.focus-half.top .focus-num');
+    var halfBottom = digit.querySelector('.focus-half.bottom .focus-num');
+    var oldVal = digit.dataset.d;
+
+    // 上半翻页层：旧值（0° → -90°），立即翻下
+    var flapTop = document.createElement('div');
+    flapTop.className = 'focus-flap top flipping-top';
+    flapTop.innerHTML = '<span class="focus-num">' + oldVal + '</span>';
+    digit.appendChild(flapTop);
+
+    // 下半翻页层：新值（90° → 0°，延迟 0.25s 等上半翻完）
+    var flapBottom = document.createElement('div');
+    flapBottom.className = 'focus-flap bottom flipping-bottom';
+    flapBottom.innerHTML = '<span class="focus-num">' + newVal + '</span>';
+    digit.appendChild(flapBottom);
+
+    // 动画一开始就把上半静态格更新为新值：
+    // 上半翻页层（旧值）会覆盖它，翻页层翻走后露出的即新值，无缝衔接
+    if (halfTop) halfTop.textContent = newVal;
+
+    // 动画结束（0.5s）后：下半静态格更新为新值、清理翻页层
+    setTimeout(function() {
+      if (halfBottom) halfBottom.textContent = newVal;
+      if (flapTop.parentNode) flapTop.parentNode.removeChild(flapTop);
+      if (flapBottom.parentNode) flapBottom.parentNode.removeChild(flapBottom);
+      digit.dataset.d = newVal;
+    }, 600);
+  }
+
+  function updateClock() {
+    var wrap = document.getElementById('focusClock');
+    if (!wrap) return;
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2, '0');
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var s = String(now.getSeconds()).padStart(2, '0');
+
+    // 秒位（4,5）
+    if (s[0] !== prevDigits.s[0]) animateFlip(4, s[0]);
+    if (s[1] !== prevDigits.s[1]) animateFlip(5, s[1]);
+    // 分位（2,3）
+    if (m[0] !== prevDigits.m[0]) animateFlip(2, m[0]);
+    if (m[1] !== prevDigits.m[1]) animateFlip(3, m[1]);
+    // 时位（0,1）
+    if (h[0] !== prevDigits.h[0]) animateFlip(0, h[0]);
+    if (h[1] !== prevDigits.h[1]) animateFlip(1, h[1]);
+
+    prevDigits = { h: h, m: m, s: s };
+  }
+
+  function startClock() {
+    renderClockFace();
+    if (clockInterval) clearInterval(clockInterval);
+    clockInterval = setInterval(updateClock, 1000);
+  }
+
+  function stopClock() {
+    if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
+  }
+
+  // ===== 打开/关闭 =====
+  function open() {
+    createOverlay();
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    startClock();
+  }
+
+  function close() {
+    if (!overlay) return;
+    overlay.classList.remove('show');
+    stopClock();
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    isRunning = false;
+    document.body.style.overflow = '';
+  }
+
+  function toggle() {
+    if (overlay && overlay.classList.contains('show')) close();
+    else open();
+  }
+
+  // ===== 倒计时 =====
+  function toggleTimer() {
+    var btn = document.getElementById('btnStartPause');
+    if (!isRunning) {
+      syncFromInput();
+      if (countdownSeconds <= 0) return;
+      isRunning = true;
+      btn.textContent = '暂停';
+      btn.classList.add('btn-primary');
+      document.getElementById('minutesInput').disabled = true;
+      document.getElementById('btnMinus').disabled = true;
+      document.getElementById('btnPlus').disabled = true;
+      timerInterval = setInterval(function() {
+        countdownSeconds--;
+        updateCountdownDisplay(countdownSeconds);
+        if (countdownSeconds <= 0) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          isRunning = false;
+          btn.textContent = '完成';
+          btn.disabled = true;
+          document.getElementById('minutesInput').disabled = false;
+          document.getElementById('btnMinus').disabled = false;
+          document.getElementById('btnPlus').disabled = false;
+          playSound();
+        }
+      }, 1000);
+    } else {
+      pauseTimer();
+    }
+  }
+
+  function pauseTimer() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    isRunning = false;
+    var btn = document.getElementById('btnStartPause');
+    btn.textContent = '继续';
+    document.getElementById('minutesInput').disabled = false;
+    document.getElementById('btnMinus').disabled = false;
+    document.getElementById('btnPlus').disabled = false;
+  }
+
+  function resetTimer() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    isRunning = false;
+    var btn = document.getElementById('btnStartPause');
+    var input = document.getElementById('minutesInput');
+    var val = parseInt(input.value) || 25;
+    val = Math.min(Math.max(val, 1), 60);
+    input.value = val;
+    countdownSeconds = val * 60;
+    updateCountdownDisplay(countdownSeconds);
+    btn.textContent = '开始';
+    btn.disabled = false;
+    btn.classList.remove('btn-primary');
+    input.disabled = false;
+    document.getElementById('btnMinus').disabled = false;
+    document.getElementById('btnPlus').disabled = false;
+  }
+
+  function minusTimer() {
+    if (isRunning) return;
+    var input = document.getElementById('minutesInput');
+    var val = parseInt(input.value) || 25;
+    val = Math.max(val - 1, 1);
+    input.value = val;
+    countdownSeconds = val * 60;
+    updateCountdownDisplay(countdownSeconds);
+  }
+
+  function plusTimer() {
+    if (isRunning) return;
+    var input = document.getElementById('minutesInput');
+    var val = parseInt(input.value) || 25;
+    val = Math.min(val + 1, 60);
+    input.value = val;
+    countdownSeconds = val * 60;
+    updateCountdownDisplay(countdownSeconds);
+  }
+
+  function syncFromInput() {
+    var input = document.getElementById('minutesInput');
+    var val = parseInt(input.value) || 25;
+    val = Math.min(Math.max(val, 1), 60);
+    input.value = val;
+    if (!isRunning && !timerInterval) {
+      countdownSeconds = val * 60;
+      updateCountdownDisplay(countdownSeconds);
+    }
+  }
+
+  function updateCountdownDisplay(seconds) {
+    var display = document.getElementById('countdownDisplay');
+    if (!display) return;
+    var mins = Math.floor(seconds / 60);
+    var secs = seconds % 60;
+    display.innerHTML = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0') + ' <span class="unit">分钟</span>';
+  }
+
+  function playSound() {
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      [880, 1100].forEach(function(freq, i) {
+        setTimeout(function() {
+          var o = ctx.createOscillator(), g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.value = freq; o.type = 'sine'; g.gain.value = 0.3;
+          o.start(); o.stop(ctx.currentTime + 0.3);
+        }, i * 400);
+      });
+    } catch (e) {}
+    setTimeout(function() { close(); }, 3000);
+  }
+
+  function toggleFullscreen() {
+    var btn = document.getElementById('fullscreenButton');
+    try {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+        btn.textContent = '⛶ 退出全屏';
+      } else {
+        document.exitFullscreen();
+        btn.textContent = '⛶ 全屏';
+      }
+    } catch (e) {}
+  }
+  document.addEventListener('fullscreenchange', function() {
+    var btn = document.getElementById('fullscreenButton');
+    if (btn) btn.textContent = document.fullscreenElement ? '⛶ 退出全屏' : '⛶ 全屏';
+  });
+
+  function bindButton() {
+    var btn = document.getElementById('focusClockBtn');
+    if (btn) btn.addEventListener('click', function(e) { e.preventDefault(); toggle(); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindButton);
+  } else {
+    bindButton();
+  }
+
+  window.FocusMode = { open: open, close: close, toggle: toggle };
 })();
 
 

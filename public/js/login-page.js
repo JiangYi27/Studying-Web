@@ -225,7 +225,6 @@
   registerForm.addEventListener('submit', function (e) {
     e.preventDefault();
     var username = document.getElementById('regUsername').value.trim();
-    var displayName = document.getElementById('regDisplayName').value.trim();
     var email = document.getElementById('regEmail').value.trim();
     var password = document.getElementById('regPassword').value;
     var confirm = document.getElementById('regConfirm').value;
@@ -275,7 +274,7 @@
       registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> 创建我的账号';
       setNotice('registerNotice', '网络错误，请重试');
     };
-    xhr.send(JSON.stringify({ username: username, password: password, email: email, displayName: displayName }));
+    xhr.send(JSON.stringify({ username: username, password: password, email: email }));
   });
 
   /* ─── 忘记密码 ─── */

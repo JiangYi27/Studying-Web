@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const crypto = require('node:crypto');
 const config = require('../config');
 const store = require('../config/store');
-const { sendResetEmail } = require('../config/mailer');
+const { sendWelcomeEmail, sendResetEmail } = require('../config/mailer');
 
 // 新注册账号默认开放全部学习站点
 const REGISTER_DEFAULT_SITES = config.sites.map((s) => s.key);
@@ -90,6 +90,7 @@ function expandSites(keys) {
       logoText: s.logoText,
       logo: s.logo,
       targetDate: s.targetDate,
+      features: s.features || [],
     }));
 }
 
@@ -200,6 +201,11 @@ router.post('/register', (req, res) => {
   if (!account) {
     return res.status(400).json({ error: '注册失败，请稍后重试' });
   }
+
+  // 注册成功，发送欢迎邮件（异步，不阻塞响应）
+  sendWelcomeEmail(emailClean, displayNameClean).catch((err) => {
+    console.error('[register] 发送欢迎邮件失败:', err);
+  });
 
   // 注册成功，不自动登录。让用户手动登录，确保 session.site 正确。
   res.json({ success: true, message: '注册成功，请登录' });

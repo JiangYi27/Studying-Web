@@ -151,12 +151,9 @@ async function selectSite(siteKey) {
         window.__currentUser = me;
         applySiteConfig(me);
         if (typeof setSite === 'function') setSite(siteKey);
-        // 背单词功能仅限英语语法站点
+        // 背单词功能仅限英语语法站点（可见性由 data-feature=vocabulary 控制）
         var vocabEl = document.getElementById('vocabNavItem');
-        if (vocabEl) {
-          vocabEl.style.display = (siteKey === 'grammar') ? '' : 'none';
-          vocabEl.href = '/vocabulary.html?site=' + siteKey;
-        }
+        if (vocabEl) vocabEl.href = '/vocabulary.html?site=' + siteKey;
         // 强制标记脏数据，确保切换站点后章节树和仪表盘立即重建
         if (typeof chapterTreeDirty !== 'undefined') chapterTreeDirty = true;
         if (typeof dashboardDirty !== 'undefined') dashboardDirty = true;
@@ -191,6 +188,81 @@ async function handleLogout(e) {
   window.location.replace('/');
 }
 
+// ==================== 账号信息填充 ====================
+function populateSettingsAccountInfo(me) {
+    const user = (me && me.user) || {};
+    const displayNameEl = document.getElementById('settingsDisplayName');
+    const usernameEl = document.getElementById('settingsAccountUsername');
+    const emailEl = document.getElementById('settingsAccountEmail');
+    const siteEl = document.getElementById('settingsAccountSite');
+    const avatarImg = document.getElementById('settingsAccountAvatar');
+    const avatarFallback = document.getElementById('settingsAccountAvatarFallback');
+
+    if (displayNameEl) displayNameEl.textContent = user.displayName || user.username || '未知';
+
+    if (usernameEl) {
+        usernameEl.innerHTML = '<i class="fas fa-user-circle"></i> ' + (user.username || '');
+    }
+    if (emailEl) {
+        const email = user.email || '';
+        emailEl.innerHTML = '<i class="fas fa-envelope"></i> ' + email;
+    }
+    if (siteEl && me && me.sites) {
+        const currentSite = me.sites.find(function (s) { return s.key === me.site; });
+        siteEl.innerHTML = '<i class="fas fa-globe"></i> ' + (currentSite ? currentSite.name : me.site);
+    }
+
+    // 头像
+    if (user.avatar && avatarImg) {
+        avatarImg.src = user.avatar;
+        avatarImg.style.display = '';
+        if (avatarFallback) avatarFallback.style.display = 'none';
+    } else if (avatarFallback) {
+        avatarFallback.style.display = '';
+        if (avatarImg) avatarImg.style.display = 'none';
+    }
+
+    // 快捷按钮绑定
+    const openEditBtn = document.getElementById('openEditProfileBtn');
+    const quickPwdBtn = document.getElementById('quickChangePwdBtn');
+    const quickExportBtn = document.getElementById('quickExportBtn');
+    const quickImportBtn = document.getElementById('quickImportBtn');
+
+    if (openEditBtn) {
+        openEditBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            // 复用 editProfileModal
+            var modal = document.getElementById('editProfileModal');
+            if (modal && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                var m = new bootstrap.Modal(modal);
+                m.show();
+            }
+        });
+    }
+    if (quickPwdBtn) {
+        quickPwdBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var modal = document.getElementById('changePasswordModal');
+            if (modal && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                var m = new bootstrap.Modal(modal);
+                m.show();
+            }
+        });
+    }
+    if (quickExportBtn) {
+        quickExportBtn.addEventListener('click', function () {
+            var btn = document.getElementById('exportAllDataBtn');
+            if (btn) btn.click();
+        });
+    }
+    if (quickImportBtn) {
+        quickImportBtn.addEventListener('click', function () {
+            var btn = document.getElementById('importDataBtn');
+            if (btn) btn.click();
+        });
+    }
+}
+
 // ==================== /app 引导 ====================
 function initAuth() {
   // 应用前先应用深色偏好（扫描任意站点的状态 key，兼容旧版单一 key）
@@ -215,6 +287,8 @@ function initAuth() {
       window.__currentUser = me;
       // 下拉用户信息块
       renderDropdownUser();
+      // 填充设置页账号信息
+      populateSettingsAccountInfo(me);
       // 站点切换下拉绑定
       bindSiteSwitcher();
       // 获取 CSRF token
@@ -236,12 +310,9 @@ function initAuth() {
       }
       // 应用站点数据（章节/语录/目标）
       if (typeof setSite === 'function') setSite(me.site || 'c');
-      // 背单词功能仅限英语语法站点
+      // 背单词功能仅限英语语法站点（可见性由 data-feature=vocabulary 控制）
       var vocabEl = document.getElementById('vocabNavItem');
-      if (vocabEl) {
-        vocabEl.style.display = (me.site === 'grammar') ? '' : 'none';
-        vocabEl.href = '/vocabulary.html?site=' + (me.site || 'c');
-      }
+      if (vocabEl) vocabEl.href = '/vocabulary.html?site=' + (me.site || 'c');
       // 应用站点标题/副标题/主题
       applySiteConfig(me);
       // 启动应用

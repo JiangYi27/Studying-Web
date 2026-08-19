@@ -32,6 +32,9 @@ app.use(helmet({
       imgSrc: ["'self'", "data:", "blob:", "https:"],
       mediaSrc: ["'self'"],
       connectSrc: ["'self'", "https://cdn.jsdelivr.net"],
+      // 关闭 upgrade-insecure-requests：纯 HTTP 阶段避免浏览器把资源强制升级为 https 导致加载失败；
+      // 后续配置 Nginx + HTTPS 后由反向代理统一处理，无需此指令。
+      upgradeInsecureRequests: null,
     },
   },
   crossOriginEmbedderPolicy: false, // 允许加载跨域视频

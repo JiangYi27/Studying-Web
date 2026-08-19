@@ -28,6 +28,32 @@ function getTransporter() {
 }
 
 /**
+ * 发送欢迎注册邮件
+ * @param {string} to - 收件人邮箱
+ * @param {string} username - 用户名
+ */
+async function sendWelcomeEmail(to, username) {
+  const transport = getTransporter();
+  if (!transport) {
+    console.log('[mailer] 欢迎邮件（SMTP 未配置，仅日志）:', { to, username });
+    return;
+  }
+  await transport.sendMail({
+    from: process.env.SMTP_FROM || '"研习室" <noreply@example.com>',
+    to,
+    subject: '研习室 - 注册成功',
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 480px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #152238;">欢迎加入研习室，${username}！</h2>
+        <p style="color: #667085; line-height: 1.6;">您的账号已注册成功，现在可以登录研习室开始学习了。</p>
+        <p style="color: #667085; line-height: 1.6;">研习室支持多站点学习，您可以在登录后选择想要学习的站点，开始您的学习之旅。</p>
+        <p style="color: #98a1ab; font-size: 12px; margin-top: 24px;">如果这不是您本人的操作，请忽略此邮件。</p>
+      </div>
+    `,
+  });
+}
+
+/**
  * 发送密码重置邮件
  * @param {string} to - 收件人邮箱
  * @param {string} resetLink - 重置链接
@@ -57,4 +83,4 @@ async function sendResetEmail(to, resetLink) {
   });
 }
 
-module.exports = { sendResetEmail };
+module.exports = { sendWelcomeEmail, sendResetEmail };

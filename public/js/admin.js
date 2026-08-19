@@ -488,6 +488,18 @@
       '<td><div class="action-btns"><button class="action-btn" title="编辑" onclick="AdminUI.editSite(\''+esc(s.key)+'\')"><i class="fas fa-edit"></i></button><button class="action-btn danger" title="删除" onclick="AdminUI.deleteSite(\''+esc(s.key)+'\')"><i class="fas fa-trash"></i></button></div></td></tr>';
     }).join('');
   }
+  var ALL_FEATURES = [
+    { key: 'home', label: '主页' },
+    { key: 'tasks', label: '任务清单' },
+    { key: 'course', label: '课程学习' },
+    { key: 'extension', label: '拓展知识' },
+    { key: 'dashboard', label: '学习记录' },
+    { key: 'roadmap', label: '实战闯关' },
+    { key: 'vocabulary', label: '背单词' },
+    { key: 'ai_qa', label: 'AI答疑' },
+    { key: 'badges', label: '我的成就' },
+    { key: 'settings', label: '设置' },
+  ];
   function openSiteModal(site) {
     var m = $('siteModal');
     $('editSiteKey').value = site ? site.key : '';
@@ -496,16 +508,21 @@
     $('siteSubtitle').value = site ? (site.subtitle||'') : '';
     $('siteTheme').value = site ? (site.theme||'#6366f1') : '#6366f1';
     $('siteKey').disabled = !!site;
+    var feats = site && site.features ? site.features : [];
+    $('siteFeaturesCheckboxes').innerHTML = ALL_FEATURES.map(function(f) {
+      return '<label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px;"><input type="checkbox" class="site-feat-check" value="'+esc(f.key)+'"'+(feats.includes(f.key)?' checked':'')+'>'+esc(f.label)+'</label>';
+    }).join('');
     m.classList.add('show');
   }
   async function saveSite() {
     var key = $('editSiteKey').value, name = $('siteName').value.trim(), siteKey = $('siteKey').value.trim();
     var subtitle = $('siteSubtitle').value.trim(), theme = $('siteTheme').value;
+    var features = Array.from(document.querySelectorAll('.site-feat-check:checked')).map(function(c){ return c.value; });
     if (!name || !siteKey) { showToast('请填写完整信息', 'error'); return; }
     $('saveSiteBtn').disabled = true;
     try {
       var url = key ? '/api/admin/sites/' + key : '/api/admin/sites';
-      var res = await fetch(url, { method: key ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name, key: siteKey, subtitle: subtitle, theme: theme }) });
+      var res = await fetch(url, { method: key ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name, key: siteKey, subtitle: subtitle, theme: theme, features: features }) });
       var data = await res.json();
       if (data.success) { showToast(key ? '更新成功' : '创建成功', 'success'); closeSiteModal(); loadSites(); }
       else showToast(data.error || '操作失败', 'error');

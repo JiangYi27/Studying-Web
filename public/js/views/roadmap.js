@@ -481,10 +481,33 @@ function initFontSize() {
 
 // ==================== 设置视图 ====================
 function initSettings() {
+    // 设置导航切换
+    const navItems = document.querySelectorAll('.settings-nav-item');
+    const sections = document.querySelectorAll('.settings-section');
+    navItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+            const target = item.dataset.section;
+            navItems.forEach(function (n) {
+                n.classList.remove('active');
+                n.setAttribute('aria-selected', 'false');
+            });
+            sections.forEach(function (s) { s.classList.remove('active'); });
+            item.classList.add('active');
+            item.setAttribute('aria-selected', 'true');
+            document.getElementById('section-' + target)?.classList.add('active');
+        });
+    });
+
     const darkModeSetting = document.getElementById('darkModeSetting');
     if (darkModeSetting) {
         darkModeSetting.checked = state.darkMode;
-        darkModeSetting.onchange = function () { state.darkMode = darkModeSetting.checked; applyDarkMode(); saveStateDebounced(); };
+        darkModeSetting.setAttribute('aria-checked', state.darkMode);
+        darkModeSetting.onchange = function () {
+            state.darkMode = darkModeSetting.checked;
+            darkModeSetting.setAttribute('aria-checked', state.darkMode);
+            applyDarkMode();
+            saveStateDebounced();
+        };
     }
 
     const themeColorOptions = document.querySelectorAll('.theme-color-option');
@@ -514,12 +537,31 @@ function initSettings() {
         fontSizeSetting.oninput = function () { state.fontSize = parseInt(fontSizeSetting.value); applyFontSize(); saveStateDebounced(); };
     }
 
-
     const focusModeSetting = document.getElementById('focusModeSetting');
     if (focusModeSetting) { focusModeSetting.checked = state.focusMode; focusModeSetting.onchange = function () { state.focusMode = focusModeSetting.checked; applyFocusMode(); saveStateDebounced(); }; }
 
     const sidebarAutoCollapseSetting = document.getElementById('sidebarAutoCollapseSetting');
     if (sidebarAutoCollapseSetting) { sidebarAutoCollapseSetting.checked = state.sidebarAutoCollapse; sidebarAutoCollapseSetting.onchange = function () { state.sidebarAutoCollapse = sidebarAutoCollapseSetting.checked; saveStateDebounced(); }; }
+
+    // 渐变背景选择器
+    const gradientOptions = document.querySelectorAll('.gradient-option');
+    gradientOptions.forEach(function (opt) {
+        opt.classList.toggle('active', (opt.dataset.gradient || 'none') === (state.gradientBg || 'none'));
+        opt.addEventListener('click', function () {
+            const grad = opt.dataset.gradient || 'none';
+            state.gradientBg = grad;
+            applyGradientBg(grad);
+            gradientOptions.forEach(function (o) { o.classList.toggle('active', o === opt); });
+            document.querySelectorAll('.video-card').forEach(function (c) {
+                c.classList.remove('active');
+                c.setAttribute('aria-pressed', 'false');
+            });
+            state.videoBg = '';
+            const gradientTab = document.querySelector('.bg-mode-tab[data-bg-mode="gradient"]');
+            if (gradientTab) gradientTab.click();
+            saveStateDebounced();
+        });
+    });
 
     const dailyGoalSetting = document.getElementById('dailyGoalSetting');
     if (dailyGoalSetting) { dailyGoalSetting.value = state.dailyGoal; dailyGoalSetting.onchange = function () { state.dailyGoal = parseInt(dailyGoalSetting.value) || 1; saveStateDebounced(); }; }
@@ -540,6 +582,41 @@ function initSettings() {
     document.getElementById('importDataFile')?.addEventListener('change', importData);
     document.getElementById('dataStatsBtn')?.addEventListener('click', showDataStats);
     document.getElementById('clearNotesBtn')?.addEventListener('click', clearNotes);
+
+    // 视频壁纸初始化
+    if (typeof initVideoBackground === 'function') initVideoBackground();
+}
+
+// ==================== 深色模式 ====================
+function applyDarkMode() {
+    if (state.darkMode) {
+        document.body.classList.add('dark');
+        var icon = document.querySelector('#darkModeToggle i');
+        if (icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
+    } else {
+        document.body.classList.remove('dark');
+        var icon = document.querySelector('#darkModeToggle i');
+        if (icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
+    }
+    var darkModeSetting = document.getElementById('darkModeSetting');
+    if (darkModeSetting) {
+        darkModeSetting.checked = state.darkMode;
+        darkModeSetting.setAttribute('aria-checked', state.darkMode);
+    }
+}
+
+// ==================== 渐变背景 ====================
+function applyGradientBg(type) {
+    var body = document.body;
+    body.className = body.className.replace(/gradient-\S+/g, '').trim();
+    if (type && type !== 'none') {
+        body.classList.add('gradient-' + type);
+    }
+    // 选择渐变时自动关闭视频壁纸
+    if (type && type !== 'none' && state.videoBg) {
+        state.videoBg = '';
+        applyVideoBackground();
+    }
 }
 
 // ==================== 主题色 ====================
@@ -794,6 +871,8 @@ function exportNotes() {
 // ==================== 应用初始化 ====================
 async function init() {
     loadState();
+    applyGradientBg(state.gradientBg);
+    applyVideoBackground();
     // 等待题库加载完成再初始化 UI，确保游戏节点点击时题库已可用
     await loadQuizzes();
     chapterTreeDirty = true;
