@@ -1,32 +1,20 @@
-/* ==================== 专注模式 — loc.html 原版实现 ==================== */
+/* ==================== 专注模式 — loc.html 视觉 · 纯JS实现 ==================== */
 (function () {
   'use strict';
 
-  var overlay, clock, timerInterval, countdownSeconds = 25 * 60, isRunning = false;
-
-  function loadDeps() {
-    return new Promise(function(resolve) {
-      if (window.jQuery && window.jQuery.fn.FlipClock) { resolve(); return; }
-      var jq = document.createElement('script');
-      jq.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js';
-      document.head.appendChild(jq);
-      jq.onload = function() {
-        var fc = document.createElement('script');
-        fc.src = 'https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.js';
-        document.head.appendChild(fc);
-        fc.onload = resolve;
-      };
-    });
-  }
+  var overlay, timerInterval, countdownSeconds = 25 * 60, isRunning = false;
+  var clockInterval = null;
+  var prevDigits = { h: '--', m: '--', s: '--' };
 
   function createOverlay() {
     if (overlay) return;
     overlay = document.createElement('div');
     overlay.className = 'focus-overlay';
     overlay.innerHTML =
+      '<div class="focus-home-btn" id="focusHomeBtn" title="返回主页"><i class="fas fa-home"></i></div>' +
       '<div class="container">' +
         '<div class="main-title">⏳ 专注时钟</div>' +
-        '<div class="clock-scale"><div class="clock flip-clock-wrapper" id="flipclock"></div></div>' +
+        '<div class="clock-scale"><div class="focus-flip-clock" id="focusClock"></div></div>' +
         '<div class="quote">"<em>专注当下，成就未来</em>"</div>' +
         '<div class="control-panel">' +
           '<div class="countdown-display" id="countdownDisplay">25:00 <span class="unit">分钟</span></div>' +
@@ -47,13 +35,6 @@
       '</div>';
     document.body.appendChild(overlay);
 
-    // 初始化 FlipClock
-    clock = $('#flipclock').FlipClock({
-      clockFace: 'TwentyFourHourClock',
-      showSeconds: true,
-      language: 'chinese'
-    });
-
     // 事件绑定
     document.getElementById('btnStartPause').addEventListener('click', toggleTimer);
     document.getElementById('btnReset').addEventListener('click', resetTimer);
@@ -62,10 +43,15 @@
     document.getElementById('minutesInput').addEventListener('change', syncFromInput);
     document.getElementById('fullscreenButton').addEventListener('click', toggleFullscreen);
 
-    // 点击遮罩关闭
-    overlay.addEventListener('click', function(e) {
-      if (e.target === overlay) close();
+    // 返回主页
+    var homeBtn = document.getElementById('focusHomeBtn');
+    if (homeBtn) homeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      // 直接跳转，不先 close()，避免跳转前原页面闪现
+      window.location.href = '/';
     });
+
+    // 注意：不绑定"点击空白退出"——避免误触退出专注模式
 
     // ESC关闭
     document.addEventListener('keydown', function(e) {
@@ -75,17 +61,113 @@
     updateCountdownDisplay(countdownSeconds);
   }
 
+  // ===== 翻页时钟（自研，上/下半切分同一数字，仅变化时翻页） =====
+  function digitHtml(d) {
+    return '<div class="focus-digit" data-d="' + d + '">' +
+      '<div class="focus-half top"><span class="focus-num">' + d + '</span></div>' +
+      '<div class="focus-half bottom"><span class="focus-num">' + d + '</span></div>' +
+      '</div>';
+  }
+
+  function colonHtml() {
+    return '<span class="focus-colon"></span>';
+  }
+
+  function pairHtml(str) {
+    return '<span class="focus-flip-group">' + digitHtml(str[0]) + digitHtml(str[1]) + '</span>';
+  }
+
+  function renderClockFace() {
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2, '0');
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var s = String(now.getSeconds()).padStart(2, '0');
+    var wrap = document.getElementById('focusClock');
+    if (!wrap) return;
+    wrap.innerHTML = pairHtml(h) + colonHtml() + pairHtml(m) + colonHtml() + pairHtml(s);
+    prevDigits = { h: h, m: m, s: s };
+  }
+
+  // 仅当数字变化时，在对应位子上生成翻页动画层（标准FlipClock双翻页层）
+  function animateFlip(pos, newVal) {
+    var wrap = document.getElementById('focusClock');
+    if (!wrap) return;
+    var digits = wrap.querySelectorAll('.focus-digit');
+    if (!digits[pos]) return;
+    var digit = digits[pos];
+
+    var halfTop = digit.querySelector('.focus-half.top .focus-num');
+    var halfBottom = digit.querySelector('.focus-half.bottom .focus-num');
+    var oldVal = digit.dataset.d;
+
+    // 上半翻页层：旧值（0° → -90°），立即翻下
+    var flapTop = document.createElement('div');
+    flapTop.className = 'focus-flap top flipping-top';
+    flapTop.innerHTML = '<span class="focus-num">' + oldVal + '</span>';
+    digit.appendChild(flapTop);
+
+    // 下半翻页层：新值（90° → 0°，延迟 0.25s 等上半翻完）
+    var flapBottom = document.createElement('div');
+    flapBottom.className = 'focus-flap bottom flipping-bottom';
+    flapBottom.innerHTML = '<span class="focus-num">' + newVal + '</span>';
+    digit.appendChild(flapBottom);
+
+    // 动画一开始就把上半静态格更新为新值：
+    // 上半翻页层（旧值）会覆盖它，翻页层翻走后露出的即新值，无缝衔接
+    if (halfTop) halfTop.textContent = newVal;
+
+    // 动画结束（0.5s）后：下半静态格更新为新值、清理翻页层
+    setTimeout(function() {
+      if (halfBottom) halfBottom.textContent = newVal;
+      if (flapTop.parentNode) flapTop.parentNode.removeChild(flapTop);
+      if (flapBottom.parentNode) flapBottom.parentNode.removeChild(flapBottom);
+      digit.dataset.d = newVal;
+    }, 600);
+  }
+
+  function updateClock() {
+    var wrap = document.getElementById('focusClock');
+    if (!wrap) return;
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2, '0');
+    var m = String(now.getMinutes()).padStart(2, '0');
+    var s = String(now.getSeconds()).padStart(2, '0');
+
+    // 秒位（4,5）
+    if (s[0] !== prevDigits.s[0]) animateFlip(4, s[0]);
+    if (s[1] !== prevDigits.s[1]) animateFlip(5, s[1]);
+    // 分位（2,3）
+    if (m[0] !== prevDigits.m[0]) animateFlip(2, m[0]);
+    if (m[1] !== prevDigits.m[1]) animateFlip(3, m[1]);
+    // 时位（0,1）
+    if (h[0] !== prevDigits.h[0]) animateFlip(0, h[0]);
+    if (h[1] !== prevDigits.h[1]) animateFlip(1, h[1]);
+
+    prevDigits = { h: h, m: m, s: s };
+  }
+
+  function startClock() {
+    renderClockFace();
+    if (clockInterval) clearInterval(clockInterval);
+    clockInterval = setInterval(updateClock, 1000);
+  }
+
+  function stopClock() {
+    if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
+  }
+
+  // ===== 打开/关闭 =====
   function open() {
-    loadDeps().then(function() {
-      createOverlay();
-      overlay.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    });
+    createOverlay();
+    overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    startClock();
   }
 
   function close() {
     if (!overlay) return;
     overlay.classList.remove('show');
+    stopClock();
     if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     isRunning = false;
     document.body.style.overflow = '';
@@ -96,6 +178,7 @@
     else open();
   }
 
+  // ===== 倒计时 =====
   function toggleTimer() {
     var btn = document.getElementById('btnStartPause');
     if (!isRunning) {
@@ -227,7 +310,7 @@
   });
 
   function bindButton() {
-    var btn = document.getElementById('focusModeBtn');
+    var btn = document.getElementById('focusClockBtn');
     if (btn) btn.addEventListener('click', function(e) { e.preventDefault(); toggle(); });
   }
 

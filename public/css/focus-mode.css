@@ -1,10 +1,16 @@
-/* ---------- 全局重置 ---------- */
-* {
+/* ==================== 专注模式 — loc.html 原版样式 ==================== */
+/* 嵌入场景：原 loc.html 使用 body，此处迁移到覆盖层 .focus-overlay，界面逐字一致 */
+
+/* ---------- 全局重置（作用于覆盖层内部） ---------- */
+.focus-overlay * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-body {
+.focus-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -14,8 +20,40 @@ body {
     color: #e0e0e0;
     overflow: hidden;
     padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease;
 }
-body::before {
+.focus-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 左上角返回主页按钮 */
+.focus-overlay .focus-home-btn {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 10;
+}
+.focus-overlay .focus-home-btn:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+}
+.focus-overlay::before {
     content: '';
     position: fixed;
     inset: 0;
@@ -28,7 +66,7 @@ body::before {
     z-index: 0;
 }
 
-.container {
+.focus-overlay .container {
     position: relative;
     z-index: 1;
     width: 100%;
@@ -40,7 +78,7 @@ body::before {
 }
 
 /* ---------- 标题 ---------- */
-.main-title {
+.focus-overlay .main-title {
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.5em;
@@ -51,136 +89,178 @@ body::before {
 }
 
 /* ---------- 时钟（当前时间）缩放 ---------- */
-.clock-scale {
+.focus-overlay .clock-scale {
     transform: scale(1.5);
     transform-origin: center center;
     transform-style: preserve-3d;
     margin: 6px 0 12px 0;
 }
 @media (max-width: 700px) {
-    .clock-scale {
+    .focus-overlay .clock-scale {
         transform: scale(1.2);
     }
 }
 @media (max-width: 480px) {
-    .clock-scale {
+    .focus-overlay .clock-scale {
         transform: scale(0.95);
     }
 }
 
-/* ---------- FlipClock 样式（极淡阴影） ---------- */
-.flip-clock-wrapper {
-    width: auto;
-    margin: 0;
-    display: inline-flex;
+/* ---------- 翻页时钟（自研，上/下半均有数字，仅变化时翻页） ---------- */
+.focus-overlay .focus-flip-clock {
+    display: flex;
     align-items: center;
     justify-content: center;
-    perspective: 1800px;
-    perspective-origin: center center;
-    transform-style: preserve-3d;
+    gap: 14px;
 }
 
-.flip-clock-wrapper ul {
-    float: none;
+.focus-overlay .focus-flip-clock .focus-flip-group {
+    display: flex;
+    gap: 8px;
+}
+
+.focus-overlay .focus-flip-clock .focus-digit {
+    position: relative;
     width: 60px;
     height: 90px;
-    margin: 5px;
     border-radius: 8px;
-    background: #0a0a0a;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.20), 0 1px 0 rgba(255, 255, 255, 0.02);
-    perspective: 1800px;
-    perspective-origin: center center;
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
+    background: #2a2a2a;
 }
 
-.flip-clock-wrapper ul li,
-.flip-clock-wrapper ul li a {
-    transform-style: preserve-3d;
+/* 静态上/下半（永远显示当前数字） */
+.focus-digit .focus-half {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50%;
+    overflow: hidden;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
-
-.flip-clock-wrapper ul li a div.up {
-    transform-origin: 50% 100% 0 !important;
-    backface-visibility: hidden;
+.focus-digit .focus-half.top {
+    top: 0;
+    border-radius: 8px 8px 0 0;
 }
-.flip-clock-wrapper ul li a div.down {
-    transform-origin: 50% 0% 0 !important;
-    backface-visibility: hidden;
+.focus-digit .focus-half.bottom {
+    bottom: 0;
+    border-radius: 0 0 8px 8px;
 }
-
-.flip-clock-wrapper ul li a div div.inn {
+.focus-digit .focus-half .focus-num {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
     color: #ececec;
-    background: linear-gradient(145deg, #3a3a3a 0%, #2a2a2a 48%, #1e1e1e 52%, #2c2c2c 100%);
-    border-radius: 8px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    font-family: 'SF Mono', 'Cascadia Code', Consolas, monospace;
+    font-size: 60px;
+    font-weight: 900;
+    background: #2a2a2a;
+    line-height: 90px;
+    height: 90px;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+.focus-digit .focus-half.top .focus-num {
+    top: 0;
+}
+.focus-digit .focus-half.bottom .focus-num {
+    bottom: 0;
 }
 
-.flip-clock-wrapper ul li a div.up::after {
-    top: 44px;
-    height: 3px;
-    background: rgba(0, 0, 0, 0.4);
-    box-shadow: 0 1px 1px rgba(255, 255, 255, 0.02), 0 1px 2px rgba(0, 0, 0, 0.15);
+/* 中间分割线 */
+.focus-digit::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 6;
 }
 
-/* 翻页动画（保持正确方向） */
-@keyframes flipUpDown {
-    0% {
-        transform: rotateX(0deg);
-    }
-    100% {
-        transform: rotateX(-90deg);
-    }
-}
-@keyframes flipDownUp {
-    0% {
-        transform: rotateX(90deg);
-    }
-    100% {
-        transform: rotateX(0deg);
-    }
-}
-
-.flip-clock-wrapper ul.play li.flip-clock-before .up {
-    animation: flipUpDown 0.4s ease-in both !important;
-}
-.flip-clock-wrapper ul.play li.flip-clock-active .down {
-    animation: flipDownUp 0.4s 0.4s ease-out both !important;
-}
-
-.flip-clock-wrapper ul li {
+/* 翻页动画块（仅当数字改变时生成并播放一次） */
+.focus-flap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: #2a2a2a;
+    z-index: 5;
+    overflow: hidden;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border: none;
+    box-shadow: none;
+}
+.focus-flap .focus-num {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #ececec;
+    font-family: 'SF Mono', 'Cascadia Code', Consolas, monospace;
+    font-size: 60px;
+    font-weight: 900;
+    line-height: 90px;
+    height: 90px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+.focus-flap.top {
+    top: 0;
+    border-radius: 8px 8px 0 0;
+    transform-origin: bottom center;
+}
+.focus-flap.top .focus-num {
+    top: 0;
+}
+.focus-flap.bottom {
+    bottom: 0;
+    border-radius: 0 0 8px 8px;
+    transform-origin: top center;
+}
+.focus-flap.bottom .focus-num {
+    bottom: 0;
+}
+.focus-flap.flipping-top {
+    animation: focusFlipTop 0.25s ease-in both;
+}
+.focus-flap.flipping-bottom {
+    animation: focusFlipBottom 0.25s ease-out 0.25s both;
+}
+/* 上半翻页层（旧值）：立即 0°→-90° 翻下（侧立最窄） */
+@keyframes focusFlipTop {
+    0% { transform: perspective(600px) rotateX(0deg); }
+    100% { transform: perspective(600px) rotateX(-90deg); }
+}
+/* 下半翻页层（新值）：等上半翻完，从 90°→0° 翻上 */
+@keyframes focusFlipBottom {
+    0% { transform: perspective(600px) rotateX(90deg); }
+    100% { transform: perspective(600px) rotateX(0deg); }
 }
 
-/* 分隔符 */
-.flip-clock-divider {
-    width: 20px;
-    height: 100px;
+/* 分隔冒号 */
+.focus-colon {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    color: rgba(255, 255, 255, 0.55);
 }
-.flip-clock-divider:first-child {
-    width: 0;
-}
-.flip-clock-dot {
-    left: 5px;
-    width: 8px;
-    height: 8px;
+.focus-colon::before,
+.focus-colon::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
     background: #b0b0b0;
     box-shadow: 0 0 6px rgba(255, 255, 255, 0.03), 0 1px 2px rgba(0, 0, 0, 0.15);
 }
-.flip-clock-dot.top {
-    top: 29px;
-}
-.flip-clock-dot.bottom {
-    bottom: 29px;
-}
-/* 隐藏AM/PM（24小时制不需要） */
-.flip-clock-meridium {
-    display: none !important;
-}
+.focus-colon::before { display: block; }
+.focus-colon::after { display: block; }
 
 /* ---------- 金句 ---------- */
-.quote {
+.focus-overlay .quote {
     margin: 28px 0 24px 0;
     font-size: 20px;
     font-weight: 300;
@@ -191,14 +271,14 @@ body::before {
     line-height: 1.6;
     opacity: 0.85;
 }
-.quote em {
+.focus-overlay .quote em {
     font-style: normal;
     color: #c8c8c8;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* ---------- 倒计时控制面板 ---------- */
-.control-panel {
+.focus-overlay .control-panel {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -216,7 +296,7 @@ body::before {
     max-width: 700px;
 }
 
-.countdown-display {
+.focus-overlay .countdown-display {
     font-size: 34px;
     font-weight: 500;
     letter-spacing: 0.06em;
@@ -226,26 +306,26 @@ body::before {
     font-variant-numeric: tabular-nums;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
 }
-.countdown-display .unit {
+.focus-overlay .countdown-display .unit {
     font-size: 16px;
     font-weight: 300;
     color: #888;
     margin-left: 4px;
 }
 
-.control-group {
+.focus-overlay .control-group {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.control-label {
+.focus-overlay .control-label {
     font-size: 13px;
     color: #999;
     letter-spacing: 0.04em;
 }
 
-.control-input {
+.focus-overlay .control-input {
     width: 56px;
     padding: 6px 4px;
     background: rgba(0, 0, 0, 0.4);
@@ -258,17 +338,17 @@ body::before {
     outline: none;
     transition: border 0.2s;
 }
-.control-input:focus {
+.focus-overlay .control-input:focus {
     border-color: #777;
 }
-.control-input::-webkit-inner-spin-button {
+.focus-overlay .control-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
-.control-input[type="number"] {
+.focus-overlay .control-input[type="number"] {
     -moz-appearance: textfield;
 }
 
-.btn {
+.focus-overlay .btn {
     padding: 7px 18px;
     border: none;
     border-radius: 40px;
@@ -283,39 +363,39 @@ body::before {
     backdrop-filter: blur(2px);
     min-width: 60px;
 }
-.btn:hover {
+.focus-overlay .btn:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: #666;
     color: #fff;
 }
-.btn:active {
+.focus-overlay .btn:active {
     transform: scale(0.96);
 }
-.btn-primary {
+.focus-overlay .btn-primary {
     background: rgba(100, 180, 255, 0.12);
     border-color: #4a6a8a;
     color: #aac8ff;
 }
-.btn-primary:hover {
+.focus-overlay .btn-primary:hover {
     background: rgba(100, 180, 255, 0.22);
     border-color: #6a9aca;
     color: #cce0ff;
 }
-.btn-danger {
+.focus-overlay .btn-danger {
     background: rgba(255, 100, 100, 0.08);
     border-color: #6a3a3a;
     color: #ffa0a0;
 }
-.btn-danger:hover {
+.focus-overlay .btn-danger:hover {
     background: rgba(255, 100, 100, 0.18);
     border-color: #8a4a4a;
     color: #ffc0c0;
 }
-.btn:disabled {
+.focus-overlay .btn:disabled {
     opacity: 0.3;
     pointer-events: none;
 }
-.btn-icon {
+.focus-overlay .btn-icon {
     min-width: 36px;
     padding: 7px 10px;
     font-size: 18px;
@@ -323,10 +403,10 @@ body::before {
 }
 
 /* 全屏按钮 */
-.fullscreen-wrap {
+.focus-overlay .fullscreen-wrap {
     margin-top: 28px;
 }
-.btn-fullscreen {
+.focus-overlay .btn-fullscreen {
     background: transparent;
     border: 1px solid #2a2a2a;
     color: #666;
@@ -336,7 +416,7 @@ body::before {
     cursor: pointer;
     transition: all 0.2s;
 }
-.btn-fullscreen:hover {
+.focus-overlay .btn-fullscreen:hover {
     border-color: #555;
     color: #aaa;
     background: rgba(255, 255, 255, 0.02);
@@ -344,42 +424,42 @@ body::before {
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 650px) {
-    .control-panel {
+    .focus-overlay .control-panel {
         flex-direction: column;
         align-items: stretch;
         gap: 12px;
         border-radius: 30px;
         padding: 18px 20px;
     }
-    .countdown-display {
+    .focus-overlay .countdown-display {
         font-size: 28px;
         min-width: auto;
     }
-    .control-group {
+    .focus-overlay .control-group {
         justify-content: center;
     }
-    .quote {
+    .focus-overlay .quote {
         font-size: 17px;
         margin: 20px 0 18px;
     }
 }
 @media (max-width: 420px) {
-    .clock-scale {
+    .focus-overlay .clock-scale {
         transform: scale(0.85);
     }
-    .countdown-display {
+    .focus-overlay .countdown-display {
         font-size: 24px;
     }
-    .btn {
+    .focus-overlay .btn {
         padding: 6px 14px;
         font-size: 12px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    .focus-overlay *,
+    .focus-overlay *::before,
+    .focus-overlay *::after {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
     }

@@ -19,11 +19,5 @@ module.exports = {
       role: '管理员',
       allowedSites: ['c', 'grammar'],
     },
-    {
-      username: 'tom',
-      displayName: 'Tom',
-      role: '学习者',
-      allowedSites: ['c'],
-    },
   ],
 };
