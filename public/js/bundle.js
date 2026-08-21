@@ -1,4 +1,4 @@
-/*! C语言知识库 - 合并脚本 | 生成时间: 2026-08-19T11:52:00.979Z */
+/*! C语言知识库 - 合并脚本 | 生成时间: 2026-08-21T04:45:09.015Z */
 (function(){
 "use strict";
 
@@ -411,6 +411,22 @@ const NOISE_STORAGE_KEY = 'c_noise_settings';
 // 默认站点初始化：脚本加载后即为默认 C 站点（QUOTES/CHAPTERS/TARGET_DATE 获得正确默认值）。
 // 登录后 auth.js 会再次调用 setSite(当前站点) 切换到实际站点。
 setSite('c');
+
+// --- js/data/login-videos.js ---
+/* ==================== 登录页视频壁纸配置 ==================== */
+/* 四个视频壁纸，供 login.ejs 和 settings 页视频选择器共用 */
+window.LOGIN_VIDEOS = [
+  { id: 'grassland', label: '暮原', src: '/video/grassland.mp4' },
+  { id: 'forest',    label: '静湖', src: '/video/forest.mp4'   },
+  { id: 'city',      label: '寒林', src: '/video/city.mp4'     },
+  { id: 'gallery',   label: '晨溪', src: '/video/gallery.mp4'  },
+];
+
+/* VIDEO_BG_MAP：供 video-background.js（settings 视频壁纸）使用 */
+window.VIDEO_BG_MAP = {};
+window.LOGIN_VIDEOS.forEach(function(v) {
+  window.VIDEO_BG_MAP[v.id] = v.src;
+});
 
 // --- js/core/main.js ---
 /* ==================== 主入口：状态管理 + 初始化 ==================== */
@@ -1029,16 +1045,7 @@ function initCourseSearch() {
 }
 
 // --- js/features/video-background.js ---
-// ==================== 视频壁纸配置 ====================
-const VIDEO_BG_MAP = {
-    grassland: '/video/background/grassland.mp4',
-    forest:    '/video/background/forest.mp4',
-    city:      '/video/background/city.mp4',
-    gallery:   '/video/background/gallery.mp4',
-    flower:    '/video/background/flower.mp4',
-    gorge:     '/video/background/gorge.mp4',
-    'green-gallery': '/video/background/green gallery.mp4',
-};
+// VIDEO_BG_MAP 在 js/data/login-videos.js 中定义，bundle.js 打包时已包含
 
 function initVideoBackground() {
     // 背景模式标签页切换
@@ -1076,7 +1083,7 @@ function initVideoBackground() {
                 c.classList.toggle('active', c === card);
                 c.setAttribute('aria-pressed', c === card ? 'true' : 'false');
             });
-            document.querySelectorAll('.gradient-option').forEach(function (opt) {
+            document.querySelectorAll('.gradient-swatch').forEach(function (opt) {
                 opt.classList.toggle('active', opt.dataset.gradient === 'none');
             });
             const videoTab = document.querySelector('.bg-mode-tab[data-bg-mode="video"]');
@@ -1101,32 +1108,6 @@ function initVideoBackground() {
             saveStateDebounced();
         });
     }
-
-    // 预览窗口 hover 时播放预览
-    const previewPlayer = document.getElementById('videoPreviewPlayer');
-    const previewEmpty = document.getElementById('videoPreviewEmpty');
-    const previewLabel = document.getElementById('videoPreviewLabel');
-    videoCards.forEach(function (card) {
-        card.addEventListener('mouseenter', function () {
-            const videoId = card.dataset.video;
-            const src = VIDEO_BG_MAP[videoId];
-            if (!src || !previewPlayer) return;
-            previewPlayer.src = src;
-            previewPlayer.style.display = '';
-            if (previewEmpty) previewEmpty.style.display = 'none';
-            if (previewLabel) {
-                previewLabel.textContent = card.querySelector('.video-card-name').textContent;
-                previewLabel.style.display = '';
-            }
-            previewPlayer.currentTime = 0;
-            previewPlayer.play().catch(function () {});
-        });
-        card.addEventListener('mouseleave', function () {
-            if (previewPlayer) { previewPlayer.pause(); previewPlayer.src = ''; previewPlayer.style.display = 'none'; }
-            if (previewEmpty) previewEmpty.style.display = '';
-            if (previewLabel) previewLabel.style.display = 'none';
-        });
-    });
 
     // 恢复状态：同步UI
     if (state.videoBg) {
@@ -1155,11 +1136,12 @@ function applyVideoBackground() {
     videoEl.src = '';
     videoEl.classList.remove('active');
 
-    if (state.videoBg && VIDEO_BG_MAP[state.videoBg]) {
-        const src = VIDEO_BG_MAP[state.videoBg];
+    if (state.videoBg && window.VIDEO_BG_MAP && window.VIDEO_BG_MAP[state.videoBg]) {
+        const src = window.VIDEO_BG_MAP[state.videoBg];
         videoEl.src = src;
         videoEl.load();
         if (!state.videoBgStatic) {
+            videoEl.playbackRate = 0.75;
             videoEl.play().catch(function () {});
         } else {
             videoEl.currentTime = 0;
@@ -1178,6 +1160,7 @@ function toggleVideoMode() {
     const videoEl = document.getElementById('videoBackground');
     if (!videoEl || !state.videoBg) return;
     if (!state.videoBgStatic) {
+        videoEl.playbackRate = 0.75;
         videoEl.play().catch(function () {});
     } else {
         videoEl.currentTime = 0;
@@ -3308,6 +3291,37 @@ function initStatsActions() {
             switchView('tasks');
         });
     }
+
+    // 快速操作栏按钮（同一功能，复制一份监听）
+    const goTasksBtn2 = document.getElementById('goTasksBtn2');
+    if (goTasksBtn2) {
+        goTasksBtn2.addEventListener('click', function () { switchView('tasks'); });
+    }
+    const randomChallengeBtn2 = document.getElementById('randomChallengeBtn2');
+    if (randomChallengeBtn2) {
+        randomChallengeBtn2.addEventListener('click', function () {
+            const allSections = [];
+            CHAPTERS.forEach(function (ch, chIdx) {
+                ch.sections.forEach(function (sec, secIdx) {
+                    allSections.push({ chIdx: chIdx, secIdx: secIdx });
+                });
+            });
+            const pick = allSections[Math.floor(Math.random() * allSections.length)];
+            state.currentChapterIndex = pick.chIdx;
+            state.currentSectionIndex = pick.secIdx;
+            loadSection(pick.chIdx, pick.secIdx);
+            switchView('course');
+            showToast('🎲 随机跳转！');
+        });
+    }
+    const viewRoadmapBtn2 = document.getElementById('viewRoadmapBtn2');
+    if (viewRoadmapBtn2) {
+        viewRoadmapBtn2.addEventListener('click', function () { switchView('roadmap'); });
+    }
+    const goBadgesBtn2 = document.getElementById('goBadgesBtn2');
+    if (goBadgesBtn2) {
+        goBadgesBtn2.addEventListener('click', function () { switchView('badges'); });
+    }
 }
 
 // --- js/views/dashboard.js ---
@@ -4862,7 +4876,7 @@ function initSettings() {
         };
     }
 
-    const themeColorOptions = document.querySelectorAll('.theme-color-option');
+    const themeColorOptions = document.querySelectorAll('.theme-dot');
     themeColorOptions.forEach(function (opt) {
         opt.classList.toggle('active', opt.dataset.color === state.themeColor);
         opt.onclick = function () {
@@ -4896,7 +4910,7 @@ function initSettings() {
     if (sidebarAutoCollapseSetting) { sidebarAutoCollapseSetting.checked = state.sidebarAutoCollapse; sidebarAutoCollapseSetting.onchange = function () { state.sidebarAutoCollapse = sidebarAutoCollapseSetting.checked; saveStateDebounced(); }; }
 
     // 渐变背景选择器
-    const gradientOptions = document.querySelectorAll('.gradient-option');
+    const gradientOptions = document.querySelectorAll('.gradient-swatch');
     gradientOptions.forEach(function (opt) {
         opt.classList.toggle('active', (opt.dataset.gradient || 'none') === (state.gradientBg || 'none'));
         opt.addEventListener('click', function () {
@@ -5148,11 +5162,6 @@ function bindEvents() {
     initNoise();
     initKeyboardShortcuts();
 
-    // 游戏模式返回按钮
-    document.getElementById('gameBackBtn')?.addEventListener('click', function () {
-        switchView('home');
-    });
-
     // 测验关闭事件由 game.js 的 bindQuizEvents() 统一处理
 }
 
@@ -5264,15 +5273,18 @@ async function init() {
 (function(){
   'use strict';
 
+  // 优先使用 QuizConfig（配置中心），兜底用默认值
+  const _cfg = window.QuizConfig || {};
+
   const CONFIG = {
-    EXP_PER_LEVEL: 100,        // 每级所需经验 = 等级 × 100
-    BATTLE_SECONDS: 25,        // 每题限时
-    QUIZ_COUNT: 8,             // 每章随机抽取题目数
-    PASS_RATE: 0.6,            // 通关及格线（答对比例 ≥ 0.6 → 60%）
-    XP_PER_CORRECT: 10,        // 每题基础经验分
-    SCROLL_SENSITIVITY: 0.0014,
-    MIN_SCALE: 0.6,            // 兜底下限（实际使用 Game.minScale() 动态下限）
-    MAX_SCALE: 2.5,
+    EXP_PER_LEVEL:       _cfg.EXP_PER_LEVEL       || 100,
+    BATTLE_SECONDS:      _cfg.BATTLE_SECONDS      || 25,
+    QUIZ_COUNT:          _cfg.QUIZ_COUNT          || 8,
+    PASS_RATE:           _cfg.PASS_RATE           || 0.6,
+    XP_PER_CORRECT:      _cfg.XP_PER_CORRECT      || 10,
+    SCROLL_SENSITIVITY:  _cfg.SCROLL_SENSITIVITY  || 0.0014,
+    MIN_SCALE:           _cfg.MIN_SCALE           || 0.6,
+    MAX_SCALE:           _cfg.MAX_SCALE           || 2.5,
   };
 
   /* ===================== 关卡秘典 · 14 重试炼命名 =====================
@@ -5470,6 +5482,22 @@ async function init() {
   function loadState(){
     const host = questHost();
     if (host && host.quest) Object.assign(state, host.quest);
+
+    // 尝试从 localStorage 恢复进度（兜底方案）
+    try {
+      const saved = localStorage.getItem('quiz_progress');
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data && typeof data === 'object') {
+          // 只更新存在的字段，避免覆盖主站状态
+          if (data.completedSections) state.completedSections = data.completedSections;
+          if (typeof data.exp === 'number') state.exp = data.exp;
+          if (typeof data.totalExp === 'number') state.totalExp = data.totalExp;
+          if (typeof data.level === 'number') state.level = data.level;
+          if (data.quizStats) state.quizStats = Object.assign(state.quizStats || {}, data.quizStats);
+        }
+      }
+    } catch (e) {}
   }
   function saveState(){
     const host = questHost();
@@ -5483,7 +5511,16 @@ async function init() {
       };
       if (host.quizStats) host.quizStats = state.quizStats;
     }
-    if (typeof saveStateDebounced === "function") saveStateDebounced();
+    // 持久化到 localStorage 作为兜底
+    try {
+      localStorage.setItem('quiz_progress', JSON.stringify({
+        completedSections: state.completedSections,
+        exp: state.exp,
+        totalExp: state.totalExp,
+        level: state.level,
+        quizStats: state.quizStats,
+      }));
+    } catch (e) {}
   }
 
   function getSectionKey(ch, sec){ return `${ch.folder}/${sec}.md`; }
@@ -6044,9 +6081,12 @@ async function init() {
   // 触屏/窄屏下粒子减半，减轻低端设备连续答题时的 DOM 抖动
   let isSmallScreen = (typeof matchMedia === 'function' && matchMedia('(max-width:768px)').matches);
   function burstParticles(x, y, colors, count){
+    // 优先读取 QuizConfig 配置
+    const _cfg = window.QuizConfig;
+    if (_cfg && _cfg.PARTICLE_ENABLED === false) return;
     const host = $('#particleHost') || $('#fxLayer');
     if (!host) return;
-    let n = count || 20;
+    let n = count || (_cfg && _cfg.PARTICLE_COUNT) || 20;
     if (isSmallScreen) n = Math.max(4, n >> 1);
     for (let i = 0; i < n; i++){
       const p = document.createElement('div');
@@ -6431,6 +6471,7 @@ async function init() {
     correct: 0, total: 0,
     locked: false, pendingTimeout: null,
     timer: null, timeLeft: 0, returnFocusEl: null,
+    paused: false, pausedTimeLeft: 0, // 暂停状态
   };
 
   function openQuiz(chIdx){
@@ -6467,6 +6508,9 @@ async function init() {
     $('#battleFeedback').textContent = '';
     $('#battleTitle').textContent = '📝 ' + levelNameFor(chIdx) + ' · 随机' + battle.questions.length + '题';
     $('#battleClose').style.opacity = 1;
+    // 显示暂停按钮
+    const pauseBtn = document.getElementById('battlePauseBtn');
+    if (pauseBtn) pauseBtn.style.display = 'inline-flex';
     // 重置进度条与时限条
     renderProgressSegs();
     const bar = $('#battleTimeBar');
@@ -6486,8 +6530,12 @@ async function init() {
   function openLevelIntro(chIdx){
     const ch = CHAPTERS[chIdx];
     if (!ch) return;
+
+    // 读取配置：是否跳过关卡过渡页
+    const _cfg = window.QuizConfig;
+    const skipIntro = _cfg && _cfg.SKIP_LEVEL_INTRO === true;
     const overlay = $('#levelIntro');
-    if (!overlay){ openQuiz(chIdx); return; }
+    if (!overlay || skipIntro){ openQuiz(chIdx); return; }
     const st = mainStatus(chIdx);
     const total = ch.sections.length;
     const cleard = ch.sections.filter(s => state.completedSections[getSectionKey(ch, s)]).length;
@@ -6512,6 +6560,103 @@ async function init() {
   function closeLevelIntro(){
     const overlay = $('#levelIntro');
     if (overlay) overlay.hidden = true;
+  }
+
+  /* ===================== 设置面板 ===================== */
+  function openSettings(){
+    let overlay = document.getElementById('quizSettingsOverlay');
+    if (!overlay){
+      overlay = document.createElement('div');
+      overlay.id = 'quizSettingsOverlay';
+      overlay.className = 'battle-pause-overlay show';
+      overlay.innerHTML =
+        '<div class="pause-content" style="max-width:400px;">' +
+          '<div class="pause-icon">⚙️</div>' +
+          '<div class="pause-title">闯关设置</div>' +
+          '<div class="settings-list">' +
+            '<div class="settings-item">' +
+              '<label>每题时限（秒）</label>' +
+              '<input type="number" id="settingTime" class="setting-input" min="5" max="120" value="25" />' +
+            '</div>' +
+            '<div class="settings-item">' +
+              '<label>每章题数</label>' +
+              '<input type="number" id="settingCount" class="setting-input" min="3" max="20" value="8" />' +
+            '</div>' +
+            '<div class="settings-item">' +
+              '<label>及格线</label>' +
+              '<select id="settingPassRate" class="setting-select">' +
+                '<option value="0.5">50%</option>' +
+                '<option value="0.6" selected>60%</option>' +
+                '<option value="0.7">70%</option>' +
+                '<option value="0.8">80%</option>' +
+              '</select>' +
+            '</div>' +
+            '<div class="settings-item settings-toggle">' +
+              '<label>启用超时</label>' +
+              '<input type="checkbox" id="settingTimeout" checked />' +
+            '</div>' +
+            '<div class="settings-item settings-toggle">' +
+              '<label>粒子特效</label>' +
+              '<input type="checkbox" id="settingParticle" checked />' +
+            '</div>' +
+            '<div class="settings-item settings-toggle">' +
+              '<label>跳过关卡介绍</label>' +
+              '<input type="checkbox" id="settingSkipIntro" checked />' +
+            '</div>' +
+          '</div>' +
+          '<div class="pause-buttons">' +
+            '<button class="pause-btn pause-btn-resume" id="settingsSaveBtn">保存</button>' +
+            '<button class="pause-btn pause-btn-quit" id="settingsCloseBtn">取消</button>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(overlay);
+
+      document.getElementById('settingsSaveBtn').addEventListener('click', saveSettings);
+      document.getElementById('settingsCloseBtn').addEventListener('click', closeSettings);
+      overlay.addEventListener('click', function(e){
+        if (e.target === overlay) closeSettings();
+      });
+    }
+
+    // 读取当前配置填充表单
+    const _cfg = window.QuizConfig;
+    document.getElementById('settingTime').value = _cfg ? _cfg.BATTLE_SECONDS : 25;
+    document.getElementById('settingCount').value = _cfg ? _cfg.QUIZ_COUNT : 8;
+    document.getElementById('settingPassRate').value = _cfg ? _cfg.PASS_RATE : 0.6;
+    document.getElementById('settingTimeout').checked = _cfg ? _cfg.ENABLE_TIMEOUT !== false : true;
+    document.getElementById('settingParticle').checked = _cfg ? _cfg.PARTICLE_ENABLED !== false : true;
+    document.getElementById('settingSkipIntro').checked = _cfg ? _cfg.SKIP_LEVEL_INTRO === true : false;
+
+    overlay.classList.add('show');
+  }
+
+  function saveSettings(){
+    const _cfg = window.QuizConfig;
+    if (!_cfg) return;
+
+    const time = parseInt(document.getElementById('settingTime').value) || 25;
+    const count = parseInt(document.getElementById('settingCount').value) || 8;
+    const passRate = parseFloat(document.getElementById('settingPassRate').value) || 0.6;
+    const timeout = document.getElementById('settingTimeout').checked;
+    const particle = document.getElementById('settingParticle').checked;
+    const skipIntro = document.getElementById('settingSkipIntro').checked;
+
+    _cfg.BATTLE_SECONDS = Math.min(120, Math.max(5, time));
+    _cfg.QUIZ_COUNT = Math.min(20, Math.max(3, count));
+    _cfg.PASS_RATE = passRate;
+    _cfg.ENABLE_TIMEOUT = timeout;
+    _cfg.PARTICLE_ENABLED = particle;
+    _cfg.SKIP_LEVEL_INTRO = skipIntro;
+    _cfg.save(); // 保存到 localStorage
+
+    closeSettings();
+    flashHint('✅ 设置已保存', 1500);
+    Sound.play('click');
+  }
+
+  function closeSettings(){
+    const overlay = document.getElementById('quizSettingsOverlay');
+    if (overlay) overlay.classList.remove('show');
   }
 
   // 营地节点：跳转到主站对应章节的正文知识点（第一章小节，用户可翻页浏览全部）
@@ -6555,7 +6700,11 @@ async function init() {
     if (battle.pendingTimeout){ clearTimeout(battle.pendingTimeout); battle.pendingTimeout = null; }
     if (resultRevealTimer){ clearTimeout(resultRevealTimer); resultRevealTimer = null; }
     battle.active = false;
+    hidePauseOverlay();
     $('#battlePanel').hidden = true;
+    // 隐藏暂停按钮
+    const pauseBtn = document.getElementById('battlePauseBtn');
+    if (pauseBtn) pauseBtn.style.display = 'none';
     // 重置答题相关 UI
     $('#battleExplain').hidden = true;
     $('#battleFeedback').textContent = '';
@@ -6568,7 +6717,101 @@ async function init() {
     if (back && back.isConnected && back.hasAttribute && back.hasAttribute('tabindex')){
       back.focus({ preventScroll: true });
     }
+    battle.paused = false;
   }
+
+  /* ===================== 暂停功能 ===================== */
+  function pauseBattle(){
+    if (!battle.active || battle.paused || battle.locked) return;
+    battle.paused = true;
+    battle.pausedTimeLeft = battle.timeLeft;
+    stopBattleTimer();
+    showPauseOverlay();
+    Sound.play('click');
+  }
+
+  function resumeBattle(){
+    if (!battle.active || !battle.paused) return;
+    battle.paused = false;
+    battle.timeLeft = battle.pausedTimeLeft;
+    hidePauseOverlay();
+    // 恢复计时器
+    const _cfg = window.QuizConfig;
+    const useTimeout = !_cfg || _cfg.ENABLE_TIMEOUT !== false;
+    if (useTimeout) {
+      updateTimerUI();
+      battle.timer = setInterval(() => {
+        battle.timeLeft -= 0.2;
+        if (battle.timeLeft <= 0){
+          stopBattleTimer();
+          battleTimeout();
+        } else {
+          updateTimerUI();
+        }
+      }, 200);
+    }
+    Sound.play('click');
+  }
+
+  function togglePause(){
+    if (battle.paused) resumeBattle();
+    else pauseBattle();
+  }
+
+  function showPauseOverlay(){
+    let overlay = document.getElementById('battlePauseOverlay');
+    if (!overlay){
+      overlay = document.createElement('div');
+      overlay.id = 'battlePauseOverlay';
+      overlay.className = 'battle-pause-overlay';
+      overlay.innerHTML =
+        '<div class="pause-content">' +
+          '<div class="pause-icon">⏸</div>' +
+          '<div class="pause-title">答题已暂停</div>' +
+          '<div class="pause-info">' +
+            '<div class="pause-stat">当前: <span id="pauseQNum">-</span> / <span id="pauseQTotal">-</span> 题</div>' +
+            '<div class="pause-stat">已答对: <span id="pauseCorrect">-</span> 题</div>' +
+            '<div class="pause-stat">剩余时间: <span id="pauseTime">-</span> 秒</div>' +
+          '</div>' +
+          '<div class="pause-buttons">' +
+            '<button class="pause-btn pause-btn-resume" id="pauseResumeBtn">▶ 继续答题</button>' +
+            '<button class="pause-btn pause-btn-quit" id="pauseQuitBtn">✕ 退出闯关</button>' +
+          '</div>' +
+          '<div class="pause-hint">按 ESC 或点击继续</div>' +
+        '</div>';
+      document.body.appendChild(overlay);
+
+      // 绑定按钮事件
+      document.getElementById('pauseResumeBtn').addEventListener('click', resumeBattle);
+      document.getElementById('pauseQuitBtn').addEventListener('click', closeBattle);
+
+      // 点击遮罩也可继续
+      overlay.addEventListener('click', function(e){
+        if (e.target === overlay) resumeBattle();
+      });
+    }
+
+    // 更新暂停信息
+    document.getElementById('pauseQNum').textContent = battle.qIdx + 1;
+    document.getElementById('pauseQTotal').textContent = battle.questions.length;
+    document.getElementById('pauseCorrect').textContent = battle.correct;
+    document.getElementById('pauseTime').textContent = Math.ceil(battle.timeLeft);
+
+    overlay.style.display = 'flex';
+  }
+
+  function hidePauseOverlay(){
+    const overlay = document.getElementById('battlePauseOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  // 绑定 ESC 键暂停
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape' && battle.active && !battle.locked){
+      togglePause();
+    }
+  });
+
   // 出题：顺序推进本章抽出的题目
   function renderProgressSegs(){
     const wrap = $('#battleSegs');
@@ -6701,6 +6944,11 @@ async function init() {
   }
   function startBattleTimer(){
     stopBattleTimer();
+    // 优先使用 QuizConfig 控制是否启用超时
+    const _cfg = window.QuizConfig;
+    const useTimeout = !_cfg || _cfg.ENABLE_TIMEOUT !== false;
+    if (!useTimeout) return; // 不启用计时器
+
     battle.timeLeft = CONFIG.BATTLE_SECONDS || 25;
     updateTimerUI();
     battle.timer = setInterval(() => {
@@ -6921,6 +7169,11 @@ async function init() {
   }
 
    function init(){
+    // 应用站点级配置覆盖
+    const siteKey = window.CURRENT_SITE_KEY || 'c';
+    if (window.QuizConfig) {
+      QuizConfig.applySiteOverrides(siteKey);
+    }
     loadState();
     initMinimap();
     computeFit();
@@ -6941,6 +7194,8 @@ async function init() {
         updateHUD();
         Sound.play('click');
       };
+      // 设置按钮
+      $('#hudSettingsBtn').addEventListener('click', openSettings);
       // 关卡秘典过渡页
       $('#levelIntroStart').onclick = () => {
         const ci = introChIdx >= 0 ? introChIdx : 0;
@@ -6954,6 +7209,7 @@ async function init() {
       document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeLevelIntro(); });
       // 关闭答题面板
       $('#battleClose').onclick = closeBattle;
+      $('#battlePauseBtn').addEventListener('click', togglePause);
       $('#battleAgainBtn').onclick = () => {
         const ci = battle.chapterIdx >= 0 ? battle.chapterIdx : 0;
         openQuiz(ci);
@@ -6983,6 +7239,9 @@ async function init() {
   e.addExp = addExp;
   e.updateHUD = updateHUD;
   e.renderAll = renderAll;
+  e.pauseBattle = pauseBattle;
+  e.resumeBattle = resumeBattle;
+  e.togglePause = togglePause;
   e.getNodeStatus = getNodeStatus;
   e.getNodePos = (id) => (nodeMapRef && nodeMapRef[id]) ? nodeMapRef[id] : null;
   e.easeTo = easeCameraTo;
@@ -7096,8 +7355,6 @@ async function init() {
     const loopVideo = document.getElementById('startLoopVideo');
     const gameVideo = document.getElementById('startGameVideo');
     const loopAudio = document.getElementById('startLoopAudio');
-    const loopHint = document.getElementById('loopHint');
-    const skipBtn = document.getElementById('skipIntroBtn');
     if (!startView || !mapView || !loopVideo || !gameVideo) return;
 
     let phase = 'loop';           // loop → enter（一次性开场）
@@ -7111,8 +7368,7 @@ async function init() {
         phase = 'loop';
         if (startTimer){ clearTimeout(startTimer); startTimer = null; }
         if (loopStallTimer){ clearTimeout(loopStallTimer); loopStallTimer = null; }
-        if (skipBtn) skipBtn.hidden = false;
-        if (loopHint) loopHint.hidden = false;
+        // 保持跳过和提示按钮隐藏
         showLoopPhase();
       },
     };
@@ -7161,8 +7417,6 @@ async function init() {
       loopVideo.currentTime = 0;
       loopVideo.play().catch(() => {});
       requestAnimationFrame(() => requestAnimationFrame(() => loopVideo.classList.add('show')));
-      if (loopHint){ loopHint.hidden = false; }
-      if (skipBtn) skipBtn.hidden = false;
       // loop 视频卡住（8 秒未开始播放）→ 自动跳过，避免黑屏
       if (loopStallTimer) clearTimeout(loopStallTimer);
       loopStallTimer = setTimeout(() => {
@@ -7188,8 +7442,6 @@ async function init() {
       phase = 'enter';
       stopMusic();               // 开门动画自带音乐，停掉 loop.mp3
       loopVideo.pause(); loopVideo.hidden = true; loopVideo.classList.remove('show');
-      if (loopHint) loopHint.hidden = true;
-      if (skipBtn) skipBtn.hidden = false;
       gameVideo.muted = false;   // 播放开门动画自带音轨
       gameVideo.hidden = false;
       gameVideo.classList.remove('show');
@@ -7199,7 +7451,6 @@ async function init() {
 
       gameVideo.onended = () => {
         gameVideo.hidden = true;
-        if (skipBtn) skipBtn.hidden = true;
         startView.classList.remove('active');
         if (loadingView){
           loadingView.classList.add('active');
@@ -7254,10 +7505,8 @@ async function init() {
       mapView.classList.add('fade-in');
       fadeOutLoopAudio();
       G.onResume && G.onResume();
-      if (skipBtn) skipBtn.hidden = true;
       setTimeout(() => mapView.classList.remove('fade-in'), 1400);
     }
-    if (skipBtn) skipBtn.addEventListener('click', skipToMap);
 
     showLoopPhase();   // 直接进入 loop 阶段（无标题页按钮）
     startView.addEventListener('click', onLoopClick);
@@ -7426,19 +7675,6 @@ async function init() {
       G.setZoom(s.scale);
     });
 
-    // 「← 返回」：回到开始界面（关闭战斗、重播 loop 视频与音乐）
-    const backBtn = document.getElementById('gameBackBtn');
-    if (backBtn){
-      backBtn.addEventListener('click', () => {
-        const panel = document.getElementById('battlePanel');
-        const closeBtn = document.getElementById('battleClose');
-        if (panel && !panel.hidden && closeBtn) closeBtn.click();
-        if (G && G.stopMapMusic) G.stopMapMusic();
-        if (typeof switchView === 'function') switchView('home');
-        else if (window.QuizGameMain) window.QuizGameMain.exit();
-      });
-    }
-
     // 小地图：点击 / 拖拽跳转
     if (minimap){
       let mmDrag = false;
@@ -7467,7 +7703,7 @@ async function init() {
 
 })();
 
-// --- js/focus-mode.js ---
+// --- js/features/focus-mode.js ---
 /* ==================== 专注模式 — loc.html 视觉 · 纯JS实现 ==================== */
 (function () {
   'use strict';
@@ -7476,31 +7712,47 @@ async function init() {
   var clockInterval = null;
   var prevDigits = { h: '--', m: '--', s: '--' };
 
+  // 随机金句
+  var quotes = [
+    { text: '专注当下，成就未来', highlight: '专注' },
+    { text: '每一次专注都是成长的积累', highlight: '专注' },
+    { text: '静下心来，世界会为你让路', highlight: '静心' },
+    { text: '坚持的力量，源于每一刻的专注', highlight: '坚持' },
+    { text: '心无旁骛，方能致远', highlight: '心无旁骛' },
+    { text: '专注是通往卓越的唯一路径', highlight: '专注' },
+    { text: '把时间投入在重要的事情上', highlight: '时间' },
+    { text: '深度工作，创造价值', highlight: '深度' }
+  ];
+
+  function getRandomQuote() {
+    return quotes[Math.floor(Math.random() * quotes.length)];
+  }
+
   function createOverlay() {
     if (overlay) return;
+    var quote = getRandomQuote();
     overlay = document.createElement('div');
     overlay.className = 'focus-overlay';
     overlay.innerHTML =
       '<div class="focus-home-btn" id="focusHomeBtn" title="返回主页"><i class="fas fa-home"></i></div>' +
       '<div class="container">' +
-        '<div class="main-title">⏳ 专注时钟</div>' +
+        '<div class="main-title">⏱ 专注时钟</div>' +
         '<div class="clock-scale"><div class="focus-flip-clock" id="focusClock"></div></div>' +
-        '<div class="quote">"<em>专注当下，成就未来</em>"</div>' +
+        '<div class="quote">"' + quote.text.replace(quote.highlight, '<em>' + quote.highlight + '</em>') + '"</div>' +
         '<div class="control-panel">' +
-          '<div class="countdown-display" id="countdownDisplay">25:00 <span class="unit">分钟</span></div>' +
+          '<div class="countdown-display" id="countdownDisplay">25<span class="unit">:</span>00</div>' +
           '<div class="control-group">' +
             '<button class="btn btn-icon" id="btnMinus">−</button>' +
             '<input type="number" class="control-input" id="minutesInput" value="25" min="1" max="60" />' +
             '<button class="btn btn-icon" id="btnPlus">+</button>' +
-            '<span class="control-label" style="margin-left:4px;">分钟</span>' +
           '</div>' +
           '<div class="control-group">' +
-            '<button class="btn btn-primary" id="btnStartPause">开始</button>' +
-            '<button class="btn btn-danger" id="btnReset">重置</button>' +
+            '<button class="btn btn-primary" id="btnStartPause">▶ 开始</button>' +
+            '<button class="btn btn-danger" id="btnReset">↺ 重置</button>' +
           '</div>' +
         '</div>' +
         '<div class="fullscreen-wrap">' +
-          '<button class="btn-fullscreen" id="fullscreenButton">⛶ 全屏</button>' +
+          '<button class="btn-fullscreen" id="fullscreenButton">⛶ 全屏专注</button>' +
         '</div>' +
       '</div>';
     document.body.appendChild(overlay);
@@ -7744,7 +7996,7 @@ async function init() {
     if (!display) return;
     var mins = Math.floor(seconds / 60);
     var secs = seconds % 60;
-    display.innerHTML = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0') + ' <span class="unit">分钟</span>';
+    display.innerHTML = '<span class="time">' + String(mins).padStart(2, '0') + '</span><span class="unit">:</span><span class="time">' + String(secs).padStart(2, '0') + '</span>';
   }
 
   function playSound() {

@@ -5,6 +5,7 @@ const crypto = require('node:crypto');
 const config = require('../config');
 const store = require('../config/store');
 const { sendWelcomeEmail, sendResetEmail } = require('../config/mailer');
+const { logout } = require('../middleware/sessionHandlers');
 
 // 新注册账号默认开放全部学习站点
 const REGISTER_DEFAULT_SITES = config.sites.map((s) => s.key);
@@ -387,13 +388,7 @@ router.patch('/me', (req, res) => {
 });
 
 // ==================== 退出登录 ====================
-router.post('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) return res.status(500).json({ error: '退出失败，请重试' });
-    res.clearCookie('connect.sid');
-    res.json({ success: true });
-  });
-});
+router.post('/logout', logout);
 
 // ==================== 当前登录状态 ====================
 router.get('/me', (req, res) => {

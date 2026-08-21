@@ -510,7 +510,7 @@ function initSettings() {
         };
     }
 
-    const themeColorOptions = document.querySelectorAll('.theme-color-option');
+    const themeColorOptions = document.querySelectorAll('.theme-dot');
     themeColorOptions.forEach(function (opt) {
         opt.classList.toggle('active', opt.dataset.color === state.themeColor);
         opt.onclick = function () {
@@ -544,7 +544,7 @@ function initSettings() {
     if (sidebarAutoCollapseSetting) { sidebarAutoCollapseSetting.checked = state.sidebarAutoCollapse; sidebarAutoCollapseSetting.onchange = function () { state.sidebarAutoCollapse = sidebarAutoCollapseSetting.checked; saveStateDebounced(); }; }
 
     // 渐变背景选择器
-    const gradientOptions = document.querySelectorAll('.gradient-option');
+    const gradientOptions = document.querySelectorAll('.gradient-swatch');
     gradientOptions.forEach(function (opt) {
         opt.classList.toggle('active', (opt.dataset.gradient || 'none') === (state.gradientBg || 'none'));
         opt.addEventListener('click', function () {
@@ -795,11 +795,6 @@ function bindEvents() {
     initNotes();
     initNoise();
     initKeyboardShortcuts();
-
-    // 游戏模式返回按钮
-    document.getElementById('gameBackBtn')?.addEventListener('click', function () {
-        switchView('home');
-    });
 
     // 测验关闭事件由 game.js 的 bindQuizEvents() 统一处理
 }

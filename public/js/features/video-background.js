@@ -1,15 +1,6 @@
 'use strict';
 
-// ==================== 视频壁纸配置 ====================
-const VIDEO_BG_MAP = {
-    grassland: '/video/background/grassland.mp4',
-    forest:    '/video/background/forest.mp4',
-    city:      '/video/background/city.mp4',
-    gallery:   '/video/background/gallery.mp4',
-    flower:    '/video/background/flower.mp4',
-    gorge:     '/video/background/gorge.mp4',
-    'green-gallery': '/video/background/green gallery.mp4',
-};
+// VIDEO_BG_MAP 在 js/data/login-videos.js 中定义，bundle.js 打包时已包含
 
 function initVideoBackground() {
     // 背景模式标签页切换
@@ -47,7 +38,7 @@ function initVideoBackground() {
                 c.classList.toggle('active', c === card);
                 c.setAttribute('aria-pressed', c === card ? 'true' : 'false');
             });
-            document.querySelectorAll('.gradient-option').forEach(function (opt) {
+            document.querySelectorAll('.gradient-swatch').forEach(function (opt) {
                 opt.classList.toggle('active', opt.dataset.gradient === 'none');
             });
             const videoTab = document.querySelector('.bg-mode-tab[data-bg-mode="video"]');
@@ -72,32 +63,6 @@ function initVideoBackground() {
             saveStateDebounced();
         });
     }
-
-    // 预览窗口 hover 时播放预览
-    const previewPlayer = document.getElementById('videoPreviewPlayer');
-    const previewEmpty = document.getElementById('videoPreviewEmpty');
-    const previewLabel = document.getElementById('videoPreviewLabel');
-    videoCards.forEach(function (card) {
-        card.addEventListener('mouseenter', function () {
-            const videoId = card.dataset.video;
-            const src = VIDEO_BG_MAP[videoId];
-            if (!src || !previewPlayer) return;
-            previewPlayer.src = src;
-            previewPlayer.style.display = '';
-            if (previewEmpty) previewEmpty.style.display = 'none';
-            if (previewLabel) {
-                previewLabel.textContent = card.querySelector('.video-card-name').textContent;
-                previewLabel.style.display = '';
-            }
-            previewPlayer.currentTime = 0;
-            previewPlayer.play().catch(function () {});
-        });
-        card.addEventListener('mouseleave', function () {
-            if (previewPlayer) { previewPlayer.pause(); previewPlayer.src = ''; previewPlayer.style.display = 'none'; }
-            if (previewEmpty) previewEmpty.style.display = '';
-            if (previewLabel) previewLabel.style.display = 'none';
-        });
-    });
 
     // 恢复状态：同步UI
     if (state.videoBg) {
@@ -126,11 +91,12 @@ function applyVideoBackground() {
     videoEl.src = '';
     videoEl.classList.remove('active');
 
-    if (state.videoBg && VIDEO_BG_MAP[state.videoBg]) {
-        const src = VIDEO_BG_MAP[state.videoBg];
+    if (state.videoBg && window.VIDEO_BG_MAP && window.VIDEO_BG_MAP[state.videoBg]) {
+        const src = window.VIDEO_BG_MAP[state.videoBg];
         videoEl.src = src;
         videoEl.load();
         if (!state.videoBgStatic) {
+            videoEl.playbackRate = 0.75;
             videoEl.play().catch(function () {});
         } else {
             videoEl.currentTime = 0;
@@ -149,6 +115,7 @@ function toggleVideoMode() {
     const videoEl = document.getElementById('videoBackground');
     if (!videoEl || !state.videoBg) return;
     if (!state.videoBgStatic) {
+        videoEl.playbackRate = 0.75;
         videoEl.play().catch(function () {});
     } else {
         videoEl.currentTime = 0;

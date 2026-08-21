@@ -55,8 +55,6 @@
     const loopVideo = document.getElementById('startLoopVideo');
     const gameVideo = document.getElementById('startGameVideo');
     const loopAudio = document.getElementById('startLoopAudio');
-    const loopHint = document.getElementById('loopHint');
-    const skipBtn = document.getElementById('skipIntroBtn');
     if (!startView || !mapView || !loopVideo || !gameVideo) return;
 
     let phase = 'loop';           // loop → enter（一次性开场）
@@ -70,8 +68,7 @@
         phase = 'loop';
         if (startTimer){ clearTimeout(startTimer); startTimer = null; }
         if (loopStallTimer){ clearTimeout(loopStallTimer); loopStallTimer = null; }
-        if (skipBtn) skipBtn.hidden = false;
-        if (loopHint) loopHint.hidden = false;
+        // 保持跳过和提示按钮隐藏
         showLoopPhase();
       },
     };
@@ -120,8 +117,6 @@
       loopVideo.currentTime = 0;
       loopVideo.play().catch(() => {});
       requestAnimationFrame(() => requestAnimationFrame(() => loopVideo.classList.add('show')));
-      if (loopHint){ loopHint.hidden = false; }
-      if (skipBtn) skipBtn.hidden = false;
       // loop 视频卡住（8 秒未开始播放）→ 自动跳过，避免黑屏
       if (loopStallTimer) clearTimeout(loopStallTimer);
       loopStallTimer = setTimeout(() => {
@@ -147,8 +142,6 @@
       phase = 'enter';
       stopMusic();               // 开门动画自带音乐，停掉 loop.mp3
       loopVideo.pause(); loopVideo.hidden = true; loopVideo.classList.remove('show');
-      if (loopHint) loopHint.hidden = true;
-      if (skipBtn) skipBtn.hidden = false;
       gameVideo.muted = false;   // 播放开门动画自带音轨
       gameVideo.hidden = false;
       gameVideo.classList.remove('show');
@@ -158,7 +151,6 @@
 
       gameVideo.onended = () => {
         gameVideo.hidden = true;
-        if (skipBtn) skipBtn.hidden = true;
         startView.classList.remove('active');
         if (loadingView){
           loadingView.classList.add('active');
@@ -213,10 +205,8 @@
       mapView.classList.add('fade-in');
       fadeOutLoopAudio();
       G.onResume && G.onResume();
-      if (skipBtn) skipBtn.hidden = true;
       setTimeout(() => mapView.classList.remove('fade-in'), 1400);
     }
-    if (skipBtn) skipBtn.addEventListener('click', skipToMap);
 
     showLoopPhase();   // 直接进入 loop 阶段（无标题页按钮）
     startView.addEventListener('click', onLoopClick);
@@ -384,19 +374,6 @@
       G.clampPos();
       G.setZoom(s.scale);
     });
-
-    // 「← 返回」：回到开始界面（关闭战斗、重播 loop 视频与音乐）
-    const backBtn = document.getElementById('gameBackBtn');
-    if (backBtn){
-      backBtn.addEventListener('click', () => {
-        const panel = document.getElementById('battlePanel');
-        const closeBtn = document.getElementById('battleClose');
-        if (panel && !panel.hidden && closeBtn) closeBtn.click();
-        if (G && G.stopMapMusic) G.stopMapMusic();
-        if (typeof switchView === 'function') switchView('home');
-        else if (window.QuizGameMain) window.QuizGameMain.exit();
-      });
-    }
 
     // 小地图：点击 / 拖拽跳转
     if (minimap){

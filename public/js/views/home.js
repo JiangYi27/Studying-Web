@@ -697,4 +697,35 @@ function initStatsActions() {
             switchView('tasks');
         });
     }
+
+    // 快速操作栏按钮（同一功能，复制一份监听）
+    const goTasksBtn2 = document.getElementById('goTasksBtn2');
+    if (goTasksBtn2) {
+        goTasksBtn2.addEventListener('click', function () { switchView('tasks'); });
+    }
+    const randomChallengeBtn2 = document.getElementById('randomChallengeBtn2');
+    if (randomChallengeBtn2) {
+        randomChallengeBtn2.addEventListener('click', function () {
+            const allSections = [];
+            CHAPTERS.forEach(function (ch, chIdx) {
+                ch.sections.forEach(function (sec, secIdx) {
+                    allSections.push({ chIdx: chIdx, secIdx: secIdx });
+                });
+            });
+            const pick = allSections[Math.floor(Math.random() * allSections.length)];
+            state.currentChapterIndex = pick.chIdx;
+            state.currentSectionIndex = pick.secIdx;
+            loadSection(pick.chIdx, pick.secIdx);
+            switchView('course');
+            showToast('🎲 随机跳转！');
+        });
+    }
+    const viewRoadmapBtn2 = document.getElementById('viewRoadmapBtn2');
+    if (viewRoadmapBtn2) {
+        viewRoadmapBtn2.addEventListener('click', function () { switchView('roadmap'); });
+    }
+    const goBadgesBtn2 = document.getElementById('goBadgesBtn2');
+    if (goBadgesBtn2) {
+        goBadgesBtn2.addEventListener('click', function () { switchView('badges'); });
+    }
 }

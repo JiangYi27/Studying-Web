@@ -8,15 +8,18 @@
 (function(){
   'use strict';
 
+  // 优先使用 QuizConfig（配置中心），兜底用默认值
+  const _cfg = window.QuizConfig || {};
+
   const CONFIG = {
-    EXP_PER_LEVEL: 100,        // 每级所需经验 = 等级 × 100
-    BATTLE_SECONDS: 25,        // 每题限时
-    QUIZ_COUNT: 8,             // 每章随机抽取题目数
-    PASS_RATE: 0.6,            // 通关及格线（答对比例 ≥ 0.6 → 60%）
-    XP_PER_CORRECT: 10,        // 每题基础经验分
-    SCROLL_SENSITIVITY: 0.0014,
-    MIN_SCALE: 0.6,            // 兜底下限（实际使用 Game.minScale() 动态下限）
-    MAX_SCALE: 2.5,
+    EXP_PER_LEVEL:       _cfg.EXP_PER_LEVEL       || 100,
+    BATTLE_SECONDS:      _cfg.BATTLE_SECONDS      || 25,
+    QUIZ_COUNT:          _cfg.QUIZ_COUNT          || 8,
+    PASS_RATE:           _cfg.PASS_RATE           || 0.6,
+    XP_PER_CORRECT:      _cfg.XP_PER_CORRECT      || 10,
+    SCROLL_SENSITIVITY:  _cfg.SCROLL_SENSITIVITY  || 0.0014,
+    MIN_SCALE:           _cfg.MIN_SCALE           || 0.6,
+    MAX_SCALE:           _cfg.MAX_SCALE           || 2.5,
   };
 
   /* ===================== 关卡秘典 · 14 重试炼命名 =====================

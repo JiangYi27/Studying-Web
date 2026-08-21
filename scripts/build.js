@@ -27,6 +27,7 @@ const cssFiles = [
     'css/components/table.css',
     'css/components/badge-modal.css',
     'css/components/responsive.css',
+    'css/components/video-background.css',
     'css/components/login.css',
     // 视图
     'css/views/shared.css',
@@ -67,6 +68,8 @@ const jsFiles = [
     // 工具 & 数据
     'js/utils/helpers.js',
     'js/data/chapters.js',
+    // 共享数据（视频配置）
+    'js/data/login-videos.js',
     // 核心
     'js/core/main.js',
     'js/core/toast.js',
@@ -95,7 +98,7 @@ const jsFiles = [
     'js/game/quizgame-game.js',
     'js/game/quizgame-main.js',
     // 专注模式
-    'js/focus-mode.js',
+    'js/features/focus-mode.js',
 ];
 
 function bundleJS() {
@@ -130,10 +133,10 @@ function generateProdHTML() {
         '  <link rel="stylesheet" href="/css/bundle.css">'
     );
 
-    // 替换多个 JS <script> 为一个 bundle.js（保留 Chart.js CDN）
+    // 替换多个 JS <script> 为一个 bundle.js + stores + router.js（保留 Chart.js CDN）
     html = html.replace(
         /<!-- 工具函数[\s\S]*?<script src="\/js\/game\/quizgame-main.js" defer><\/script>/m,
-        '  <script src="/js/bundle.js" defer></script>'
+        '  <script src="/js/data/login-videos.js" defer></script>\n  <script src="/js/bundle.js" defer></script>\n  <script src="/js/stores/studyStore.js" defer></script>\n  <script src="/js/stores/uiStore.js" defer></script>\n  <script src="/js/core/router.js" defer></script>'
     );
 
     const outPath = path.join(PUBLIC, 'index.prod.html');

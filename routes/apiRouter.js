@@ -176,9 +176,9 @@ router.get('/extension', async (req, res) => {
 });
 
 // 获取单个拓展知识的 HTML 正文
-router.get('/extension/:id(*)', async (req, res) => {
+router.get('/extension/*', async (req, res) => {
   try {
-    const id = decodeURIComponent(req.params.id);
+    const id = decodeURIComponent(req.params[0]);
     const html = await extensionModel.getHtml(id);
     res.json({ id, html });
   } catch (err) {

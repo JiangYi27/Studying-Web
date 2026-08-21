@@ -16,6 +16,7 @@ if (!fs.existsSync(dataDir)) {
 }
 
 let db = null;
+const DB_VERSION = 1;
 
 function getDb() {
   if (!db) {
@@ -24,37 +25,108 @@ function getDb() {
     db.pragma('foreign_keys = ON');
     db.pragma('busy_timeout = 5000');
     initTables();
+    ensureVersionTable();
+    runMigrations();
   }
   return db;
 }
 
+function ensureVersionTable() {
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS db_version (
+      id INTEGER PRIMARY KEY,
+      version INTEGER NOT NULL DEFAULT 1,
+      applied_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+}
+
+function runMigrations() {
+  const row = db.prepare('SELECT version FROM db_version ORDER BY id DESC LIMIT 1').get();
+  const currentVersion = row ? row.version : 0;
+
+  if (currentVersion >= DB_VERSION) return; // 已最新
+
+  // 迁移 0 → 1：重建 user_data 和 study_records 添加 ON DELETE CASCADE
+  if (currentVersion < 1) {
+    migrateForeignKeyOnce('user_data', `
+      CREATE TABLE user_data (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        completed_sections TEXT DEFAULT '{}',
+        completed_dates TEXT DEFAULT '{}',
+        section_study_time TEXT DEFAULT '{}',
+        notes TEXT DEFAULT '{}',
+        bookmarks TEXT DEFAULT '[]',
+        streak INTEGER DEFAULT 0,
+        total_days INTEGER DEFAULT 0,
+        total_study_time INTEGER DEFAULT 0,
+        last_study_date TEXT,
+        exp INTEGER DEFAULT 0,
+        total_exp INTEGER DEFAULT 0,
+        level INTEGER DEFAULT 1,
+        badges TEXT DEFAULT '[]',
+        quiz_stats TEXT DEFAULT '{"attempts":0,"bestStreak":0}',
+        studied_early INTEGER DEFAULT 0,
+        studied_at_night INTEGER DEFAULT 0,
+        daily_goal_complete_days INTEGER DEFAULT 0,
+        daily_goal_met_date TEXT,
+        dark_mode INTEGER DEFAULT 0,
+        font_size INTEGER DEFAULT 16,
+        sidebar_collapsed INTEGER DEFAULT 0,
+        focus_mode INTEGER DEFAULT 0,
+        theme_color TEXT DEFAULT '#3b82f6',
+        daily_goal INTEGER DEFAULT 1,
+        auto_mark INTEGER DEFAULT 0,
+        reminder_time TEXT DEFAULT '19:00',
+        review_interval INTEGER DEFAULT 3,
+        background_music TEXT DEFAULT '',
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (username) REFERENCES accounts(username) ON DELETE CASCADE
+      )
+    `);
+    migrateForeignKeyOnce('study_records', `
+      CREATE TABLE study_records (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL,
+        section TEXT NOT NULL,
+        time_minutes INTEGER DEFAULT 0,
+        study_date DATE NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (username) REFERENCES accounts(username) ON DELETE CASCADE
+      )
+    `);
+    db.prepare('INSERT INTO db_version (version) VALUES (?)').run(1);
+    console.log('[DB] 迁移完成: 0 → 1');
+  }
+}
+
 /**
- * 迁移外键约束：检测旧表是否缺少 CASCADE，若缺少则重建表。
- * SQLite 不支持 ALTER TABLE 修改外键，只能查 SQL 后重建。
+ * 一次性迁移：检测旧表是否缺少 CASCADE，若缺少则重建表。
+ * 完成后记录 version。
  */
-function migrateForeignKey(tableName, createSql) {
-  const database = db;
+function migrateForeignKeyOnce(tableName, createSql) {
   try {
-    const row = database.prepare(
+    const row = db.prepare(
       "SELECT sql FROM sqlite_master WHERE type='table' AND name=?"
     ).get(tableName);
     if (!row || !row.sql) return;
-    // 如果建表 SQL 中已包含 ON DELETE CASCADE，跳过迁移
-    if (/ON\s+DELETE\s+CASCADE/i.test(row.sql)) return;
+    if (/ON\s+DELETE\s+CASCADE/i.test(row.sql)) {
+      console.log('[DB] 表', tableName, '已有 CASCADE，跳过');
+      return;
+    }
     console.log('[DB] 迁移外键约束:', tableName);
-    // 备份旧数据 → 删旧表 → 建新表 → 恢复数据
-    const oldData = database.prepare(`SELECT * FROM ${tableName}`).all();
-    database.exec(`DROP TABLE ${tableName}`);
-    database.exec(createSql);
+    const oldData = db.prepare(`SELECT * FROM ${tableName}`).all();
+    db.exec(`DROP TABLE ${tableName}`);
+    db.exec(createSql);
     if (oldData.length > 0) {
       const cols = Object.keys(oldData[0]);
       const placeholders = cols.map(() => '?').join(', ');
-      const insert = database.prepare(
-        `INSERT INTO ${tableName} (${cols.join(', ')}) VALUES (${placeholders})`
-      );
-      const insertMany = database.transaction((rows) => {
+      const insertMany = db.transaction((rows) => {
         for (const row of rows) {
-          insert.run(...cols.map((c) => row[c]));
+          db.prepare(
+            `INSERT INTO ${tableName} (${cols.join(', ')}) VALUES (${placeholders})`
+          ).run(...cols.map((c) => row[c]));
         }
       });
       insertMany(oldData);
@@ -68,7 +140,7 @@ function migrateForeignKey(tableName, createSql) {
 function initTables() {
   const database = db;
 
-  // 用户账号表
+  // 基础表（CREATE IF NOT EXISTS，外键约束在迁移中添加）
   database.exec(`
     CREATE TABLE IF NOT EXISTS accounts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,12 +150,14 @@ function initTables() {
       role TEXT DEFAULT '学习者',
       avatar TEXT,
       allowed_sites TEXT DEFAULT '["c"]',
+      email TEXT DEFAULT '',
+      reset_token TEXT,
+      reset_token_expires TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
 
-  // 用户学习数据表（ON DELETE CASCADE：删除账号时自动清理学习数据）
   database.exec(`
     CREATE TABLE IF NOT EXISTS user_data (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -116,12 +190,10 @@ function initTables() {
       reminder_time TEXT DEFAULT '19:00',
       review_interval INTEGER DEFAULT 3,
       background_music TEXT DEFAULT '',
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (username) REFERENCES accounts(username) ON DELETE CASCADE
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
 
-  // 学习记录表（ON DELETE CASCADE：删除账号时自动清理学习记录）
   database.exec(`
     CREATE TABLE IF NOT EXISTS study_records (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -129,68 +201,10 @@ function initTables() {
       section TEXT NOT NULL,
       time_minutes INTEGER DEFAULT 0,
       study_date DATE NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (username) REFERENCES accounts(username) ON DELETE CASCADE
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
 
-  // 迁移：为 accounts 表添加 email 和密码重置字段（如果不存在）
-  try { database.exec('ALTER TABLE accounts ADD COLUMN email TEXT DEFAULT \'\''); } catch (e) { /* 已存在 */ }
-  try { database.exec('ALTER TABLE accounts ADD COLUMN reset_token TEXT'); } catch (e) { /* 已存在 */ }
-  try { database.exec('ALTER TABLE accounts ADD COLUMN reset_token_expires TEXT'); } catch (e) { /* 已存在 */ }
-
-  // 迁移：重建 user_data 表以添加 ON DELETE CASCADE（如果旧表缺少此约束）
-  migrateForeignKey('user_data', `
-    CREATE TABLE user_data (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT UNIQUE NOT NULL,
-      completed_sections TEXT DEFAULT '{}',
-      completed_dates TEXT DEFAULT '{}',
-      section_study_time TEXT DEFAULT '{}',
-      notes TEXT DEFAULT '{}',
-      bookmarks TEXT DEFAULT '[]',
-      streak INTEGER DEFAULT 0,
-      total_days INTEGER DEFAULT 0,
-      total_study_time INTEGER DEFAULT 0,
-      last_study_date TEXT,
-      exp INTEGER DEFAULT 0,
-      total_exp INTEGER DEFAULT 0,
-      level INTEGER DEFAULT 1,
-      badges TEXT DEFAULT '[]',
-      quiz_stats TEXT DEFAULT '{"attempts":0,"bestStreak":0}',
-      studied_early INTEGER DEFAULT 0,
-      studied_at_night INTEGER DEFAULT 0,
-      daily_goal_complete_days INTEGER DEFAULT 0,
-      daily_goal_met_date TEXT,
-      dark_mode INTEGER DEFAULT 0,
-      font_size INTEGER DEFAULT 16,
-      sidebar_collapsed INTEGER DEFAULT 0,
-      focus_mode INTEGER DEFAULT 0,
-      theme_color TEXT DEFAULT '#3b82f6',
-      daily_goal INTEGER DEFAULT 1,
-      auto_mark INTEGER DEFAULT 0,
-      reminder_time TEXT DEFAULT '19:00',
-      review_interval INTEGER DEFAULT 3,
-      background_music TEXT DEFAULT '',
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (username) REFERENCES accounts(username) ON DELETE CASCADE
-    )
-  `);
-
-  // 迁移：重建 study_records 表以添加 ON DELETE CASCADE（如果旧表缺少此约束）
-  migrateForeignKey('study_records', `
-    CREATE TABLE study_records (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT NOT NULL,
-      section TEXT NOT NULL,
-      time_minutes INTEGER DEFAULT 0,
-      study_date DATE NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (username) REFERENCES accounts(username) ON DELETE CASCADE
-    )
-  `);
-
-  // 审计日志表
   database.exec(`
     CREATE TABLE IF NOT EXISTS audit_log (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -202,7 +216,7 @@ function initTables() {
     )
   `);
 
-  // 创建索引
+  // 索引
   database.exec(`
     CREATE INDEX IF NOT EXISTS idx_user_data_username ON user_data(username);
     CREATE INDEX IF NOT EXISTS idx_study_records_username ON study_records(username);
@@ -437,9 +451,18 @@ function getStats() {
     WHERE study_date >= date('now', '-7 days')
   `).get().count;
   const totalStudyTime = database.prepare('SELECT COALESCE(SUM(time_minutes), 0) as total FROM study_records').get().total;
-  const totalBadges = database.prepare('SELECT SUM(json_array_length(badges)) as total FROM user_data').get().total || 0;
+  const totalBadges = database.prepare(`
+    SELECT COALESCE(SUM(json_array_length(badges)), 0) as total FROM user_data
+  `).get().total || 0;
+  const totalExp = database.prepare(`
+    SELECT COALESCE(SUM(total_exp), 0) as total FROM user_data
+  `).get().total || 0;
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  const newUsersThisWeek = database.prepare(`
+    SELECT COUNT(*) as count FROM accounts WHERE created_at >= ?
+  `).get(weekAgo).count;
 
-  return { totalUsers, activeUsers, totalStudyTime, totalBadges };
+  return { totalUsers, activeUsers, totalStudyTime, totalBadges, totalExp, newUsersThisWeek };
 }
 
 function getRecentRecords(limit = 10) {
@@ -452,6 +475,67 @@ function getRecentRecords(limit = 10) {
     LIMIT ?
   `);
   return stmt.all(limit);
+}
+
+/**
+ * 获取最近 n 天的学习趋势数据
+ * @returns {Array} 每天的 { date, activeUsers, studyTime, newUsers }
+ */
+function getStudyTrends(days = 7) {
+  const database = getDb();
+  const now = new Date();
+  const dailyData = [];
+
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+    const key = d.toISOString().slice(0, 10);
+    dailyData.push({ date: key, activeUsers: 0, studyTime: 0, newUsers: 0 });
+  }
+
+  // 查询每日活跃用户（last_study_date 在当天）
+  const dateRange = dailyData.map(r => r.date);
+  if (dateRange.length > 0) {
+    const placeholders = dateRange.map(() => '?').join(',');
+    const userStats = database.prepare(`
+      SELECT substr(last_study_date, 1, 10) as study_date,
+             COUNT(*) as active_users,
+             SUM(total_study_time) as total_time
+      FROM user_data
+      WHERE last_study_date IS NOT NULL
+        AND substr(last_study_date, 1, 10) IN (${placeholders})
+      GROUP BY substr(last_study_date, 1, 10)
+    `).all(...dateRange);
+
+    const userStatMap = {};
+    userStats.forEach(s => { userStatMap[s.study_date] = s; });
+
+    dailyData.forEach(d => {
+      if (userStatMap[d.date]) {
+        d.activeUsers = userStatMap[d.date].active_users;
+        d.studyTime = Math.floor((userStatMap[d.date].total_time || 0) / 60);
+      }
+    });
+  }
+
+  // 查询每日新注册用户
+  if (dateRange.length > 0) {
+    const placeholders = dateRange.map(() => '?').join(',');
+    const newUsers = database.prepare(`
+      SELECT substr(created_at, 1, 10) as created_date, COUNT(*) as cnt
+      FROM accounts
+      WHERE substr(created_at, 1, 10) IN (${placeholders})
+      GROUP BY substr(created_at, 1, 10)
+    `).all(...dateRange);
+
+    const newUserMap = {};
+    newUsers.forEach(n => { newUserMap[n.created_date] = n.cnt; });
+
+    dailyData.forEach(d => {
+      if (newUserMap[d.date]) d.newUsers = newUserMap[d.date];
+    });
+  }
+
+  return dailyData;
 }
 
 function addStudyRecord(username, section, timeMinutes) {
@@ -617,6 +701,7 @@ module.exports = {
   updateUserData,
   getStats,
   getRecentRecords,
+  getStudyTrends,
   addStudyRecord,
   addAuditLog,
   getAuditLogs,

@@ -298,6 +298,99 @@
     @media (max-width: 520px) {
       .auth-panel { padding: 25px 20px; }
     }
+
+    /* ── 介绍 Modal ── */
+    .intro-modal {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 280ms ease;
+    }
+    .intro-modal.open { opacity: 1; pointer-events: auto; }
+    .intro-modal-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(21, 34, 56, 0.65);
+      backdrop-filter: blur(4px);
+    }
+    .intro-modal-panel {
+      position: relative; z-index: 1;
+      width: min(600px, 92vw);
+      max-height: 80vh;
+      overflow-y: auto;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(21, 34, 56, 0.18);
+      padding: 32px 34px 28px;
+    }
+    body.dark .intro-modal-panel { background: #1a2a40; color: #e2e8f0; }
+    .intro-modal-close {
+      position: absolute; top: 16px; right: 18px;
+      width: 32px; height: 32px; border-radius: 50%;
+      border: none; background: #f0f2f1; color: #667085;
+      font-size: 16px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 200ms ease;
+    }
+    .intro-modal-close:hover { background: #e2e8ef; color: #152238; }
+    .intro-modal-eyebrow {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #2b8c88; margin-bottom: 8px;
+    }
+    .intro-modal-title {
+      font-size: 22px; font-weight: 800; letter-spacing: -0.04em;
+      color: #152238; margin: 0 0 14px;
+    }
+    body.dark .intro-modal-title { color: #f0f2f1; }
+    .intro-modal-body { font-size: 14px; line-height: 1.75; color: #475569; }
+    body.dark .intro-modal-body { color: #94a3b8; }
+    .intro-modal-chapters {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+      margin-top: 18px;
+    }
+    .intro-chapter-card {
+      padding: 12px 14px; border-radius: 10px;
+      background: #f8fafc; border: 1px solid #e2e8ef;
+      font-size: 12px; font-weight: 700; color: #152238;
+    }
+    body.dark .intro-chapter-card { background: #0f1f33; border-color: #1e3048; color: #cbd5e1; }
+    .intro-chapter-card .ch-icon { font-size: 15px; margin-right: 6px; }
+    .intro-chapter-card .ch-title { display: block; margin-top: 4px; font-weight: 600; color: #667085; font-size: 11px; }
+    body.dark .intro-chapter-card .ch-title { color: #64748b; }
+    .intro-modal-divider { height: 1px; background: #e2e8ef; margin: 18px 0; }
+    body.dark .intro-modal-divider { background: #1e3048; }
+    .intro-modal-features { display: flex; flex-direction: column; gap: 8px; }
+    .intro-feature-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: #475569;
+    }
+    body.dark .intro-feature-item { color: #94a3b8; }
+    .intro-feature-item i { color: #2b8c88; font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+    .intro-modal-footer { margin-top: 18px; padding-top: 16px; border-top: 1px solid #e2e8ef; text-align: center; font-size: 12px; color: #94a8b8; }
+    body.dark .intro-modal-footer { border-color: #1e3048; }
+    .intro-roadmap-steps { display: flex; gap: 0; margin-top: 14px; }
+    .intro-roadmap-step {
+      flex: 1; text-align: center; padding: 12px 6px;
+      border-radius: 10px; background: #f8fafc; border: 1px solid #e2e8ef;
+      font-size: 11px; font-weight: 700; color: #152238;
+    }
+    body.dark .intro-roadmap-step { background: #0f1f33; border-color: #1e3048; color: #cbd5e1; }
+    .intro-roadmap-step .step-num { font-size: 20px; margin-bottom: 4px; }
+    .intro-roadmap-step .step-label { color: #667085; font-weight: 600; margin-top: 4px; }
+    body.dark .intro-roadmap-step .step-label { color: #64748b; }
+    .intro-code-block {
+      margin-top: 14px; padding: 16px 18px;
+      border-radius: 10px; background: #152238; color: #dbe4ef;
+      font-family: "SFMono-Regular", Consolas, monospace; font-size: 12px;
+      line-height: 1.85; white-space: pre-wrap;
+    }
+    .intro-code-block .kw { color: #ef9ca0; }
+    .intro-code-block .fn { color: #f2c94c; }
+    .intro-code-block .str { color: #86d0a0; }
+    .intro-code-block .cm { color: #75869a; }
+    @media (max-width: 480px) {
+      .intro-modal-chapters { grid-template-columns: 1fr; }
+      .intro-roadmap-steps { flex-wrap: wrap; }
+    }
   </style>
 </head>
 
@@ -305,12 +398,7 @@
 
   <!-- 全屏视频 Hero 背景 -->
   <div id="loginBg" class="login-page-bg">
-    <div class="login-hero-videos">
-      <video class="login-hero-video active" src="/video/first.mp4" autoplay muted loop playsinline></video>
-      <video class="login-hero-video" src="/video/second.mp4" autoplay muted loop playsinline preload="auto"></video>
-      <video class="login-hero-video" src="/video/third.mp4" autoplay muted loop playsinline preload="auto"></video>
-      <video class="login-hero-video" src="/video/fourth.mp4" autoplay muted loop playsinline preload="auto"></video>
-    </div>
+    <div class="login-hero-videos" id="loginHeroVideos"></div>
     <img class="login-hero-png" src="/image/login-overlay.png" alt="">
     <div class="login-hero-shade"></div>
 
@@ -321,10 +409,10 @@
 
         <div class="login-nav-desktop">
           <div class="login-nav-pill">
-            <a href="#" class="login-nav-link">课程地图</a>
-            <a href="#" class="login-nav-link">闯关答题</a>
-            <a href="#" class="login-nav-link">语法手册</a>
-            <a href="#" class="login-nav-link">关于</a>
+            <a href="#" class="login-nav-link" data-modal="modalCurriculum">课程地图</a>
+            <a href="#" class="login-nav-link" data-modal="modalRoadmap">闯关答题</a>
+            <a href="#" class="login-nav-link" data-modal="modalGrammar">语法手册</a>
+            <a href="#" class="login-nav-link" data-modal="modalAbout">关于</a>
             <a href="#" class="login-nav-cta" data-open-login>开始学习</a>
           </div>
         </div>
@@ -339,10 +427,10 @@
 
       <div id="loginMenuOverlay" class="login-menu-overlay">
         <div id="loginMenuPanel" class="login-menu-panel">
-          <a href="#" class="login-menu-link">课程地图</a>
-          <a href="#" class="login-menu-link">闯关答题</a>
-          <a href="#" class="login-menu-link">语法手册</a>
-          <a href="#" class="login-menu-link">关于</a>
+          <a href="#" class="login-menu-link" data-modal="modalCurriculum">课程地图</a>
+          <a href="#" class="login-menu-link" data-modal="modalRoadmap">闯关答题</a>
+          <a href="#" class="login-menu-link" data-modal="modalGrammar">语法手册</a>
+          <a href="#" class="login-menu-link" data-modal="modalAbout">关于</a>
           <a href="#" class="login-menu-cta" data-open-login>开始学习</a>
         </div>
       </div>
@@ -366,12 +454,7 @@
           <button type="button" class="login-hero-cta" data-open-login>开始旅程</button>
         </form>
 
-        <div class="login-hero-vtabs">
-          <button class="login-hero-vtab active" data-index="0">晨曦</button>
-          <button class="login-hero-vtab" data-index="1">静水</button>
-          <button class="login-hero-vtab" data-index="2">深林</button>
-          <button class="login-hero-vtab" data-index="3">幽谷</button>
-        </div>
+        <div class="login-hero-vtabs" id="loginHeroVtabs"></div>
       </div>
 
       <div class="login-hero-slogan">
@@ -557,6 +640,230 @@
     </div>
   </div>
 
-  <script src="/js/login-page.js" defer></script>
+  <!-- 介绍 Modal：课程地图 -->
+  <div class="intro-modal" id="modalCurriculum" role="dialog" aria-modal="true" aria-labelledby="modalCurriculumTitle">
+    <div class="intro-modal-backdrop" data-close-modal></div>
+    <div class="intro-modal-panel">
+      <button class="intro-modal-close" data-close-modal aria-label="关闭">✕</button>
+      <p class="intro-modal-eyebrow">Curriculum Overview</p>
+      <h2 class="intro-modal-title" id="modalCurriculumTitle">课程地图</h2>
+      <div class="intro-modal-body">
+        <p>两个站点的完整学习路径，登录后可随时切换。</p>
+        <div class="intro-modal-chapters" id="introChaptersList"></div>
+        <div class="intro-modal-divider"></div>
+        <div class="intro-modal-features">
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 任意时刻回看已学内容</div>
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 标记已学 / 记录笔记</div>
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 每日签到打卡，连续学习</div>
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 实时学习进度统计</div>
+        </div>
+      </div>
+      <div class="intro-modal-footer">登录后点击左侧「课程学习」进入</div>
+    </div>
+  </div>
+
+  <!-- 介绍 Modal：闯关答题 -->
+  <div class="intro-modal" id="modalRoadmap" role="dialog" aria-modal="true" aria-labelledby="modalRoadmapTitle">
+    <div class="intro-modal-backdrop" data-close-modal></div>
+    <div class="intro-modal-panel">
+      <button class="intro-modal-close" data-close-modal aria-label="关闭">✕</button>
+      <p class="intro-modal-eyebrow">Quiz Adventure</p>
+      <h2 class="intro-modal-title" id="modalRoadmapTitle">实战闯关</h2>
+      <div class="intro-modal-body">
+        <p>以王国冒险的形式复习所学知识，每关随机抽题，答对继续前进。</p>
+        <div class="intro-roadmap-steps">
+          <div class="intro-roadmap-step">
+            <div class="step-num">🎬</div>
+            <div>开场视频</div>
+            <div class="step-label">沉浸式进入</div>
+          </div>
+          <div class="intro-roadmap-step">
+            <div class="step-num">🗺️</div>
+            <div>闯关地图</div>
+            <div class="step-label">选择章节</div>
+          </div>
+          <div class="intro-roadmap-step">
+            <div class="step-num">📝</div>
+            <div>答题挑战</div>
+            <div class="step-label">随机 8 题</div>
+          </div>
+          <div class="intro-roadmap-step">
+            <div class="step-num">🏆</div>
+            <div>结算奖励</div>
+            <div class="step-label">经验 + 徽章</div>
+          </div>
+        </div>
+        <div class="intro-modal-divider"></div>
+        <div class="intro-modal-features">
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 每关 8 道随机抽题</div>
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 每题限时 25 秒</div>
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 60% 及格，闯关成功</div>
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 闯关获得经验值与徽章</div>
+        </div>
+      </div>
+      <div class="intro-modal-footer">登录后点击左侧「实战闯关」进入</div>
+    </div>
+  </div>
+
+  <!-- 介绍 Modal：语法手册 -->
+  <div class="intro-modal" id="modalGrammar" role="dialog" aria-modal="true" aria-labelledby="modalGrammarTitle">
+    <div class="intro-modal-backdrop" data-close-modal></div>
+    <div class="intro-modal-panel">
+      <button class="intro-modal-close" data-close-modal aria-label="关闭">✕</button>
+      <p class="intro-modal-eyebrow">Grammar Reference</p>
+      <h2 class="intro-modal-title" id="modalGrammarTitle">英语语法</h2>
+      <div class="intro-modal-body">
+        <p>覆盖英语语法的核心模块，从认知框架到实战应用：</p>
+        <div class="intro-modal-chapters">
+          <div class="intro-chapter-card"><span class="ch-icon">🧠</span>重塑语法认知框架<span class="ch-title">简单句、十六种时态、易混对比</span></div>
+          <div class="intro-chapter-card"><span class="ch-icon">📚</span>动词与语气<span class="ch-title">虚拟语气、非谓语动词、情态动词</span></div>
+          <div class="intro-chapter-card"><span class="ch-icon">🔗</span>从句专题<span class="ch-title">定语从句、主语从句、状语从句等</span></div>
+          <div class="intro-chapter-card"><span class="ch-icon">🔤</span>词类详解<span class="ch-title">冠词、介词、名词、形容词、副词</span></div>
+          <div class="intro-chapter-card"><span class="ch-icon">🏗️</span>句子成分与分类<span class="ch-title">被动语态、倒装句、强调、省略</span></div>
+        </div>
+        <div class="intro-modal-divider"></div>
+        <div class="intro-modal-features">
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 登录切换至「英语语法」站点</div>
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> 支持「背单词」专项训练</div>
+          <div class="intro-feature-item"><i class="fas fa-check-circle"></i> AI 答疑解惑，随时提问</div>
+        </div>
+      </div>
+      <div class="intro-modal-footer">登录后切换站点至「英语语法」开始学习</div>
+    </div>
+  </div>
+
+  <!-- 介绍 Modal：关于 -->
+  <div class="intro-modal" id="modalAbout" role="dialog" aria-modal="true" aria-labelledby="modalAboutTitle">
+    <div class="intro-modal-backdrop" data-close-modal></div>
+    <div class="intro-modal-panel">
+      <button class="intro-modal-close" data-close-modal aria-label="关闭">✕</button>
+      <p class="intro-modal-eyebrow">About</p>
+      <h2 class="intro-modal-title" id="modalAboutTitle">关于研习室</h2>
+      <div class="intro-modal-body">
+        <p><strong>研习室</strong>是一个结合 C 语言与英语语法的在线学习平台，致力于让学习者在真实的编程任务中掌握语言技能。</p>
+        <div class="intro-modal-divider"></div>
+        <div class="intro-modal-features">
+          <div class="intro-feature-item"><i class="fas fa-code"></i> C 语言全体系：从概述到工程化调试</div>
+          <div class="intro-feature-item"><i class="fas fa-language"></i> 英语语法系统：认知框架到实战应用</div>
+          <div class="intro-feature-item"><i class="fas fa-bolt"></i> 闯关答题：游戏化复习加深记忆</div>
+          <div class="intro-feature-item"><i class="fas fa-chart-line"></i> 学习仪表盘：数据驱动持续进步</div>
+          <div class="intro-feature-item"><i class="fas fa-robot"></i> AI 答疑：随时解答学习疑惑</div>
+          <div class="intro-feature-item"><i class="fas fa-medal"></i> 成就系统：记录每一次成长</div>
+        </div>
+        <div class="intro-modal-divider"></div>
+        <div class="intro-code-block"><span class="cm">// Make it work. Make it right. Make it fast.</span>
+<span class="kw">int</span> <span class="fn">main</span>(<span class="kw">void</span>) {
+    <span class="kw">return</span> <span class="fn">keepLearning</span>();
+}</div>
+      </div>
+      <div class="intro-modal-footer">版本 v1.0.1 &nbsp;·&nbsp; 开发者：孤屿·行舟 &nbsp;·&nbsp; 2026</div>
+    </div>
+  </div>
+
+  <script src="/js/data/login-videos.js" defer></script>
+  <script>
+    /* ── 动态生成登录页视频 ── */
+    (function () {
+      var container = document.getElementById('loginHeroVideos');
+      if (container && window.LOGIN_VIDEOS) {
+        window.LOGIN_VIDEOS.forEach(function(v, i) {
+          var video = document.createElement('video');
+          video.className = 'login-hero-video' + (i === 0 ? ' active' : '');
+          video.src = v.src;
+          video.autoplay = true;
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.setAttribute('preload', i === 0 ? 'auto' : 'none');
+          container.appendChild(video);
+        });
+      }
+    })();
+  </script>
+  <script>
+    /* ── 介绍 Modal 逻辑 ── */
+    (function () {
+      /* 动态填充课程地图章节列表 */
+      (function buildCurriculum() {
+        var list = document.getElementById('introChaptersList');
+        if (!list) return;
+        var chapters = [
+          { site: 'C语言', icon: '💻', items: [
+            'C语言概述', '核心语法基础', '程序流程控制',
+            '数组与字符串', '函数与程序结构', '指针',
+            '内存管理', '构造数据类型', 'C预处理器',
+            '标准库与系统调用', '文件操作', '高级与底层专题',
+            '数据结构与算法', '工程化与调试'
+          ]},
+          { site: '英语语法', icon: '📖', items: [
+            '重塑语法认知框架', '动词语气与虚拟语气',
+            '从句', '词类', '句子成分与分类'
+          ]}
+        ];
+        chapters.forEach(function (ch) {
+          ch.items.forEach(function (title) {
+            var card = document.createElement('div');
+            card.className = 'intro-chapter-card';
+            card.innerHTML = '<span class="ch-icon">' + ch.icon + '</span>' + title +
+              '<span class="ch-title">' + ch.site + '</span>';
+            list.appendChild(card);
+          });
+        });
+      })();
+
+      /* 打开 / 关闭 Modal */
+      function openModal(id) {
+        var modal = document.getElementById(id);
+        if (modal) modal.classList.add('open');
+      }
+      function closeModal(id) {
+        var modal = document.getElementById(id);
+        if (modal) modal.classList.remove('open');
+      }
+      function closeAllModals() {
+        document.querySelectorAll('.intro-modal.open').forEach(function (m) {
+          m.classList.remove('open');
+        });
+      }
+
+      /* 点击关闭按钮或遮罩关闭 */
+      document.addEventListener('click', function (e) {
+        if (e.target.hasAttribute('data-close-modal')) {
+          closeAllModals();
+        }
+      });
+
+      /* ESC 键关闭 */
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeAllModals();
+      });
+
+      /* 给导航链接绑定打开事件 */
+      var overlay = document.getElementById('loginBg');
+      if (overlay) {
+        overlay.addEventListener('click', function (e) {
+          var target = e.target.closest('[data-modal]');
+          if (target) {
+            openModal(target.getAttribute('data-modal'));
+          }
+        });
+      }
+
+      /* 给移动菜单链接也绑定 */
+      var menuOverlay = document.getElementById('loginMenuOverlay');
+      if (menuOverlay) {
+        menuOverlay.addEventListener('click', function (e) {
+          var link = e.target.closest('a[data-modal]');
+          if (link) {
+            link.addEventListener('click', function (ev) {
+              ev.preventDefault();
+              openModal(link.getAttribute('data-modal'));
+            });
+          }
+        });
+      }
+    })();
+  </script>
+  <script src="/js/features/login-page.js" defer></script>
 </body>
 </html>

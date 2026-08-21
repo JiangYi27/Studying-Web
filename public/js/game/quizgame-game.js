@@ -59,6 +59,22 @@
   function loadState(){
     const host = questHost();
     if (host && host.quest) Object.assign(state, host.quest);
+
+    // 尝试从 localStorage 恢复进度（兜底方案）
+    try {
+      const saved = localStorage.getItem('quiz_progress');
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data && typeof data === 'object') {
+          // 只更新存在的字段，避免覆盖主站状态
+          if (data.completedSections) state.completedSections = data.completedSections;
+          if (typeof data.exp === 'number') state.exp = data.exp;
+          if (typeof data.totalExp === 'number') state.totalExp = data.totalExp;
+          if (typeof data.level === 'number') state.level = data.level;
+          if (data.quizStats) state.quizStats = Object.assign(state.quizStats || {}, data.quizStats);
+        }
+      }
+    } catch (e) {}
   }
   function saveState(){
     const host = questHost();
@@ -72,7 +88,16 @@
       };
       if (host.quizStats) host.quizStats = state.quizStats;
     }
-    if (typeof saveStateDebounced === "function") saveStateDebounced();
+    // 持久化到 localStorage 作为兜底
+    try {
+      localStorage.setItem('quiz_progress', JSON.stringify({
+        completedSections: state.completedSections,
+        exp: state.exp,
+        totalExp: state.totalExp,
+        level: state.level,
+        quizStats: state.quizStats,
+      }));
+    } catch (e) {}
   }
 
   function getSectionKey(ch, sec){ return `${ch.folder}/${sec}.md`; }
@@ -633,9 +658,12 @@
   // 触屏/窄屏下粒子减半，减轻低端设备连续答题时的 DOM 抖动
   let isSmallScreen = (typeof matchMedia === 'function' && matchMedia('(max-width:768px)').matches);
   function burstParticles(x, y, colors, count){
+    // 优先读取 QuizConfig 配置
+    const _cfg = window.QuizConfig;
+    if (_cfg && _cfg.PARTICLE_ENABLED === false) return;
     const host = $('#particleHost') || $('#fxLayer');
     if (!host) return;
-    let n = count || 20;
+    let n = count || (_cfg && _cfg.PARTICLE_COUNT) || 20;
     if (isSmallScreen) n = Math.max(4, n >> 1);
     for (let i = 0; i < n; i++){
       const p = document.createElement('div');
@@ -1020,6 +1048,7 @@
     correct: 0, total: 0,
     locked: false, pendingTimeout: null,
     timer: null, timeLeft: 0, returnFocusEl: null,
+    paused: false, pausedTimeLeft: 0, // 暂停状态
   };
 
   function openQuiz(chIdx){
@@ -1056,6 +1085,9 @@
     $('#battleFeedback').textContent = '';
     $('#battleTitle').textContent = '📝 ' + levelNameFor(chIdx) + ' · 随机' + battle.questions.length + '题';
     $('#battleClose').style.opacity = 1;
+    // 显示暂停按钮
+    const pauseBtn = document.getElementById('battlePauseBtn');
+    if (pauseBtn) pauseBtn.style.display = 'inline-flex';
     // 重置进度条与时限条
     renderProgressSegs();
     const bar = $('#battleTimeBar');
@@ -1075,8 +1107,12 @@
   function openLevelIntro(chIdx){
     const ch = CHAPTERS[chIdx];
     if (!ch) return;
+
+    // 读取配置：是否跳过关卡过渡页
+    const _cfg = window.QuizConfig;
+    const skipIntro = _cfg && _cfg.SKIP_LEVEL_INTRO === true;
     const overlay = $('#levelIntro');
-    if (!overlay){ openQuiz(chIdx); return; }
+    if (!overlay || skipIntro){ openQuiz(chIdx); return; }
     const st = mainStatus(chIdx);
     const total = ch.sections.length;
     const cleard = ch.sections.filter(s => state.completedSections[getSectionKey(ch, s)]).length;
@@ -1101,6 +1137,103 @@
   function closeLevelIntro(){
     const overlay = $('#levelIntro');
     if (overlay) overlay.hidden = true;
+  }
+
+  /* ===================== 设置面板 ===================== */
+  function openSettings(){
+    let overlay = document.getElementById('quizSettingsOverlay');
+    if (!overlay){
+      overlay = document.createElement('div');
+      overlay.id = 'quizSettingsOverlay';
+      overlay.className = 'battle-pause-overlay show';
+      overlay.innerHTML =
+        '<div class="pause-content" style="max-width:400px;">' +
+          '<div class="pause-icon">⚙️</div>' +
+          '<div class="pause-title">闯关设置</div>' +
+          '<div class="settings-list">' +
+            '<div class="settings-item">' +
+              '<label>每题时限（秒）</label>' +
+              '<input type="number" id="settingTime" class="setting-input" min="5" max="120" value="25" />' +
+            '</div>' +
+            '<div class="settings-item">' +
+              '<label>每章题数</label>' +
+              '<input type="number" id="settingCount" class="setting-input" min="3" max="20" value="8" />' +
+            '</div>' +
+            '<div class="settings-item">' +
+              '<label>及格线</label>' +
+              '<select id="settingPassRate" class="setting-select">' +
+                '<option value="0.5">50%</option>' +
+                '<option value="0.6" selected>60%</option>' +
+                '<option value="0.7">70%</option>' +
+                '<option value="0.8">80%</option>' +
+              '</select>' +
+            '</div>' +
+            '<div class="settings-item settings-toggle">' +
+              '<label>启用超时</label>' +
+              '<input type="checkbox" id="settingTimeout" checked />' +
+            '</div>' +
+            '<div class="settings-item settings-toggle">' +
+              '<label>粒子特效</label>' +
+              '<input type="checkbox" id="settingParticle" checked />' +
+            '</div>' +
+            '<div class="settings-item settings-toggle">' +
+              '<label>跳过关卡介绍</label>' +
+              '<input type="checkbox" id="settingSkipIntro" checked />' +
+            '</div>' +
+          '</div>' +
+          '<div class="pause-buttons">' +
+            '<button class="pause-btn pause-btn-resume" id="settingsSaveBtn">保存</button>' +
+            '<button class="pause-btn pause-btn-quit" id="settingsCloseBtn">取消</button>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(overlay);
+
+      document.getElementById('settingsSaveBtn').addEventListener('click', saveSettings);
+      document.getElementById('settingsCloseBtn').addEventListener('click', closeSettings);
+      overlay.addEventListener('click', function(e){
+        if (e.target === overlay) closeSettings();
+      });
+    }
+
+    // 读取当前配置填充表单
+    const _cfg = window.QuizConfig;
+    document.getElementById('settingTime').value = _cfg ? _cfg.BATTLE_SECONDS : 25;
+    document.getElementById('settingCount').value = _cfg ? _cfg.QUIZ_COUNT : 8;
+    document.getElementById('settingPassRate').value = _cfg ? _cfg.PASS_RATE : 0.6;
+    document.getElementById('settingTimeout').checked = _cfg ? _cfg.ENABLE_TIMEOUT !== false : true;
+    document.getElementById('settingParticle').checked = _cfg ? _cfg.PARTICLE_ENABLED !== false : true;
+    document.getElementById('settingSkipIntro').checked = _cfg ? _cfg.SKIP_LEVEL_INTRO === true : false;
+
+    overlay.classList.add('show');
+  }
+
+  function saveSettings(){
+    const _cfg = window.QuizConfig;
+    if (!_cfg) return;
+
+    const time = parseInt(document.getElementById('settingTime').value) || 25;
+    const count = parseInt(document.getElementById('settingCount').value) || 8;
+    const passRate = parseFloat(document.getElementById('settingPassRate').value) || 0.6;
+    const timeout = document.getElementById('settingTimeout').checked;
+    const particle = document.getElementById('settingParticle').checked;
+    const skipIntro = document.getElementById('settingSkipIntro').checked;
+
+    _cfg.BATTLE_SECONDS = Math.min(120, Math.max(5, time));
+    _cfg.QUIZ_COUNT = Math.min(20, Math.max(3, count));
+    _cfg.PASS_RATE = passRate;
+    _cfg.ENABLE_TIMEOUT = timeout;
+    _cfg.PARTICLE_ENABLED = particle;
+    _cfg.SKIP_LEVEL_INTRO = skipIntro;
+    _cfg.save(); // 保存到 localStorage
+
+    closeSettings();
+    flashHint('✅ 设置已保存', 1500);
+    Sound.play('click');
+  }
+
+  function closeSettings(){
+    const overlay = document.getElementById('quizSettingsOverlay');
+    if (overlay) overlay.classList.remove('show');
   }
 
   // 营地节点：跳转到主站对应章节的正文知识点（第一章小节，用户可翻页浏览全部）
@@ -1144,7 +1277,11 @@
     if (battle.pendingTimeout){ clearTimeout(battle.pendingTimeout); battle.pendingTimeout = null; }
     if (resultRevealTimer){ clearTimeout(resultRevealTimer); resultRevealTimer = null; }
     battle.active = false;
+    hidePauseOverlay();
     $('#battlePanel').hidden = true;
+    // 隐藏暂停按钮
+    const pauseBtn = document.getElementById('battlePauseBtn');
+    if (pauseBtn) pauseBtn.style.display = 'none';
     // 重置答题相关 UI
     $('#battleExplain').hidden = true;
     $('#battleFeedback').textContent = '';
@@ -1157,7 +1294,101 @@
     if (back && back.isConnected && back.hasAttribute && back.hasAttribute('tabindex')){
       back.focus({ preventScroll: true });
     }
+    battle.paused = false;
   }
+
+  /* ===================== 暂停功能 ===================== */
+  function pauseBattle(){
+    if (!battle.active || battle.paused || battle.locked) return;
+    battle.paused = true;
+    battle.pausedTimeLeft = battle.timeLeft;
+    stopBattleTimer();
+    showPauseOverlay();
+    Sound.play('click');
+  }
+
+  function resumeBattle(){
+    if (!battle.active || !battle.paused) return;
+    battle.paused = false;
+    battle.timeLeft = battle.pausedTimeLeft;
+    hidePauseOverlay();
+    // 恢复计时器
+    const _cfg = window.QuizConfig;
+    const useTimeout = !_cfg || _cfg.ENABLE_TIMEOUT !== false;
+    if (useTimeout) {
+      updateTimerUI();
+      battle.timer = setInterval(() => {
+        battle.timeLeft -= 0.2;
+        if (battle.timeLeft <= 0){
+          stopBattleTimer();
+          battleTimeout();
+        } else {
+          updateTimerUI();
+        }
+      }, 200);
+    }
+    Sound.play('click');
+  }
+
+  function togglePause(){
+    if (battle.paused) resumeBattle();
+    else pauseBattle();
+  }
+
+  function showPauseOverlay(){
+    let overlay = document.getElementById('battlePauseOverlay');
+    if (!overlay){
+      overlay = document.createElement('div');
+      overlay.id = 'battlePauseOverlay';
+      overlay.className = 'battle-pause-overlay';
+      overlay.innerHTML =
+        '<div class="pause-content">' +
+          '<div class="pause-icon">⏸</div>' +
+          '<div class="pause-title">答题已暂停</div>' +
+          '<div class="pause-info">' +
+            '<div class="pause-stat">当前: <span id="pauseQNum">-</span> / <span id="pauseQTotal">-</span> 题</div>' +
+            '<div class="pause-stat">已答对: <span id="pauseCorrect">-</span> 题</div>' +
+            '<div class="pause-stat">剩余时间: <span id="pauseTime">-</span> 秒</div>' +
+          '</div>' +
+          '<div class="pause-buttons">' +
+            '<button class="pause-btn pause-btn-resume" id="pauseResumeBtn">▶ 继续答题</button>' +
+            '<button class="pause-btn pause-btn-quit" id="pauseQuitBtn">✕ 退出闯关</button>' +
+          '</div>' +
+          '<div class="pause-hint">按 ESC 或点击继续</div>' +
+        '</div>';
+      document.body.appendChild(overlay);
+
+      // 绑定按钮事件
+      document.getElementById('pauseResumeBtn').addEventListener('click', resumeBattle);
+      document.getElementById('pauseQuitBtn').addEventListener('click', closeBattle);
+
+      // 点击遮罩也可继续
+      overlay.addEventListener('click', function(e){
+        if (e.target === overlay) resumeBattle();
+      });
+    }
+
+    // 更新暂停信息
+    document.getElementById('pauseQNum').textContent = battle.qIdx + 1;
+    document.getElementById('pauseQTotal').textContent = battle.questions.length;
+    document.getElementById('pauseCorrect').textContent = battle.correct;
+    document.getElementById('pauseTime').textContent = Math.ceil(battle.timeLeft);
+
+    overlay.style.display = 'flex';
+  }
+
+  function hidePauseOverlay(){
+    const overlay = document.getElementById('battlePauseOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  // 绑定 ESC 键暂停
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape' && battle.active && !battle.locked){
+      togglePause();
+    }
+  });
+
   // 出题：顺序推进本章抽出的题目
   function renderProgressSegs(){
     const wrap = $('#battleSegs');
@@ -1290,6 +1521,11 @@
   }
   function startBattleTimer(){
     stopBattleTimer();
+    // 优先使用 QuizConfig 控制是否启用超时
+    const _cfg = window.QuizConfig;
+    const useTimeout = !_cfg || _cfg.ENABLE_TIMEOUT !== false;
+    if (!useTimeout) return; // 不启用计时器
+
     battle.timeLeft = CONFIG.BATTLE_SECONDS || 25;
     updateTimerUI();
     battle.timer = setInterval(() => {
@@ -1510,6 +1746,11 @@
   }
 
    function init(){
+    // 应用站点级配置覆盖
+    const siteKey = window.CURRENT_SITE_KEY || 'c';
+    if (window.QuizConfig) {
+      QuizConfig.applySiteOverrides(siteKey);
+    }
     loadState();
     initMinimap();
     computeFit();
@@ -1530,6 +1771,8 @@
         updateHUD();
         Sound.play('click');
       };
+      // 设置按钮
+      $('#hudSettingsBtn').addEventListener('click', openSettings);
       // 关卡秘典过渡页
       $('#levelIntroStart').onclick = () => {
         const ci = introChIdx >= 0 ? introChIdx : 0;
@@ -1543,6 +1786,7 @@
       document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') closeLevelIntro(); });
       // 关闭答题面板
       $('#battleClose').onclick = closeBattle;
+      $('#battlePauseBtn').addEventListener('click', togglePause);
       $('#battleAgainBtn').onclick = () => {
         const ci = battle.chapterIdx >= 0 ? battle.chapterIdx : 0;
         openQuiz(ci);
@@ -1572,6 +1816,9 @@
   e.addExp = addExp;
   e.updateHUD = updateHUD;
   e.renderAll = renderAll;
+  e.pauseBattle = pauseBattle;
+  e.resumeBattle = resumeBattle;
+  e.togglePause = togglePause;
   e.getNodeStatus = getNodeStatus;
   e.getNodePos = (id) => (nodeMapRef && nodeMapRef[id]) ? nodeMapRef[id] : null;
   e.easeTo = easeCameraTo;

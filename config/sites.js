@@ -14,7 +14,7 @@ module.exports = {
       "accent": "#3b82f6"
     },
     "logoText": "lab研习室",
-    "logo": "/image/logo.png",
+    "logo": "/image/Logo-C.png",
     "targetDate": "2027-04-17",
     "features": [
       "home",

@@ -350,36 +350,15 @@
     overflow: hidden;
 }
 
-.nav-item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: var(--accent);
-    transform: scaleY(0);
-    transition: transform var(--transition-fast);
-    border-radius: 0 2px 2px 0;
-}
-
 .nav-item:hover {
     background: var(--hover-bg);
     color: var(--accent);
-}
-
-.nav-item:hover::before {
-    transform: scaleY(0.5);
 }
 
 .nav-item.active {
     background: var(--hover-bg-strong);
     color: var(--accent);
     font-weight: 600;
-}
-
-.nav-item.active::before {
-    transform: scaleY(1);
 }
 
 .nav-item i {

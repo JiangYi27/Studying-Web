@@ -57,7 +57,7 @@
     <!--  -->
     <header class="top-bar">
       <div class="top-left">
-        <img src="/image/logo.png" alt="Logo" class="logo-img" id="logoImg" width="36" height="36"
+        <img src="/image/Logo-C.png" alt="Logo" class="logo-img" id="logoImg" width="36" height="36"
           onerror="this.style.display='none'">
         <span class="logo-text" id="logoText">lab研习室</span>
       </div>
@@ -718,14 +718,8 @@
 
         <!-- ========== 🏰 实战闯关（Quiz Game 王国冒险体验） ========== -->
         <div class="view" id="roadmapView">
-          <!-- 全阶段返回按钮：开场/加载/地图全程固定在左上角，点击退出闯关回主页 -->
-          <button class="game-back-btn" id="gameBackBtn" type="button" title="返回主页">
-            <i class="fas fa-arrow-left"></i> 返回
-          </button>
           <!-- 开场：直接进入 loop 视频（无静态标题页） -->
           <div class="qg-view active" id="startView">
-            <div class="loop-hint" id="loopHint">点击进入</div>
-            <button class="skip-intro-btn" id="skipIntroBtn" hidden type="button">跳过 »</button>
             <video class="start-video" id="startLoopVideo" src="/video/loop.mp4" loop muted playsinline hidden></video>
             <audio id="startLoopAudio" src="/audio/loop.mp3" loop preload="none"></audio>
             <video class="start-video" id="startGameVideo" src="/video/enter.mp4" playsinline hidden></video>
@@ -770,6 +764,7 @@
                   <strong id="hudProgress">0/14</strong>
                 </div>
                 <button class="hud-sound-btn" id="hudSoundBtn" title="音效开关">🎵</button>
+                <button class="hud-settings-btn" id="hudSettingsBtn" title="闯关设置">⚙️</button>
               </div>
 
               <!-- 地图容器 -->
@@ -823,38 +818,75 @@
                 <!-- 章节轻提示 -->
                 <div class="map-hint" id="mapHint" role="status" aria-live="polite"></div>
 
-                <!-- 章节答题面板（纯答题，无游戏战斗元素） -->
-                <div class="battle-panel" id="battlePanel" role="dialog" aria-modal="true" aria-labelledby="battleTitle"
-                  hidden>
-                  <button class="battle-close" id="battleClose" title="退出">✕</button>
+                <!-- 章节答题面板（现代化设计） -->
+                <div class="battle-panel" id="battlePanel" role="dialog" aria-modal="true" aria-labelledby="battleTitle" hidden>
+                  <!-- 面板头部：关闭 + 暂停按钮 -->
+                  <div class="battle-panel-header">
+                    <button class="battle-close" id="battleClose" title="退出 (Esc)">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                      </svg>
+                    </button>
+                    <button class="battle-pause" id="battlePauseBtn" title="暂停 (ESC)" style="display:none">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="6" y="4" width="4" height="16" rx="1"/>
+                        <rect x="14" y="4" width="4" height="16" rx="1"/>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <!-- 顶栏：标题 + 计时器 -->
                   <div class="battle-topbar">
                     <div class="battle-head">
                       <span class="battle-title" id="battleTitle" tabindex="-1">章节</span>
-                      <span class="battle-timer" id="battleTimer" title="每题限时">⏱ <span
-                          id="battleTimerNum">25</span>s</span>
+                      <span class="battle-timer" id="battleTimer" title="每题限时">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                          <circle cx="12" cy="12" r="10"/>
+                          <path d="M12 6v6l4 2"/>
+                        </svg>
+                        <span id="battleTimerNum">25</span>s
+                      </span>
                     </div>
                     <div class="battle-timebar">
                       <div class="battle-timebar-inner" id="battleTimeBar"></div>
                     </div>
                   </div>
+
+                  <!-- 答题区域 -->
                   <div class="battle-qna">
                     <div class="battle-progress" id="battleProgress">
                       <span class="battle-progress-text" id="battleQtag">第 0 / 8 题</span>
                       <span class="battle-progress-segs" id="battleSegs"></span>
                     </div>
-                    <div class="battle-explain" id="battleExplain" hidden></div>
                     <div class="battle-question" id="battleQuestion"></div>
                     <div class="battle-options" id="battleOptions"></div>
+                    <div class="battle-explain" id="battleExplain" hidden></div>
                     <div class="battle-feedback" id="battleFeedback"></div>
                   </div>
+
+                  <!-- 结算区域 -->
                   <div class="battle-summary" id="battleSummary" hidden>
                     <video class="battle-result-video" id="battleResultVideo" playsinline preload="none"></video>
                     <div class="battle-summary-wait" id="battleSummaryWait">🎬 结算中…</div>
                     <div class="battle-summary-box" id="battleSummaryBox" hidden>
                       <div class="battle-summary-kind" id="battleSummaryKind">结果</div>
                       <div class="battle-summary-stats" id="battleSummaryStats"></div>
-                      <button class="battle-again" id="battleAgainBtn">再来一次</button>
-                      <button class="battle-back-map" id="battleBackMapBtn">返回地图</button>
+                      <div class="battle-summary-buttons">
+                        <button class="battle-again" id="battleAgainBtn">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <path d="M1 4v6h6M23 20v-6h-6"/>
+                            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                          </svg>
+                          再来一次
+                        </button>
+                        <button class="battle-back-map" id="battleBackMapBtn">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                          </svg>
+                          返回地图
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -974,29 +1006,35 @@
         <!-- 设置视图 -->
         <div class="view" id="settingsView">
           <div class="settings-container">
+            <!-- 紧凑页面标题行 -->
             <div class="settings-header">
-              <h2><i class="fas fa-cog"></i> 设置</h2>
-              <p class="settings-subtitle">个性化你的学习体验</p>
+              <h2 class="settings-page-title"><i class="fas fa-cog"></i> 设置</h2>
             </div>
 
+            <!-- 主布局：Tab导航 + 内容 -->
             <div class="settings-layout">
-              <!-- 左侧导航 -->
+
+              <!-- 左侧Tab导航 -->
               <nav class="settings-nav">
                 <button class="settings-nav-item active" data-section="account">
-                  <i class="fas fa-user-circle"></i> 账号
+                  <i class="fas fa-user-circle"></i>
+                  <span>账号</span>
                 </button>
                 <button class="settings-nav-item" data-section="appearance">
-                  <i class="fas fa-palette"></i> 外观
+                  <i class="fas fa-palette"></i>
+                  <span>外观</span>
                 </button>
                 <button class="settings-nav-item" data-section="learning">
-                  <i class="fas fa-heart"></i> 学习
+                  <i class="fas fa-heart"></i>
+                  <span>学习</span>
                 </button>
-                <div class="settings-nav-divider"></div>
                 <button class="settings-nav-item" data-section="data">
-                  <i class="fas fa-database"></i> 数据
+                  <i class="fas fa-database"></i>
+                  <span>数据</span>
                 </button>
                 <button class="settings-nav-item" data-section="about">
-                  <i class="fas fa-info-circle"></i> 关于
+                  <i class="fas fa-info-circle"></i>
+                  <span>关于</span>
                 </button>
               </nav>
 
@@ -1005,55 +1043,44 @@
 
                 <!-- ===== 账号 ===== -->
                 <div class="settings-section active" id="section-account">
-                  <div class="settings-section-header">
-                    <h3><i class="fas fa-user-circle"></i> 账号信息</h3>
-                    <p>管理你的个人资料和账号安全</p>
-                  </div>
-
-                  <!-- 账号主页卡片 -->
-                  <div class="settings-profile-card" id="settingsProfileCard">
-                    <div class="profile-avatar-wrap">
-                      <img id="settingsAccountAvatar" src="/image/admin-avatar.png" alt="头像" class="profile-avatar-img">
-                      <i class="fas fa-user account-avatar-fallback" id="settingsAccountAvatarFallback" style="display:none"></i>
-                      <button class="profile-avatar-edit-btn" id="changeAvatarBtn" title="更换头像">
+                  <!-- 账号信息Banner -->
+                  <div class="settings-profile-banner" id="settingsProfileCard">
+                    <div class="banner-avatar-wrap">
+                      <img id="settingsAccountAvatar" src="/image/admin-avatar.png" alt="头像" class="banner-avatar-img">
+                      <button class="banner-avatar-edit" id="changeAvatarBtn" title="更换头像">
                         <i class="fas fa-camera"></i>
                       </button>
                     </div>
-                    <div class="profile-info">
-                      <div class="profile-display-name" id="settingsDisplayName">加载中...</div>
-                      <div class="profile-email" id="settingsAccountEmail">
-                        <i class="fas fa-envelope"></i> <span>—</span>
-                      </div>
-                      <div class="profile-meta">
+                    <div class="banner-info">
+                      <div class="banner-name" id="settingsDisplayName">加载中...</div>
+                      <div class="banner-meta">
+                        <span id="settingsAccountEmail"><i class="fas fa-envelope"></i> <span>—</span></span>
+                        <span class="meta-dot">·</span>
                         <span id="settingsAccountUsername"><i class="fas fa-user"></i></span>
+                        <span class="meta-dot">·</span>
                         <span id="settingsAccountSite"><i class="fas fa-globe"></i></span>
                       </div>
                     </div>
-                    <div class="profile-actions">
-                      <button class="btn-profile-action" id="openEditProfileBtn">
+                    <div class="banner-actions">
+                      <button class="btn-primary-sm" id="openEditProfileBtn">
                         <i class="fas fa-user-edit"></i> 编辑资料
                       </button>
-                      <button class="btn-profile-action btn-profile-action-secondary" id="changePasswordBtn">
+                      <button class="btn-ghost-sm" id="changePasswordBtn">
                         <i class="fas fa-key"></i> 修改密码
                       </button>
                     </div>
                   </div>
 
-                  <!-- 账号安全卡 -->
-                  <div class="settings-card">
-                    <div class="settings-card-header">
-                      <i class="fas fa-shield-alt"></i>
-                      <span>账号安全</span>
-                    </div>
-                    <div class="settings-card-body">
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main"><i class="fas fa-key"></i> 登录密码</div>
-                          <span class="setting-label-sub">已设置</span>
-                        </div>
-                        <div class="setting-control">
-                          <button class="btn btn-sm btn-outline-primary" id="changePasswordBtn2">修改</button>
-                        </div>
+                  <!-- 设置卡片列表 -->
+                  <div class="settings-group">
+                    <div class="settings-group-title">账号安全</div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">登录密码</span>
+                        <span class="row-desc">已设置密码</span>
+                      </div>
+                      <div class="row-action">
+                        <button class="btn-text" id="changePasswordBtn2">修改</button>
                       </div>
                     </div>
                   </div>
@@ -1061,233 +1088,153 @@
 
                 <!-- ===== 外观 ===== -->
                 <div class="settings-section" id="section-appearance">
-                  <div class="settings-section-header">
-                    <h3><i class="fas fa-palette"></i> 外观设置</h3>
-                    <p>自定义界面颜色、主题和视觉效果</p>
-                  </div>
-
-                  <div class="settings-card">
-                    <div class="settings-card-header">
-                      <i class="fas fa-moon"></i>
-                      <span>模式</span>
-                    </div>
-                    <div class="settings-card-body">
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-moon"></i> 深色模式
-                          </div>
-                          <span class="setting-label-sub">开启后切换为深色主题</span>
+                  <div class="settings-group">
+                    <div class="settings-group-title">主题</div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">深色模式</span>
+                        <span class="row-desc">开启后切换为深色主题</span>
+                      </div>
+                      <div class="row-action">
+                        <div class="toggle-switch">
+                          <input type="checkbox" id="darkModeSetting" class="toggle-input" role="switch" aria-label="深色模式">
+                          <label for="darkModeSetting" class="toggle-slider"></label>
                         </div>
-                        <div class="setting-control">
-                          <div class="toggle-switch">
-                            <input type="checkbox" id="darkModeSetting" class="toggle-input" role="switch" aria-label="深色模式">
-                            <label for="darkModeSetting" class="toggle-slider"></label>
-                          </div>
+                      </div>
+                    </div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">主题颜色</span>
+                        <span class="row-desc">选择你喜欢的主色调</span>
+                      </div>
+                      <div class="row-action">
+                        <div class="theme-color-picker" id="themeColorPicker">
+                          <button type="button" class="theme-dot active" data-color="#6366f1" title="紫色" style="background:#6366f1"></button>
+                          <button type="button" class="theme-dot" data-color="#3b82f6" title="蓝色" style="background:#3b82f6"></button>
+                          <button type="button" class="theme-dot" data-color="#10b981" title="绿色" style="background:#10b981"></button>
+                          <button type="button" class="theme-dot" data-color="#f59e0b" title="橙色" style="background:#f59e0b"></button>
+                          <button type="button" class="theme-dot" data-color="#ef4444" title="红色" style="background:#ef4444"></button>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div class="settings-card">
-                    <div class="settings-card-header">
-                      <i class="fas fa-tint"></i>
-                      <span>主题色</span>
+                  <div class="settings-group">
+                    <div class="settings-group-title">背景样式</div>
+                    <!-- 背景模式切换 -->
+                    <div class="bg-mode-tabs" role="tablist" aria-label="背景模式">
+                      <button class="bg-mode-tab active" data-bg-mode="gradient" role="tab" aria-selected="true">
+                        <i class="fas fa-palette"></i> 渐变背景
+                      </button>
+                      <button class="bg-mode-tab" data-bg-mode="video" role="tab" aria-selected="false">
+                        <i class="fas fa-video"></i> 视频壁纸
+                      </button>
                     </div>
-                    <div class="settings-card-body">
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-palette"></i> 主题颜色
-                          </div>
-                          <span class="setting-label-sub">选择你喜欢的主色调</span>
+
+                    <!-- 渐变背景 -->
+                    <div id="gradientArea" class="bg-panel" role="tabpanel">
+                      <div class="gradient-picker" id="gradientPicker">
+                        <button type="button" class="gradient-swatch gradient-none active" data-gradient="none" title="无渐变" aria-label="无渐变"></button>
+                        <button type="button" class="gradient-swatch gradient-aurora" data-gradient="aurora" title="极光" aria-label="极光渐变"></button>
+                        <button type="button" class="gradient-swatch gradient-ocean" data-gradient="ocean" title="海洋" aria-label="海洋渐变"></button>
+                        <button type="button" class="gradient-swatch gradient-sunset" data-gradient="sunset" title="日落" aria-label="日落渐变"></button>
+                        <button type="button" class="gradient-swatch gradient-forest" data-gradient="forest" title="森林" aria-label="森林渐变"></button>
+                        <button type="button" class="gradient-swatch gradient-midnight" data-gradient="midnight" title="午夜" aria-label="午夜渐变"></button>
+                        <button type="button" class="gradient-swatch gradient-lake" data-gradient="lake" title="湖光" aria-label="湖光渐变"></button>
+                        <button type="button" class="gradient-swatch gradient-peach" data-gradient="peach" title="蜜桃" aria-label="蜜桃渐变"></button>
+                      </div>
+                    </div>
+
+                    <!-- 视频壁纸 -->
+                    <div id="videoArea" class="bg-panel video-panel" role="tabpanel" style="display:none">
+                      <div class="video-grid" id="videoGrid" aria-label="选择视频壁纸">
+                        <div class="video-card" data-video="grassland" tabindex="0" role="button" aria-pressed="false" aria-label="暮时清辉">
+                          <video class="video-card-video" src="/video/grassland.mp4" muted loop playsinline></video>
+                          <canvas class="video-card-canvas"></canvas>
+                          <span class="video-card-name">暮时清辉</span>
+                          <span class="video-card-check"><i class="fas fa-check"></i></span>
                         </div>
-                        <div class="setting-control">
-                          <div class="theme-color-picker" id="themeColorPicker">
-                            <button type="button" class="theme-color-option" data-color="#6366f1" title="紫色"><span
-                                class="color-swatch" style="background:#6366f1"></span></button>
-                            <button type="button" class="theme-color-option" data-color="#3b82f6" title="蓝色"><span
-                                class="color-swatch" style="background:#3b82f6"></span></button>
-                            <button type="button" class="theme-color-option" data-color="#10b981" title="绿色"><span
-                                class="color-swatch" style="background:#10b981"></span></button>
-                            <button type="button" class="theme-color-option" data-color="#f59e0b" title="橙色"><span
-                                class="color-swatch" style="background:#f59e0b"></span></button>
-                            <button type="button" class="theme-color-option" data-color="#ef4444" title="红色"><span
-                                class="color-swatch" style="background:#ef4444"></span></button>
-                          </div>
+                        <div class="video-card" data-video="forest" tabindex="0" role="button" aria-pressed="false" aria-label="静水澄观">
+                          <video class="video-card-video" src="/video/forest.mp4" muted loop playsinline></video>
+                          <canvas class="video-card-canvas"></canvas>
+                          <span class="video-card-name">静水澄观</span>
+                          <span class="video-card-check"><i class="fas fa-check"></i></span>
+                        </div>
+                        <div class="video-card" data-video="city" tabindex="0" role="button" aria-pressed="false" aria-label="深林雪境">
+                          <video class="video-card-video" src="/video/city.mp4" muted loop playsinline></video>
+                          <canvas class="video-card-canvas"></canvas>
+                          <span class="video-card-name">深林雪境</span>
+                          <span class="video-card-check"><i class="fas fa-check"></i></span>
+                        </div>
+                        <div class="video-card" data-video="gallery" tabindex="0" role="button" aria-pressed="false" aria-label="寂野晨晓">
+                          <video class="video-card-video" src="/video/gallery.mp4" muted loop playsinline></video>
+                          <canvas class="video-card-canvas"></canvas>
+                          <span class="video-card-name">寂野晨晓</span>
+                          <span class="video-card-check"><i class="fas fa-check"></i></span>
                         </div>
                       </div>
+                      <div class="video-controls">
+                        <span class="video-mode-label" id="videoModeLabel">动态播放</span>
+                        <div class="toggle-switch">
+                          <input type="checkbox" id="videoStaticMode" class="toggle-input" role="switch" aria-label="动态/静态">
+                          <label for="videoStaticMode" class="toggle-slider"></label>
+                        </div>
+                      </div>
+                      <script>
+                      (function() {
+                        var canvasCtxs = {};
+                        var captured = {};
+                        function captureFrame(vid, canvas) {
+                          var c = canvas.getContext('2d');
+                          c.canvas.width = vid.videoWidth || 320;
+                          c.canvas.height = vid.videoHeight || 180;
+                          c.drawImage(vid, 0, 0, c.canvas.width, c.canvas.height);
+                          captured[vid.dataset.video] = true;
+                        }
+                        function loadThumb(card) {
+                          var vid = card.querySelector('.video-card-video');
+                          var canvas = card.querySelector('.video-card-canvas');
+                          if (!vid || !canvas || captured[vid.dataset.video]) return;
+                          var c = canvas.getContext('2d');
+                          canvasCtxs[vid.dataset.video] = c;
+                          vid.addEventListener('seeked', function onSeek() {
+                            captureFrame(vid, canvas);
+                            vid.removeEventListener('seeked', onSeek);
+                          });
+                          vid.addEventListener('loadeddata', function() {
+                            vid.currentTime = 1;
+                          });
+                          vid.load();
+                        }
+                        var observer = new MutationObserver(function(mutations) {
+                          mutations.forEach(function(m) {
+                            if (m.attributeName === 'style') {
+                              var videoArea = document.getElementById('videoArea');
+                              if (videoArea && videoArea.style.display !== 'none') {
+                                document.querySelectorAll('.video-card').forEach(loadThumb);
+                                observer.disconnect();
+                              }
+                            }
+                          });
+                        });
+                        var videoArea = document.getElementById('videoArea');
+                        if (videoArea) observer.observe(videoArea, { attributes: true });
+                      })();
+                      </script>
                     </div>
                   </div>
 
-                  <div class="settings-card">
-                    <div class="settings-card-header">
-                      <i class="fas fa-image"></i>
-                      <span>背景样式</span>
-                    </div>
-                    <div class="settings-card-body">
-                      <!-- 背景模式切换标签页 -->
-                      <div class="bg-mode-tabs" role="tablist" aria-label="背景模式">
-                        <button class="bg-mode-tab active" data-bg-mode="gradient" role="tab" aria-selected="true" aria-controls="gradientArea">
-                          <i class="fas fa-palette"></i> 渐变背景
-                        </button>
-                        <button class="bg-mode-tab" data-bg-mode="video" role="tab" aria-selected="false" aria-controls="videoArea">
-                          <i class="fas fa-video"></i> 视频壁纸
-                        </button>
+                  <div class="settings-group">
+                    <div class="settings-group-title">背景音乐</div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">背景音效</span>
+                        <span class="row-desc">学习时播放舒缓的背景音</span>
                       </div>
-
-                      <!-- 渐变背景区域 -->
-                      <div id="gradientArea" class="bg-options-area" role="tabpanel">
-                        <div class="bg-gradient-col">
-                          <div class="setting-row">
-                            <div class="setting-label">
-                              <div class="setting-label-main">
-                                <i class="fas fa-layer-group"></i> 渐变样式
-                              </div>
-                              <span class="setting-label-sub">为界面选择柔和的渐变背景</span>
-                            </div>
-                            <div class="setting-control">
-                              <div class="gradient-picker" id="gradientPicker">
-                                <button type="button" class="gradient-option gradient-none active" data-gradient="none"
-                                  title="无" aria-label="无渐变"></button>
-                                <button type="button" class="gradient-option gradient-aurora" data-gradient="aurora"
-                                  title="极光" aria-label="极光渐变"></button>
-                                <button type="button" class="gradient-option gradient-ocean" data-gradient="ocean"
-                                  title="海洋" aria-label="海洋渐变"></button>
-                                <button type="button" class="gradient-option gradient-sunset" data-gradient="sunset"
-                                  title="日落" aria-label="日落渐变"></button>
-                                <button type="button" class="gradient-option gradient-forest" data-gradient="forest"
-                                  title="森林" aria-label="森林渐变"></button>
-                                <button type="button" class="gradient-option gradient-midnight" data-gradient="midnight"
-                                  title="午夜" aria-label="午夜渐变"></button>
-                                <button type="button" class="gradient-option gradient-lake" data-gradient="lake"
-                                  title="湖光" aria-label="湖光渐变"></button>
-                                <button type="button" class="gradient-option gradient-peach" data-gradient="peach"
-                                  title="蜜桃" aria-label="蜜桃渐变"></button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- 视频壁纸区域 -->
-                      <div id="videoArea" class="bg-options-area" role="tabpanel" style="display:none">
-                        <div class="bg-video-col">
-                          <!-- 视频网格选择器 -->
-                          <div class="video-grid" id="videoGrid" aria-label="选择视频壁纸">
-                            <div class="video-card" data-video="grassland" tabindex="0" role="button" aria-pressed="false" aria-label="草地视频">
-                              <div class="video-card-placeholder">
-                                <i class="fas fa-seedling"></i>
-                                <span>grassland.mp4</span>
-                              </div>
-                              <span class="video-card-name">🌿 草地</span>
-                              <span class="video-card-check"><i class="fas fa-check"></i></span>
-                            </div>
-                            <div class="video-card" data-video="forest" tabindex="0" role="button" aria-pressed="false" aria-label="森林视频">
-                              <div class="video-card-placeholder">
-                                <i class="fas fa-tree"></i>
-                                <span>forest.mp4</span>
-                              </div>
-                              <span class="video-card-name">🌲 森林</span>
-                              <span class="video-card-check"><i class="fas fa-check"></i></span>
-                            </div>
-                            <div class="video-card" data-video="city" tabindex="0" role="button" aria-pressed="false" aria-label="城市视频">
-                              <div class="video-card-placeholder">
-                                <i class="fas fa-city"></i>
-                                <span>city.mp4</span>
-                              </div>
-                              <span class="video-card-name">🏙️ 城市</span>
-                              <span class="video-card-check"><i class="fas fa-check"></i></span>
-                            </div>
-                            <div class="video-card" data-video="gallery" tabindex="0" role="button" aria-pressed="false" aria-label="画廊视频">
-                              <div class="video-card-placeholder">
-                                <i class="fas fa-images"></i>
-                                <span>gallery.mp4</span>
-                              </div>
-                              <span class="video-card-name">🖼️ 画廊</span>
-                              <span class="video-card-check"><i class="fas fa-check"></i></span>
-                            </div>
-                            <div class="video-card" data-video="flower" tabindex="0" role="button" aria-pressed="false" aria-label="花海视频">
-                              <div class="video-card-placeholder">
-                                <i class="fas fa-spa"></i>
-                                <span>flower.mp4</span>
-                              </div>
-                              <span class="video-card-name">🌸 花海</span>
-                              <span class="video-card-check"><i class="fas fa-check"></i></span>
-                            </div>
-                            <div class="video-card" data-video="gorge" tabindex="0" role="button" aria-pressed="false" aria-label="峡谷视频">
-                              <div class="video-card-placeholder">
-                                <i class="fas fa-mountain"></i>
-                                <span>gorge.mp4</span>
-                              </div>
-                              <span class="video-card-name">🏔️ 峡谷</span>
-                              <span class="video-card-check"><i class="fas fa-check"></i></span>
-                            </div>
-                            <div class="video-card" data-video="green-gallery" tabindex="0" role="button" aria-pressed="false" aria-label="绿色长廊视频">
-                              <div class="video-card-placeholder">
-                                <i class="fas fa-leaf"></i>
-                                <span>green gallery.mp4</span>
-                              </div>
-                              <span class="video-card-name">🍃 绿色长廊</span>
-                              <span class="video-card-check"><i class="fas fa-check"></i></span>
-                            </div>
-                          </div>
-
-                          <!-- 动态/静态模式切换 -->
-                          <div class="video-mode-row">
-                            <div class="setting-label">
-                              <div class="setting-label-main">
-                                <i class="fas fa-film"></i> 播放模式
-                              </div>
-                              <span class="setting-label-sub">选择动态视频或静态壁纸</span>
-                            </div>
-                            <div class="setting-control">
-                              <span class="video-mode-label" id="videoModeLabel">动态播放</span>
-                              <div class="toggle-switch">
-                                <input type="checkbox" id="videoStaticMode" class="toggle-input" role="switch" aria-label="动态/静态模式">
-                                <label for="videoStaticMode" class="toggle-slider"></label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- 视频预览窗口 -->
-                        <div class="video-preview-area">
-                          <div class="video-preview-window" id="videoPreviewWindow" aria-label="视频预览" role="img">
-                            <div class="video-preview-empty" id="videoPreviewEmpty">
-                              <i class="fas fa-photo-video"></i>
-                              <span>选择视频预览</span>
-                            </div>
-                            <video id="videoPreviewPlayer" muted loop preload="none" style="display:none"></video>
-                            <div class="video-preview-overlay"></div>
-                            <div class="video-preview-label" id="videoPreviewLabel" style="display:none"></div>
-                          </div>
-                          <div style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:6px;">
-                            <i class="fas fa-eye"></i> 实时预览
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="settings-card">
-                    <div class="settings-card-header">
-                      <i class="fas fa-music"></i>
-                      <span>背景音乐</span>
-                    </div>
-                    <div class="settings-card-body">
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-music"></i> 背景音乐
-                          </div>
-                          <span class="setting-label-sub">学习时播放舒缓的白噪音或音乐</span>
-                        </div>
-                        <div class="setting-control">
-                          <select id="noiseSelectSetting" class="setting-select">
-                            <option value="">关闭</option>
-                          </select>
-                        </div>
+                      <div class="row-action">
+                        <select id="noiseSelectSetting" class="setting-select">
+                          <option value="">关闭</option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -1295,71 +1242,55 @@
 
                 <!-- ===== 学习 ===== -->
                 <div class="settings-section" id="section-learning">
-                  <div class="settings-section-header">
-                    <h3><i class="fas fa-heart"></i> 学习偏好</h3>
-                    <p>调整学习节奏和提醒设置</p>
-                  </div>
-
-                  <div class="settings-card">
-                    <div class="settings-card-body">
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-bullseye"></i> 每日学习目标
-                          </div>
-                          <span class="setting-label-sub">每天完成的小节数量</span>
-                        </div>
-                        <div class="setting-control">
-                          <input type="number" id="dailyGoalSetting" min="1" max="20" value="1"
-                            class="setting-number-input">
-                          <span class="setting-value">小节/天</span>
+                  <div class="settings-group">
+                    <div class="settings-group-title">学习节奏</div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">每日学习目标</span>
+                        <span class="row-desc">每天完成的小节数量</span>
+                      </div>
+                      <div class="row-action row-inline">
+                        <input type="number" id="dailyGoalSetting" min="1" max="20" value="1" class="setting-number-input">
+                        <span class="input-suffix">小节/天</span>
+                      </div>
+                    </div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">自动标记已学</span>
+                        <span class="row-desc">完成小节后自动标记为已学</span>
+                      </div>
+                      <div class="row-action">
+                        <div class="toggle-switch">
+                          <input type="checkbox" id="autoMarkSetting" class="toggle-input" role="switch" aria-label="自动标记已学">
+                          <label for="autoMarkSetting" class="toggle-slider"></label>
                         </div>
                       </div>
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-check-circle"></i> 自动标记已学
-                          </div>
-                          <span class="setting-label-sub">完成小节后自动标记为已学</span>
-                        </div>
-                        <div class="setting-control">
-                          <div class="toggle-switch">
-                            <input type="checkbox" id="autoMarkSetting" class="toggle-input" role="switch" aria-label="自动标记已学">
-                            <label for="autoMarkSetting" class="toggle-slider"></label>
-                          </div>
-                        </div>
+                    </div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">学习提醒</span>
+                        <span class="row-desc">每日提醒你坚持学习</span>
                       </div>
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-bell"></i> 学习提醒
-                          </div>
-                          <span class="setting-label-sub">每日提醒你坚持学习</span>
+                      <div class="row-action row-inline">
+                        <div class="toggle-switch">
+                          <input type="checkbox" id="studyReminderSetting" class="toggle-input" role="switch" aria-label="学习提醒">
+                          <label for="studyReminderSetting" class="toggle-slider"></label>
                         </div>
-                        <div class="setting-control">
-                          <div class="toggle-switch">
-                            <input type="checkbox" id="studyReminderSetting" class="toggle-input" role="switch" aria-label="学习提醒">
-                            <label for="studyReminderSetting" class="toggle-slider"></label>
-                          </div>
-                          <input type="time" id="reminderTimeSetting" value="19:00" class="setting-time-input"
-                            style="padding:4px 8px;border-radius:6px;border:1px solid var(--border-color);background:var(--input-bg);color:var(--text-primary);font-size:0.82rem;width:90px;">
-                        </div>
+                        <input type="time" id="reminderTimeSetting" value="19:00" class="setting-time-input">
                       </div>
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-sync-alt"></i> 复习间隔
-                          </div>
-                          <span class="setting-label-sub">已学内容多久后提醒复习</span>
-                        </div>
-                        <div class="setting-control">
-                          <select id="reviewIntervalSetting" class="setting-select">
-                            <option value="1">1天后</option>
-                            <option value="3" selected>3天后</option>
-                            <option value="7">7天后</option>
-                            <option value="14">14天后</option>
-                          </select>
-                        </div>
+                    </div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">复习间隔</span>
+                        <span class="row-desc">已学内容多久后提醒复习</span>
+                      </div>
+                      <div class="row-action">
+                        <select id="reviewIntervalSetting" class="setting-select">
+                          <option value="1">1天后</option>
+                          <option value="3" selected>3天后</option>
+                          <option value="7">7天后</option>
+                          <option value="14">14天后</option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -1367,91 +1298,61 @@
 
                 <!-- ===== 数据 ===== -->
                 <div class="settings-section" id="section-data">
-                  <div class="settings-section-header">
-                    <h3><i class="fas fa-database"></i> 数据管理</h3>
-                    <p>导入导出和重置你的学习数据</p>
-                  </div>
-
-                  <div class="settings-card">
-                    <div class="settings-card-body">
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-download"></i> 导出全部数据
-                          </div>
-                          <span class="setting-label-sub">将所有学习数据导出为 JSON 文件</span>
-                        </div>
-                        <div class="setting-control">
-                          <button class="btn btn-sm btn-outline-primary" id="exportAllDataBtn">
-                            <i class="fas fa-download"></i> 导出
-                          </button>
-                        </div>
+                  <div class="settings-group">
+                    <div class="settings-group-title">数据管理</div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">导出全部数据</span>
+                        <span class="row-desc">将所有学习数据导出为 JSON 文件</span>
                       </div>
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-upload"></i> 导入数据
-                          </div>
-                          <span class="setting-label-sub">从 JSON 文件恢复学习数据</span>
-                        </div>
-                        <div class="setting-control">
-                          <button class="btn btn-sm btn-outline-primary" id="importDataBtn">
-                            <i class="fas fa-upload"></i> 导入
-                          </button>
-                          <input type="file" id="importDataFile" accept=".json" style="display:none">
-                        </div>
+                      <div class="row-action">
+                        <button class="btn-outline" id="exportAllDataBtn"><i class="fas fa-download"></i> 导出</button>
                       </div>
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-chart-bar"></i> 数据统计
-                          </div>
-                          <span class="setting-label-sub">查看详细的学习数据报告</span>
-                        </div>
-                        <div class="setting-control">
-                          <button class="btn btn-sm btn-outline-info" id="dataStatsBtn">
-                            <i class="fas fa-info-circle"></i> 查看
-                          </button>
-                        </div>
+                    </div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">导入数据</span>
+                        <span class="row-desc">从 JSON 文件恢复学习数据</span>
                       </div>
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-file-alt"></i> 导出笔记
-                          </div>
-                          <span class="setting-label-sub">将笔记导出为备份文件</span>
-                        </div>
-                        <div class="setting-control">
-                          <button class="btn btn-sm btn-outline-secondary" id="exportNotesBtn2">
-                            <i class="fas fa-file-export"></i> 导出
-                          </button>
-                        </div>
+                      <div class="row-action">
+                        <button class="btn-outline" id="importDataBtn"><i class="fas fa-upload"></i> 导入</button>
+                        <input type="file" id="importDataFile" accept=".json" style="display:none">
                       </div>
-                      <div class="setting-row">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-trash-alt"></i> 清除笔记
-                          </div>
-                          <span class="setting-label-sub">删除所有笔记内容</span>
-                        </div>
-                        <div class="setting-control">
-                          <button class="btn btn-sm btn-outline-warning" id="clearNotesBtn">
-                            <i class="fas fa-trash"></i> 清除
-                          </button>
-                        </div>
+                    </div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">数据统计</span>
+                        <span class="row-desc">查看详细的学习数据报告</span>
                       </div>
-                      <div class="setting-row setting-row-danger">
-                        <div class="setting-label">
-                          <div class="setting-label-main">
-                            <i class="fas fa-exclamation-triangle"></i> 重置学习进度
-                          </div>
-                          <span class="setting-label-sub">清除所有学习记录，此操作不可逆</span>
-                        </div>
-                        <div class="setting-control">
-                          <button class="btn-danger" id="resetProgressBtn2">
-                            <i class="fas fa-undo"></i> 重置
-                          </button>
-                        </div>
+                      <div class="row-action">
+                        <button class="btn-outline" id="dataStatsBtn"><i class="fas fa-chart-bar"></i> 查看</button>
+                      </div>
+                    </div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">导出笔记</span>
+                        <span class="row-desc">将笔记导出为备份文件</span>
+                      </div>
+                      <div class="row-action">
+                        <button class="btn-outline" id="exportNotesBtn2"><i class="fas fa-file-export"></i> 导出</button>
+                      </div>
+                    </div>
+                    <div class="settings-row">
+                      <div class="row-label">
+                        <span class="row-title">清除笔记</span>
+                        <span class="row-desc">删除所有笔记内容</span>
+                      </div>
+                      <div class="row-action">
+                        <button class="btn-outline btn-warn" id="clearNotesBtn"><i class="fas fa-trash"></i> 清除</button>
+                      </div>
+                    </div>
+                    <div class="settings-row settings-row-danger">
+                      <div class="row-label">
+                        <span class="row-title">重置学习进度</span>
+                        <span class="row-desc">清除所有学习记录，此操作不可逆</span>
+                      </div>
+                      <div class="row-action">
+                        <button class="btn-danger" id="resetProgressBtn2"><i class="fas fa-undo"></i> 重置</button>
                       </div>
                     </div>
                   </div>
@@ -1459,48 +1360,33 @@
 
                 <!-- ===== 关于 ===== -->
                 <div class="settings-section" id="section-about">
-                  <div class="settings-section-header">
-                    <h3><i class="fas fa-info-circle"></i> 关于</h3>
-                    <p>了解更多关于知识库的信息</p>
-                  </div>
-
-                  <div class="settings-card">
-                    <div class="settings-card-body">
-                      <div class="about-info">
-                        <div class="about-row">
-                          <span class="label"><i class="fas fa-tag"></i> 版本</span>
-                          <span class="value">v1.0.1</span>
+                  <div class="settings-group">
+                    <div class="settings-group-title">关于</div>
+                    <div class="settings-row row-about">
+                      <div class="about-meta-grid">
+                        <div class="about-item">
+                          <span class="about-label">版本</span>
+                          <span class="about-value">v1.0.1</span>
                         </div>
-                        <div class="about-row">
-                          <span class="label"><i class="fas fa-code"></i> 开发者</span>
-                          <span class="value">孤屿·行舟</span>
+                        <div class="about-item">
+                          <span class="about-label">开发者</span>
+                          <span class="about-value">孤屿·行舟</span>
                         </div>
-                        <div class="about-row">
-                          <span class="label"><i class="fas fa-clock"></i> 构建时间</span>
-                          <span class="value">2026-08-19</span>
+                        <div class="about-item">
+                          <span class="about-label">构建时间</span>
+                          <span class="about-value">2026-08-19</span>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="settings-card">
-                    <div class="settings-card-header">
-                      <i class="fas fa-graduation-cap"></i>
-                      <span>技术栈</span>
-                    </div>
-                    <div class="settings-card-body">
-                      <div class="about-info">
-                        <div class="about-row">
-                          <span class="label">前端框架</span>
-                          <span class="value">原生 JavaScript + CSS</span>
+                        <div class="about-item">
+                          <span class="about-label">前端框架</span>
+                          <span class="about-value">原生 JavaScript + CSS</span>
                         </div>
-                        <div class="about-row">
-                          <span class="label">UI 库</span>
-                          <span class="value">Bootstrap 5 + FontAwesome</span>
+                        <div class="about-item">
+                          <span class="about-label">UI 库</span>
+                          <span class="about-value">Bootstrap 5 + FontAwesome</span>
                         </div>
-                        <div class="about-row">
-                          <span class="label">图表</span>
-                          <span class="value">Chart.js</span>
+                        <div class="about-item">
+                          <span class="about-label">图表</span>
+                          <span class="about-value">Chart.js</span>
                         </div>
                       </div>
                     </div>
@@ -1701,7 +1587,11 @@
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/data/login-videos.js" defer></script>
   <script src="/js/bundle.js" defer></script>
+  <script src="/js/stores/studyStore.js" defer></script>
+  <script src="/js/stores/uiStore.js" defer></script>
+  <script src="/js/core/router.js" defer></script>
 
 
   <!-- Prism：由 roadmap.js 首次遇到代码块时懒加载 -->

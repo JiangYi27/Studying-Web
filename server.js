@@ -63,6 +63,15 @@ function generateCsrfToken() {
   return crypto.randomBytes(32).toString('hex');
 }
 
+// CSRF 豁免路径（精确匹配）
+const CSRF_EXEMPT = new Set([
+  '/api/auth/login',
+  '/api/auth/register',
+  '/api/auth/logout',
+  '/api/auth/forgot-password',
+  '/api/auth/reset-password',
+]);
+
 function csrfProtection(req, res, next) {
   // GET/HEAD/OPTIONS 不需要 CSRF 校验
   if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
@@ -72,12 +81,8 @@ function csrfProtection(req, res, next) {
     return next();
   }
 
-  // 登录、注册、登出、重置密码等接口不需要 CSRF
-  // 整个 /api/admin 也豁免（admin 独立登录，不使用 CSRF token）
-  if (req.path === '/api/auth/login' || req.path === '/api/auth/register' ||
-      req.path === '/api/auth/logout' ||
-      req.path === '/api/auth/forgot-password' || req.path === '/api/auth/reset-password' ||
-      req.path.startsWith('/api/admin')) {
+  // 豁免路径：精确匹配或 /api/admin 前缀（admin 独立登录）
+  if (CSRF_EXEMPT.has(req.path) || req.path.startsWith('/api/admin')) {
     return next();
   }
 
